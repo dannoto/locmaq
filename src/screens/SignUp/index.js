@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { Background, Container, Logo, TextTitulo, AreaInput, TituloInput, Input, IconButton, CustomButton, InputCaracter, CustomButtonText, SignMessageButton, SignMessageButtonText, SignMessage, SignMessageText } from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInputMask } from 'react-native-masked-text';
-import { validate } from 'gerador-validador-cpf';
+import { validate } from 'gerador-validador-cpf'
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 
@@ -14,6 +14,8 @@ export default () => {
 
     const { cadastrar } = useContext(AuthContext);
     const errors = {}
+
+
 
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
@@ -25,6 +27,11 @@ export default () => {
     const status = isValid(cpf);
     const isstring = isString(nome);
 
+
+
+
+
+
     const inputElementRef = useRef(null);
 
     useEffect(() => {
@@ -33,46 +40,43 @@ export default () => {
         });
     }, [visible]);
 
-    // Validade name
-    function isString(nome) {
-        var letters = /^[A-Za-z]+$/;
-        if (nome.match(letters)) {
-          
-            return true;
-        } else {
-            return false;
-
-        }
-    }
-
-    // Validate cpf
-    function isValid(cpf) {
-
-        if (validate(cpf)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-
-    function handleSignUp() {
-        if (nome.length < 200) {
-            if (isstring) {
-               
+             // Validade name
+        function isString(nome) {
+            var letters = /^[A-Za-z]+$/;
+            if (nome.match(letters)) {
+            
+                return true;
             } else {
-                errors.nome = Alert.alert('Opps!', 'Informe seu nome.')
+                return false;
             }
-        } else if (nome.length < 5) {
-            errors.nome = Alert.alert('Oops!', 'Infome seu Sobrenome.')
-        }  else if (status == false) {
-            errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
-
-        } else {
-            cadastrar(nome, cpf, email, password);
         }
-    }
+
+        // Validate cpf
+        function isValid(cpf) {
+
+            if (validate(cpf)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+
+        function handleSignUp() {
+            if (nome.length < 5) {
+                if (isstring) {              
+                } else {
+                    errors.nome = Alert.alert('Opps!', 'Informe seu nome.')
+                }
+            }  else if (status == false) {
+                errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
+
+            } else {
+                cadastrar(nome, cpf, email, password);
+            }
+        }
+
 
         return (
             <Background>
@@ -155,7 +159,7 @@ export default () => {
                     <InputCaracter>No minímo 6 caracteres</InputCaracter>
 
                     <SignMessageButton onPress={() => navigation.navigate('Termos')}>
-                        <SignMessageButtonText>Ao continuar, você concorda com os Termos.</SignMessageButtonText>
+                        <SignMessageButtonText>Ao continuar, você concorda com os Termos e Condições de Uso</SignMessageButtonText>
                     </SignMessageButton>
 
                     <CustomButton onPress={handleSignUp}>
@@ -169,4 +173,4 @@ export default () => {
                 </Container>
             </Background>
         );
-}
+    }

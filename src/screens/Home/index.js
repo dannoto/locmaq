@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { Background, Container, HeaderArea, HeaderTitle, SearchButton, LocationArea, LocationInput, IconButton, LoadingIcon } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
@@ -52,9 +52,9 @@ export default () => {
                 <HeaderArea>
                     <HeaderTitle numberOfLines={2}>O que você está procurando?</HeaderTitle>
                     <SearchButton onPress={()=>navigation.navigate('Search')}>
-                        <FontAwesome5
+                        <EvilIcons
                         name='search'
-                        size= {26}
+                        size= {35}
                         color="#222"
                         />
                     </SearchButton>

@@ -9,7 +9,7 @@ export default () => {
     return (
         <View>
             <Text>Conta</Text>
-            <Text>{ user.email }</Text>
+            <Text>{ user && user.nome }</Text>
             <Button
             title="Sair"
             onPress={() => sair()}
