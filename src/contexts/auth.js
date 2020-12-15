@@ -9,8 +9,6 @@ function AuthProvider({ children }) {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    // const [cat, setCategorias] = useState('Carregando...');
-  
 
     //Cadastrar Usuário
     async function cadastrar(nome, cpf, email, password) {
@@ -42,10 +40,6 @@ function AuthProvider({ children }) {
                 Alert.alert('Oops!', 'E-mail já cadastrado.');
                 return;
             }
-            // if(error.code === 'auth/-already-in-use'){
-            //     Alert.alert('Oops!', 'E-mail já cadastrado.');
-            //     return;
-            // }
             if(error.code === 'auth/invalid-email'){
                 Alert.alert('Oops!', 'E-mail inválido.')
             }
@@ -107,29 +101,24 @@ function AuthProvider({ children }) {
         })
     }
 
+    //Inserindo Categorias
+    // useEffect (() => {
+    //     async function dados() {
+    //         let categorias = firebase.database().ref('categorias');
+    //         let chave = categorias.push().key;
+    //         await categorias.child(chave).set({ 
+    //            categoria: 'Guindastes'
+    //         });  
+    //     }
 
-
-
-    //   async function categorias() {
-      
-    //         await firebase.database().ref('categorias/1/nome').on('value', (snapshot) => {
-    //             lista = snapshot.val();
-    //             setCategorias(lista);
-    //         })
-            
-    // }
-    
- 
-
-
-
-
+    //     dados();
+    // }, []);
 
     return(
         <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair }}>
         {children}
         </AuthContext.Provider>
-        );
+    );
 }
 
 export default AuthProvider;
