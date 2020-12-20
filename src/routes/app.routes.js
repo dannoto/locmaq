@@ -31,13 +31,13 @@ function AppRoutes() {
                 <Entypo name="home" color={color} size={30}/>
             )}}/>
             <Tab.Screen name="Busca" component={Busca} options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="search" color={color} size={35}/>
+                <EvilIcons name="search" color={color} size={40}/>
             )}}/>
-            <Tab.Screen name="Negociações" component={Negociacoes}options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="comment" color={color} size={35}/>
+            <Tab.Screen name="Negociações" component={Negociacoes} options={{tabBarIcon: ({color, size}) => (
+                <EvilIcons name="comment" color={color} size={40}/>
             )}}/>
-            <Tab.Screen name="Conta" component={Conta}options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="user" color={color} size={35}/>
+            <Tab.Screen name="Conta" component={Conta} options={{tabBarIcon: ({color, size}) => (
+                <EvilIcons name="user" color={color} size={40}/>
             )}}/>
         </Tab.Navigator>
     );
