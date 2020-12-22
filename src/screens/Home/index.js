@@ -18,7 +18,7 @@ export default () => {
     const [list, setList] = useState([]);
 
     return (
-<ScrollView style={styles.background}>
+        <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>               
@@ -33,7 +33,7 @@ export default () => {
                     <TouchableOpacity style={styles.areaBtn}>
                         
 
-                        <Text style={styles.location}>Selecionar Localização</Text>
+                        <Text style={styles.location}>Informar localização</Text>
 
                         <FontAwesome
                             name='sort-desc'

@@ -152,7 +152,7 @@ export default () => {
 
                     <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
                     <EvilIcons style={styles.icon}
-                        name={'plus'}
+                        name={'heart'}
                         size={40}
                         color="#ffa500"
                     /> 
@@ -235,7 +235,6 @@ const styles = StyleSheet.create ({
         borderBottomWidth: 2,
         borderColor: '#ddd',
         alignItems: 'center',
-        
         flexDirection: 'row'
     },
     btnTitulo: {
