@@ -10,6 +10,7 @@ export default () => {
     const [categorias, setCategorias] = useState([]);
     const [search, setSearch] = useState();
     const [loading, setLoading] = useState(false);
+    const [loadingCat, setLoadingCat] = useState(true);
     const [emptyList, setEmptyList] = useState(false);
     const [list, setList] = useState([]);
 
@@ -22,11 +23,14 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: childItem.val().categoria
+                        name: childItem.val().categoria,
+                        imagem: childItem.val().imagem
                     };
 
                     setCategorias(oldArray => [...oldArray, data].sort());
                 })
+
+                setLoadingCat(false)
             })
         }
 
@@ -67,17 +71,17 @@ export default () => {
                         onChangeText={(text) => setSearch(text)}
                         keyboardType={'default'}
                         returnKeyType="search"
-                        autoFocus
+                        autofocus
                         selectTextOnFocus
                     />      
                     
-                    <TouchableOpacity style={{justifyContent: 'space-evenly'}}>
+                    {/* <TouchableOpacity style={{justifyContent: 'space-evenly'}}>
                         <EvilIcons
                             name='close'
                             size= {30}
                             color="#222"
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 {/* <View>
@@ -92,11 +96,19 @@ export default () => {
 
                 <View style={styles.areaCategorias}>
                 <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
-                <FlatList
-                    data={categorias}
-                    renderItem={({item}) => (<Categories data={item}/>)}
-                    keyExtractor={item => item.key}
-                />
+                {loadingCat ?
+                    (
+                        <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
+                    ) :
+                    (
+                        <FlatList
+                            data={categorias}
+                            renderItem={({item}) => (<Categories data={item}/>)}
+                            keyExtractor={item => item.key}
+                        />
+                    )
+                }
+                
         </View>
             
         </KeyboardAvoidingView>

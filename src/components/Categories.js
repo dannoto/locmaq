@@ -1,23 +1,18 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Categories({data}){
     return(
       <View style={styles.areaCat}>
 
-        <FontAwesome
-            style={{opacity: 0.6, marginRight: 10}}
-            name='caret-right'
-            size= {60}
-            color="#ffa500"
-          />
+        <Image style={styles.img} source={{uri: data.imagem}}/>
         
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.btnTitulo}>{data.name}</Text>
 
           <FontAwesome
-            style={{opacity: 0.8, marginRight: 10}}
+            style={{marginRight: 20}}
             name='caret-right'
             size= {60}
             color="#ffa500"
@@ -36,9 +31,7 @@ const styles = StyleSheet.create ({
     height: 90,
     borderBottomWidth: 2,
     borderColor: '#ddd',
-    paddingLeft: 20,
-    marginLeft: 20,
-    marginRight: 20
+    paddingLeft: 20
   },
   btn: {
     flex: 1,
@@ -53,4 +46,9 @@ const styles = StyleSheet.create ({
     marginLeft:10,
     textTransform: 'uppercase'
   },
+  img: {
+    width: 75,
+    height: 75,
+    marginRight: 10
+  }
 })
