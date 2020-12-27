@@ -1,24 +1,48 @@
-import React, {useState} from 'react';
-import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect } from 'react';
+import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AuthContext } from '../../contexts/auth';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import { set } from 'react-native-reanimated';
+import CategoriesHome from '../../components/CategoriesHome';
+import firebase from '../../services/firebaseConnection';
 
 export default () => {
 
     const navigation = useNavigation();
 
-    const [locationText, setLocationText] = useState('');
-    const [coords, setCoords] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [list, setList] = useState([]);
+    const [categorias, setCategorias] = useState([]);
+    const [loadingCat, setLoadingCat] = useState(true);
+
+    // Buscando Categorias
+    useEffect(() => {
+        async function getCategories() {
+            await firebase.database().ref('categorias').on('value', (snapshot) => {
+                setCategorias([]);
+
+                snapshot.forEach((childItem) => {
+                    let data = {
+                        key: childItem.key,
+                        name: childItem.val().categoria,
+                        imagem: childItem.val().imagem
+                    };
+
+                    setCategorias(oldArray => [...oldArray, data]);
+
+                })
+
+                setLoadingCat(false)
+            })
+        }
+
+        getCategories();
+    }, []);
+
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>               
@@ -32,7 +56,6 @@ export default () => {
 
                     <TouchableOpacity style={styles.areaBtn}>
                         
-
                         <Text style={styles.location}>Informar localização</Text>
 
                         <FontAwesome
@@ -40,6 +63,41 @@ export default () => {
                             size= {22}
                             color="#222"
                         />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.categorias}>
+                    {loadingCat ?
+                        (
+                            <ActivityIndicator size={"large"} color={"#222"}/>
+                        ) :
+                        (
+                            <FlatList
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                data={categorias}
+                                renderItem={({item}) => (<CategoriesHome data={item}/>)}
+                                keyExtractor={item => item.key}
+                            />
+                        )
+                    }
+                </View>
+
+                <View style={styles.areaFiltros}>
+                    <TouchableOpacity>
+                        <Text style={styles.txtFiltros}>Todos</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Text style={styles.txtFiltros}>Aluguel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Text style={styles.txtFiltros}>Vendas</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity>
+                        <Text style={styles.txtFiltros}>Serviços</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -80,6 +138,23 @@ const styles = StyleSheet.create ({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    categorias: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    areaFiltros: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20
+    },
+    txtFiltros: {
+        fontSize: 18,
+        color: '#222',
+        fontWeight: 'bold',
+        marginTop: 10
+    }
 })
 
 // import React, {useState} from 'react';

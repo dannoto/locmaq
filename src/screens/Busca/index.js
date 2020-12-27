@@ -3,7 +3,6 @@ import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, Style
 import firebase from '../../services/firebaseConnection';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Categories from '../../components/Categories';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default () => {
 
@@ -140,6 +139,7 @@ const styles = StyleSheet.create ({
     },
     areaCategorias: {
         flex: 1,
+        justifyContent: 'center'
     },
     tituloCat: {
         color: '#222',
