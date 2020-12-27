@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
 import firebase from '../../services/firebaseConnection';
-import Categories from '../../components/Categories'
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Categories from '../../components/Categories';
 
 export default () => {
 
     const [categorias, setCategorias] = useState([]);
+    const [search, setSearch] = useState();
+    const [loading, setLoading] = useState(false);
+    const [loadingCat, setLoadingCat] = useState(true);
+    const [emptyList, setEmptyList] = useState(false);
+    const [list, setList] = useState([]);
 
     // Buscando Categorias
     useEffect(() => {
@@ -16,95 +22,132 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: childItem.val().categoria
+                        name: childItem.val().categoria,
+                        imagem: childItem.val().imagem
                     };
 
                     setCategorias(oldArray => [...oldArray, data].sort());
                 })
+
+                setLoadingCat(false)
             })
         }
 
         getCategories();
     }, []);
 
+    // const busca = async () => {
+    //     setLoading(true);
+    //     setEmptyList(false);
+    //     setList([]);
+
+    //     if(search != '') {
+
+    //     }
+
+    //     setLoading(false);
+    // }
+
 
     return (
-        <View>
-            <Text>SELECIONE A CATEGORIA</Text>
-            <FlatList
-                data={categorias}
-                renderItem={({item}) => (<Categories data={item}/>)}
-                keyExtractor={item => item.key}
-            />
-      </View>
+        <ScrollView style={styles.background}>
+            <KeyboardAvoidingView style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : ''}
+            enabled>               
+
+                <View style={styles.header}>
+                    <EvilIcons
+                        name='search'
+                        size= {30}
+                        color="#222"
+                    />
+
+                    <TextInput 
+                        style={{color: '#222', fontSize: 18, marginLeft: 10}}
+                        placeholder="O que você está procurando?"
+                        placeholderTextColor= "#777"
+                        value={search}
+                        onChangeText={(text) => setSearch(text)}
+                        keyboardType={'default'}
+                        returnKeyType="search"
+                        autofocus
+                        selectTextOnFocus
+                    />      
+                    
+                    {/* <TouchableOpacity style={{justifyContent: 'space-evenly'}}>
+                        <EvilIcons
+                            name='close'
+                            size= {30}
+                            color="#222"
+                        />
+                    </TouchableOpacity> */}
+                </View>
+
+                {/* <View>
+                    {loading &&
+                        <ActivityIndicator size={"large"} color={"#ffffff"}/>
+                    }
+                    {emptyList &&
+                        <Text>Nenhum resultado encontrado!</Text>
+                    }
+                    
+                </View> */}
+
+                <View style={styles.areaCategorias}>
+                <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
+                {loadingCat ?
+                    (
+                        <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
+                    ) :
+                    (
+                        <FlatList
+                            data={categorias}
+                            renderItem={({item}) => (<Categories data={item}/>)}
+                            keyExtractor={item => item.key}
+                        />
+                    )
+                }
+                
+        </View>
+            
+        </KeyboardAvoidingView>
+    </ScrollView>
+        
     );
 }
 
-// import React, { Component, useState, useEffect, useRef, isValidElement, useContext } from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-// import firebase from '../../services/firebaseConnection';
-// import AsyncStorage from '@react-native-community/async-storage';
-// // import {AuthContext} from '../../contexts/auth';
+const styles = StyleSheet.create ({
+    background: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
 
-
-
-// //  MONNIK SEGUE OBSERVAÇOES NOS COMENTARIOS
-
-
-// // Eu fiz a funçao aqui ao inves de fazer no auth pra ficar organizado, mas voce pode organizar isso lá e aqui so importar com o AuthContext 
-// // igual fez em ./src/Conta/Index.js
-
-// export default function app() {
-
-// // 	// Esta constante na verdade vai precisar receber um array, ou seja ao inves de pegar somente 'categorias/1/nome' eu vou ter que pegar somente
-// // 	// 'categorias' e isso vai gerar um lista, array com todas as categorias [...] voce vai colocar isso dentro da const categorias e dps jogar
-// // 	 // dentro de um flalist e personalizar e estilizar.
-// // 	const [categorias, setCategorias] = []; 
-
-
-
-
-
-
-// // 	useEffect( () => {
-
-
-// // 		async function dados(){
-// // 			// Pegando 
-// // 			 await firebase.database().ref('categorias').on('value', (snapshot) => {
-// // 			 	// Salvando o resultado da consulta no banco de dados dentro da variavel datas
-// // 			 	let datas = snapshot.val();
-// // 			 	// Colocando todo o array/objeto/lista dentro da const categorias
-// // 			 	setCategorias(datas);
-
-// // 			 	// Caso queira ver o resultado da consulta só olhar no prompt de comando verdinho que roda o servidor js e vai ta la o print do console.
-// // 			 	// Vai estar  [undefined, {"imagem": "trator.png", "nome": "trator"}, {"imagem": "retro.png", "nome": "retro"}]
-// // 			 	console.log(datas);
-// // 			 })
-// // 		}
-
-// // dados();
-// // 	}, []);
-
-
-	
-
-
-
-
-// 	// return (
-
-// 	// 	// Para exibir o array com as categorias aqui vai ter que fazer o FlaList e passar o dados, não esquece da questao do KeyExtractor
-// 	// 	// Vai ter que pensar sobre isso e ver algo referente.
-// 	// 	<View style={{marginTop: 25}}>
-// 	// 	<FlatList
-
-// 	// 		data = {}
-// 	// 		render = {}
-// 	// 		keyExtractor = {}
-// 	// 	/>
-			
-		
-// 	// 	</View>
-// 	// 	)
-// }
+    container: {
+        flex: 1,
+    },
+    header: {
+        height: 55,
+        marginBottom: 20,
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 15,
+        shadowOffset: {width: 0, height: 4},
+        shadowColor: '#222',
+        shadowRadius: 2,
+        elevation: 7
+    },
+    areaCategorias: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    tituloCat: {
+        color: '#222',
+        fontSize: 18,
+        marginTop: 10,
+        paddingBottom: 20,
+        paddingLeft: 20, 
+        borderBottomWidth: 2,
+        borderColor: '#ddd'
+    }
+})

@@ -101,13 +101,13 @@ function AuthProvider({ children }) {
         })
     }
 
-    //Inserindo Categorias
+    // // Inserindo Categorias
     // useEffect (() => {
     //     async function dados() {
     //         let categorias = firebase.database().ref('categorias');
     //         let chave = categorias.push().key;
     //         await categorias.child(chave).set({ 
-    //            categoria: 'Guindastes'
+    //            categoria: 'Equipamentos em Geral'
     //         });  
     //     }
 
