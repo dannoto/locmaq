@@ -6,8 +6,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import { set } from 'react-native-reanimated';
-import CategoriesHome from '../../components/CategoriesHome';
 import firebase from '../../services/firebaseConnection';
+import CategoriesHome from '../../components/CategoriesHome';
+import Recentes from '../../components/Recentes';
+import FiltroTodos from '../../components/FiltroTodos';
 
 export default () => {
 
@@ -39,7 +41,6 @@ export default () => {
 
         getCategories();
     }, []);
-
 
     return (
         <ScrollView style={styles.background} showsVerticalIndicator={false}>
@@ -75,6 +76,7 @@ export default () => {
                             <FlatList
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
                                 data={categorias}
                                 renderItem={({item}) => (<CategoriesHome data={item}/>)}
                                 keyExtractor={item => item.key}
@@ -83,22 +85,60 @@ export default () => {
                     }
                 </View>
 
+                <View style={styles.areaRecentes}>
+                    <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
+                    
+                    {loadingCat ?
+                        (
+                            <ActivityIndicator size={"large"} color={"#222"}/>
+                        ) :
+                        (
+                            <FlatList
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                                data={categorias}
+                                renderItem={({item}) => (<Recentes data={item}/>)}
+                                keyExtractor={item => item.key}
+                            />
+                        )
+                    }
+                </View>
+
                 <View style={styles.areaFiltros}>
                     <TouchableOpacity>
-                        <Text style={styles.txtFiltros}>Todos</Text>
+                        <Text style={styles.txtFiltros}>TODOS</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Text style={styles.txtFiltros}>Aluguel</Text>
+                        <Text style={styles.txtFiltros}>ALUGUEL</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Text style={styles.txtFiltros}>Vendas</Text>
+                        <Text style={styles.txtFiltros}>VENDAS</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Text style={styles.txtFiltros}>Serviços</Text>
+                        <Text style={styles.txtFiltros}>SERVIÇOS</Text>
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.produtos}>
+                    
+                    {loadingCat ?
+                        (
+                            <ActivityIndicator size={"large"} color={"#222"}/>
+                        ) :
+                        (
+                            <FlatList
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                                data={categorias}
+                                renderItem={({item}) => (<FiltroTodos data={item}/>)}
+                                keyExtractor={item => item.key}
+                            />
+                        )
+                    }
                 </View>
                 
             </KeyboardAvoidingView>
@@ -143,17 +183,31 @@ const styles = StyleSheet.create ({
         flexDirection: 'row',
         justifyContent: 'center'
     },
+    areaRecentes: {
+        flex: 1,
+    },
+    txtRecentes: {
+        fontSize: 19,
+        color: '#ffa500',
+        fontWeight: 'bold',
+        paddingHorizontal: 10,
+        marginBottom: 15
+    },
     areaFiltros: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20
+        paddingHorizontal: 10,
+        marginBottom: 20
     },
     txtFiltros: {
-        fontSize: 18,
+        fontSize: 19,
         color: '#222',
         fontWeight: 'bold',
-        marginTop: 10
+        marginTop: 25
+    },
+    produtos: {
+        flex: 1,
     }
 })
 
