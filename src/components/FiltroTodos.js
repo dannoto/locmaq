@@ -8,13 +8,7 @@ export default function CategoriesHome({data}){
             <TouchableOpacity onPress={() => {}} style={styles.areabtn}> 
                 <Image style={styles.img} source={{uri: data.imagem}}/>
                 <Text style={styles.txtCat}>SERVIÇO</Text>
-                <Text style={styles.txtProd}>NOME PRODUTO</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => {}} style={styles.areabtn}> 
-                <Image style={styles.img} source={{uri: data.imagem}}/>
-                <Text style={styles.txtCat}>SERVIÇO</Text>
-                <Text style={styles.txtProd}>NOME PRODUTO</Text>
+                <Text style={styles.txtProd}>{data.name}</Text>
             </TouchableOpacity>
 
         </View>      

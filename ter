@@ -1,0 +1,80 @@
+[33mcommit 56a1ff86e5e72b1e710a14f71f6cf820ab09243d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Merge: 3e6eaa0 36c0a53
+Author: dannoto <63319412+dannoto@users.noreply.github.com>
+Date:   Tue Dec 29 21:58:41 2020 -0300
+
+    Merge pull request #3 from monnikjsilva/master
+    
+    Atualizando Home
+
+[33mcommit 36c0a5302e9fec110667e830b89c84c3c1a956c9[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Tue Dec 29 21:56:25 2020 -0300
+
+    Atualizando Home
+
+[33mcommit 3e6eaa06bbf6c3cb5509db991bca29589cc9e475[m
+Merge: 019f7bb 0c17dcd
+Author: dannoto <63319412+dannoto@users.noreply.github.com>
+Date:   Sun Dec 27 18:46:47 2020 -0300
+
+    Merge pull request #2 from monnikjsilva/master
+    
+    Novo código
+
+[33mcommit 0c17dcd0efa6feb995dadba3b2929ac7c56b1c50[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Sun Dec 27 18:41:16 2020 -0300
+
+    iniciando a home
+
+[33mcommit 06541ee511ba937a10c976ed39fbf5f0ae986524[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Tue Dec 22 13:02:01 2020 -0300
+
+    foi adicionado as fotos das categorias
+
+[33mcommit b37f758ac3221ad0871a82aba212c47effafed24[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Tue Dec 22 10:08:00 2020 -0300
+
+    alteração categorias
+
+[33mcommit 81960e06c61d1ccbf72ffc34caeef783792ed168[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Sun Dec 20 19:10:51 2020 -0300
+
+    Criação btn CONTA
+
+[33mcommit 019f7bb3f2416c36ba925a91393021b022b423ec[m
+Merge: 386f402 1276bb2
+Author: dannoto <63319412+dannoto@users.noreply.github.com>
+Date:   Tue Dec 15 00:26:39 2020 -0300
+
+    Merge pull request #1 from monnikjsilva/master
+    
+    Lista de Categorias
+
+[33mcommit 1276bb2621045876277b914696cd1e4c92b73ccb[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Mon Dec 14 23:16:41 2020 -0300
+
+    Lista de Categorias
+
+[33mcommit 386f402168a203809dddbc7334d7472df2acb29e[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Sat Dec 12 08:18:08 2020 -0300
+
+    Mechi no Busca/Index.js e adicionei la instruçoes
+
+[33mcommit 45980a8670cc1e89fdb4d3e425a78fd404b52b58[m
+Author: Monnik Silva <monniksilva123@gmail.com>
+Date:   Sun Dec 6 20:48:02 2020 -0300
+
+    Primeira alteraçao monnik
+
+[33mcommit b7acdadce774f9f7239a4fe76b2a737e67555f49[m
+Author: Daniel Ribeiro <danrib2018@gmail.com>
+Date:   Sun Dec 6 18:50:53 2020 -0300
+
+    Versão enviada pela Monnik
