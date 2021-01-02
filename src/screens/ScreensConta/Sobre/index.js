@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 export default () => {
     return (
         <View>
-            <Text>Negociações</Text>
+            <Text>Sobre a LocMaq</Text>
         </View>
     );
 }
