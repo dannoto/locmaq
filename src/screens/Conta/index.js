@@ -3,10 +3,12 @@ import { Platform , ScrollView, Text, TouchableOpacity, KeyboardAvoidingView, Vi
 import { AuthContext } from '../../contexts/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { useNavigation } from '@react-navigation/native';
 
 export default () => {
 
     const { user, sair } = useContext(AuthContext);
+    const navigation = useNavigation();
 
     return (
         <ScrollView style={styles.background}>
@@ -33,16 +35,16 @@ export default () => {
                 <View style={styles.areaBtn}>
                     <Text style={styles.titulo1}>CONFIGURAÇÕES DA CONTA</Text>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusDados')}>
                     <EvilIcons style={styles.icon}
                         name={'user'}
                         size={40}
                         color="#ffa500"
                     /> 
-                        <Text style={styles.btnTitulo}>INFORMAÇÕES PESSOAIS</Text>
+                        <Text style={styles.btnTitulo}>MEUS DADOS</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusAnuncios')}>
                     <EvilIcons
                         name={'tag'}
                         size={40}
@@ -51,7 +53,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MinhasAssinaturas')}>
                     <EvilIcons
                         name={'retweet'}
                         size={40}
@@ -60,7 +62,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>MINHAS ASSINATURAS</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('HistoricoPagamentos')}>
                     <EvilIcons
                         name={'credit-card'}
                         size={40}
@@ -69,7 +71,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>HISTÓRICO DE PAGAMENTOS</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Notificacoes')}>
                     <EvilIcons
                         name={'bell'}
                         size={40}
@@ -78,7 +80,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>NOTIFICAÇÕES</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Favoritos')}>
                     <EvilIcons
                         name={'heart'}
                         size={40}
@@ -91,7 +93,7 @@ export default () => {
                 <View style={styles.areaBtn}>
                     <Text style={styles.titulo2}>SERVIÇOS E CONTEÚDO</Text>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Anunciar')}>
                     <EvilIcons style={styles.icon}
                         name={'tag'}
                         size={40}
@@ -100,7 +102,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>ANUNCIAR</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SobreAssinatura')}>
                     <EvilIcons style={styles.icon}
                         name={'retweet'}
                         size={40}
@@ -109,7 +111,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>SOBRE A ASSINATURA</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Planos')}>
                     <EvilIcons style={styles.icon}
                         name={'plus'}
                         size={40}
@@ -123,7 +125,7 @@ export default () => {
                 <View style={styles.areaBtn}>
                     <Text style={styles.titulo2}>CENTRAL DE ATENDIMENTO</Text>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Feedback')}>
                     <EvilIcons style={styles.icon}
                         name={'comment'}
                         size={40}
@@ -132,7 +134,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>ENVIAR FEEDBACK</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Erro')}>
                     <EvilIcons style={styles.icon}
                         name={'exclamation'}
                         size={40}
@@ -141,7 +143,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>ENCONTROU ALGUM ERRO?</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Perguntas')}>
                     <EvilIcons style={styles.icon}
                         name={'question'}
                         size={40}
@@ -150,7 +152,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>PERGUNTAS FREQUENTES</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Sobre')}>
                     <EvilIcons style={styles.icon}
                         name={'heart'}
                         size={40}
@@ -159,7 +161,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>SOBRE A LOCMAQ</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Termos')}>
                     <EvilIcons style={styles.icon}
                         name={'arrow-right'}
                         size={40}
@@ -168,7 +170,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>TERMOS DE USO</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Politica')}>
                     <EvilIcons style={styles.icon}
                         name={'arrow-right'}
                         size={40}
