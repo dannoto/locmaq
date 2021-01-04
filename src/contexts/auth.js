@@ -107,7 +107,7 @@ function AuthProvider({ children }) {
     //         let categorias = firebase.database().ref('categorias');
     //         let chave = categorias.push().key;
     //         await categorias.child(chave).set({ 
-    //            categoria: 'Equipamentos em Geral'
+    //            categoria: 'Martelos Hidraúlico'
     //         });  
     //     }
 
@@ -120,8 +120,8 @@ function AuthProvider({ children }) {
     //         let subcategorias = firebase.database().ref('subcategorias');
     //         let chave = subcategorias.push().key;
     //         await subcategorias.child(chave).set({ 
-    //            nome: 'Mini Escavadeira',
-    //            categoria: 'MOYhb9TriP8ideQfsOc'
+    //            nome: 'Trator de Esteira',
+    //            categoria: '-MOYhjWTHG77Uf6JCH7W'
     //         });  
     //     }
 

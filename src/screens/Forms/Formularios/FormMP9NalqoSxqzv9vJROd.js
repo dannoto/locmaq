@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-import FormularioEscavadeira from '../../../components/FormularioEscavadeira'
+import FormularioEquipamentosemGeral from '../../../components/FormularioEquipamentosemGeral'
 
-//Formulário Escavadeiras
+//Formulário Equipamentos em Geral
 export default () => {
 
     return (
@@ -15,7 +15,7 @@ export default () => {
 
                 <Text style={styles.titulo}>PREENCHA OS CAMPOS ABAIXO</Text>
 
-                <FormularioEscavadeira/>
+                <FormularioEquipamentosemGeral/>
 
                 <TouchableOpacity style={styles.btnCadastrar} >
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>
@@ -23,38 +23,38 @@ export default () => {
 
             </KeyboardAvoidingView>
         </ScrollView>
-    );
+);
 }
 
 const styles = StyleSheet.create ({
-    background: {
-        backgroundColor: '#ffa500',
-        flex: 1
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 20
-    },
-    titulo: {
-        color: '#fff',
-        fontSize: 20,
-        textAlign: 'center',
-        textTransform: 'uppercase',
-        marginBottom: 20,
-        fontWeight: 'bold'
-    },
-    btnCadastrar: {
-        width: '100%',
-        height: 60,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
-    },
-    txtBtn: {
-        fontSize: 22,
-        color: '#222',
-        fontWeight: 'bold'
-    }
+background: {
+    backgroundColor: '#ffa500',
+    flex: 1
+},
+container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20
+},
+titulo: {
+    color: '#fff',
+    fontSize: 20,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    marginBottom: 20,
+    fontWeight: 'bold'
+},
+btnCadastrar: {
+    width: '100%',
+    height: 60,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+},
+txtBtn: {
+    fontSize: 22,
+    color: '#222',
+    fontWeight: 'bold'
+}
 })

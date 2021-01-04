@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-import FormularioEscavadeira from '../../../components/FormularioEscavadeira'
+import FormularioTrator from '../../../components/FormularioTrator'
 
-//Formulário Escavadeiras
+//Formulário Tratores
 export default () => {
 
     return (
@@ -15,7 +15,7 @@ export default () => {
 
                 <Text style={styles.titulo}>PREENCHA OS CAMPOS ABAIXO</Text>
 
-                <FormularioEscavadeira/>
+                <FormularioTrator/>
 
                 <TouchableOpacity style={styles.btnCadastrar} >
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>

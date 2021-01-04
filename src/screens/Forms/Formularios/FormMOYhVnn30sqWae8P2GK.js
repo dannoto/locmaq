@@ -4,8 +4,9 @@ import {Picker} from '@react-native-picker/picker';
 
 import FormularioCaminhao from '../../../components/FormularioCaminhao'
 
-export default (route) => {
-    const {titulo} = route.params;
+//Formulário Caminhões
+export default () => {
+
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}

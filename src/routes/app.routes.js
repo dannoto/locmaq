@@ -31,6 +31,14 @@ import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormMOYhVnn30s
 import FormMOYhb9TriP8ideQfsOc from '../screens/Forms/Formularios/FormMOYhb9TriP8ideQfsOc'; //Escavadeiras
 import FormMOYheKfAJRaaIkK4iNN from '../screens/Forms/Formularios/FormMOYheKfAJRaaIkK4iNN'; //Empilhadeiras
 import FormMOYhhGcyYZ48yNzorkY from '../screens/Forms/Formularios/FormMOYhhGcyYZ48yNzorkY'; //Compactadores
+import FormMOYhjWTHG77Uf6JCH7W from '../screens/Forms/Formularios/FormMOYhjWTHG77Uf6JCH7W'; //Tratores
+import FormMOYhrOgzF4rJwl6v7Z2 from '../screens/Forms/Formularios/FormMOYhrOgzF4rJwl6v7Z2'; //Usina de Asfalto
+import FormMOYiJQ9nhcKzGiBotsr from '../screens/Forms/Formularios/FormMOYiJQ9nhcKzGiBotsr'; //Guindastes
+import FormMP966g82MJ3W_1v_dUc from '../screens/Forms/Formularios/FormMP966g82MJ3W_1v_dUc'; //Plataformas Aérea
+import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormMQCn08fEkfPwhfOVxWr'; //Martelos Hidraúlico
+import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
+import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormMP96RRAkNan7K7LKHJs'; //Britadores
+import FormMP9NalqoSxqzv9vJROd from '../screens/Forms/Formularios/FormMP9NalqoSxqzv9vJROd'; //Equipamentos em Geral
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -96,6 +104,14 @@ export default function AppRoutes() {
             <Stack.Screen name="FormMOYhb9TriP8ideQfsOc" component={FormMOYhb9TriP8ideQfsOc} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYheKfAJRaaIkK4iNN" component={FormMOYheKfAJRaaIkK4iNN} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYhhGcyYZ48yNzorkY" component={FormMOYhhGcyYZ48yNzorkY} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
-        </Stack.Navigator>
+            <Stack.Screen name="FormMOYhjWTHG77Uf6JCH7W" component={FormMOYhjWTHG77Uf6JCH7W} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMOYhrOgzF4rJwl6v7Z2" component={FormMOYhrOgzF4rJwl6v7Z2} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMOYiJQ9nhcKzGiBotsr" component={FormMOYiJQ9nhcKzGiBotsr} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMP966g82MJ3W_1v_dUc" component={FormMP966g82MJ3W_1v_dUc} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMQCn08fEkfPwhfOVxWr" component={FormMQCn08fEkfPwhfOVxWr} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMP96Or2Unms_Wf1gWlI" component={FormMP96Or2Unms_Wf1gWlI} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMP96RRAkNan7K7LKHJs" component={FormMP96RRAkNan7K7LKHJs} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMP9NalqoSxqzv9vJROd" component={FormMP9NalqoSxqzv9vJROd} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+       </Stack.Navigator>
     )
 }

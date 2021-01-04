@@ -73,7 +73,7 @@ export default ({route}) => {
                         ) :
                         (
                             <FlatList
-                                data={subcategoriasfiltradas}
+                                data={subcategoriasfiltradas.sort((a,b) => a.nome.localeCompare(b.nome))}
                                 renderItem={({item}) => (
                                    
                                     <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Form' + item.categoria.replace("-",""),{titulo:item.nome})}>

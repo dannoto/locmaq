@@ -48,7 +48,7 @@ export default () => {
                         ) :
                         (
                             <FlatList
-                                data={categorias}
+                                data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
                                 renderItem={({item}) => (
                                     <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Subcategorias', {catId: item.key})}>
                                         <FormCategories data={item}/>
