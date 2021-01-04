@@ -22,11 +22,11 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: childItem.val().categoria,
+                        nome: childItem.val().categoria,
                         imagem: childItem.val().imagem
                     };
 
-                    setCategorias(oldArray => [...oldArray, data].sort());
+                    setCategorias(oldArray => [...oldArray, data]);
                 })
 
                 setLoadingCat(false)
@@ -35,18 +35,6 @@ export default () => {
 
         getCategories();
     }, []);
-
-    // const busca = async () => {
-    //     setLoading(true);
-    //     setEmptyList(false);
-    //     setList([]);
-
-    //     if(search != '') {
-
-    //     }
-
-    //     setLoading(false);
-    // }
 
 
     return (
@@ -94,24 +82,23 @@ export default () => {
                 </View> */}
 
                 <View style={styles.areaCategorias}>
-                <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
-                {loadingCat ?
-                    (
-                        <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                    ) :
-                    (
-                        <FlatList
-                            data={categorias}
-                            renderItem={({item}) => (<Categories data={item}/>)}
-                            keyExtractor={item => item.key}
-                        />
-                    )
-                }
-                
-        </View>
+                    <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
+                    {loadingCat ?
+                        (
+                            <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
+                        ) :
+                        (
+                            <FlatList
+                                data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
+                                renderItem={({item}) => (<Categories data={item}/>)}
+                                keyExtractor={item => item.key}
+                            />
+                        )
+                    }
+                </View>
             
-        </KeyboardAvoidingView>
-    </ScrollView>
+            </KeyboardAvoidingView>
+        </ScrollView>
         
     );
 }

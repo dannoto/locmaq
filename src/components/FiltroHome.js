@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-export default function CategoriesHome({data}){
+export default function FiltroHome({data}){
     return(
         <View style={styles.container}>
 
             <TouchableOpacity onPress={() => {}} style={styles.areabtn}> 
                 <Image style={styles.img} source={{uri: data.imagem}}/>
                 <Text style={styles.txtCat}>SERVIÇO</Text>
-                <Text style={styles.txtProd}>{data.name}</Text>
+                <Text style={styles.txtProd}>{data.nome}</Text>
             </TouchableOpacity>
 
         </View>      
@@ -18,11 +18,11 @@ export default function CategoriesHome({data}){
 const styles = StyleSheet.create ({
     container: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingHorizontal: 10
     },
     areabtn: {
-        width: '46%',
-        marginHorizontal: '2%',
+        width: '100%',
     },
     txtCat: {
         position: 'absolute',

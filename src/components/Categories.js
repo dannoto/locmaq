@@ -9,7 +9,7 @@ export default function Categories({data}){
         <Image style={styles.img} source={{uri: data.imagem}}/>
         
         <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnTitulo}>{data.name}</Text>
+          <Text style={styles.btnTitulo}>{data.nome}</Text>
 
           <FontAwesome
             style={{marginRight: 20}}
@@ -42,7 +42,7 @@ const styles = StyleSheet.create ({
   },
   btnTitulo: {
     color: '#222',
-    fontSize: 18,
+    fontSize: 16,
     marginLeft:10,
     textTransform: 'uppercase'
   },

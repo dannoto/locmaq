@@ -3,10 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import Home from '../screens/Home';
 import Busca from '../screens/Busca';
 import Negociacoes from '../screens/Negociacoes';
+import Anuncie from '../screens/Anuncie';
 import Conta from '../screens/Conta';
 import Anunciar from '../screens/ScreensConta/Anunciar';
 import Erro from '../screens/ScreensConta/Erro';
@@ -23,6 +25,12 @@ import Politica from '../screens/ScreensConta/Politica';
 import Sobre from '../screens/ScreensConta/Sobre';
 import SobreAssinatura from '../screens/ScreensConta/SobreAssinatura';
 import Termos from '../screens/ScreensConta/Termos';
+import Categorias from '../screens/Forms/Categorias';
+import Subcategorias from '../screens/Forms/Subcategorias';
+import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormMOYhVnn30sqWae8P2GK'; //Caminhões
+import FormMOYhb9TriP8ideQfsOc from '../screens/Forms/Formularios/FormMOYhb9TriP8ideQfsOc'; //Escavadeiras
+import FormMOYheKfAJRaaIkK4iNN from '../screens/Forms/Formularios/FormMOYheKfAJRaaIkK4iNN'; //Empilhadeiras
+import FormMOYhhGcyYZ48yNzorkY from '../screens/Forms/Formularios/FormMOYhhGcyYZ48yNzorkY'; //Compactadores
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,6 +58,9 @@ function Tabs() {
             <Tab.Screen name="Busca" component={Busca} options={{tabBarIcon: ({color, size}) => (
                 <EvilIcons name="search" color={color} size={40}/>
             )}}/>
+            <Tab.Screen name="Anuncie" component={Anuncie} options={{tabBarIcon: ({color, size}) => (
+                <AntDesign name="notification" color={color} size={30}/>
+            )}}/>
             <Tab.Screen name="Negociações" component={Negociacoes} options={{tabBarIcon: ({color, size}) => (
                 <EvilIcons name="comment" color={color} size={40}/>
             )}}/>
@@ -70,7 +81,7 @@ export default function AppRoutes() {
             <Stack.Screen name="HistoricoPagamentos" component={HistoricoPagamentos} options={{headerTitle: 'HISTÓRICO DE PAGAMENTOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerTitle: 'NOTIFICAÇÕES', headerTintColor: '#222'}}/>
             <Stack.Screen name="Favoritos" component={Favoritos} options={{headerTitle: 'FAVORITOS', headerTintColor: '#222'}}/>
-            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: 'ANUNCIAR', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SobreAssinatura" component={SobreAssinatura} options={{headerTitle: 'SOBRE A ASSINATURA', headerTintColor: '#222'}}/>
             <Stack.Screen name="Planos" component={Planos} options={{headerTitle: 'CONHEÇA NOSSOS PLANOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Feedback" component={Feedback} options={{headerTitle: 'ENVIAR FEEDBACK', headerTintColor: '#222'}}/>
@@ -79,6 +90,12 @@ export default function AppRoutes() {
             <Stack.Screen name="Sobre" component={Sobre} options={{headerTitle: 'SOBRE A LOCMAQ', headerTintColor: '#222'}}/>
             <Stack.Screen name="Termos" component={Termos} options={{headerTitle: 'TERMOS DE USO', headerTintColor: '#222'}}/>
             <Stack.Screen name="Politica" component={Politica} options={{headerTitle: 'POLÍTICA DE PRIVACIDADE', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Categorias" component={Categorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="Subcategorias" component={Subcategorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMOYhVnn30sqWae8P2GK" component={FormMOYhVnn30sqWae8P2GK} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 
+            <Stack.Screen name="FormMOYhb9TriP8ideQfsOc" component={FormMOYhb9TriP8ideQfsOc} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMOYheKfAJRaaIkK4iNN" component={FormMOYheKfAJRaaIkK4iNN} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMOYhhGcyYZ48yNzorkY" component={FormMOYhhGcyYZ48yNzorkY} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
         </Stack.Navigator>
     )
 }

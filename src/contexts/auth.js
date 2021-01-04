@@ -114,6 +114,20 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
+    // // Inserindo Subcategorias
+    // useEffect (() => {
+    //     async function dados() {
+    //         let subcategorias = firebase.database().ref('subcategorias');
+    //         let chave = subcategorias.push().key;
+    //         await subcategorias.child(chave).set({ 
+    //            nome: 'Mini Escavadeira',
+    //            categoria: 'MOYhb9TriP8ideQfsOc'
+    //         });  
+    //     }
+
+    //     dados();
+    // }, []);
+
     return(
         <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair }}>
         {children}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-export default function CategoriesHome({data}){
+export default function Recentes({data}){
     return(
         <View style={styles.container}>
             <TouchableOpacity onPress={() => {}} style={styles.areabtn}> 

@@ -7,9 +7,8 @@ import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import { set } from 'react-native-reanimated';
 import firebase from '../../services/firebaseConnection';
-import CategoriesHome from '../../components/CategoriesHome';
 import Recentes from '../../components/Recentes';
-import FiltroTodos from '../../components/FiltroTodos';
+import FiltroHome from '../../components/FiltroHome';
 
 export default () => {
 
@@ -94,7 +93,7 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: childItem.val().nome,
+                        nome: childItem.val().nome,
                         imagem: childItem.val().imagem
                     };
 
@@ -119,7 +118,7 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: 'ALUGUEL',
+                        nome: 'ALUGUEL',
                         imagem: childItem.val().imagem
                     };
 
@@ -136,7 +135,7 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: 'VENDAS',
+                        nome: 'VENDAS',
                         imagem: childItem.val().imagem
                     };
 
@@ -157,7 +156,7 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        name: 'SERVICOS',
+                        nome: 'SERVICOS',
                         imagem: childItem.val().imagem
                     };
 
@@ -244,7 +243,7 @@ export default () => {
                                 showsVerticalScrollIndicator={false}
                                 data={condicao}
                                 numColumns={2}
-                                renderItem={({item}) => (<FiltroTodos data={item}/>)}
+                                renderItem={({item}) => (<FiltroHome data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
                         )
@@ -316,9 +315,6 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold',
         marginTop: 25
     },
-    produtos: {
-        flex: 1,
-    }
 })
 
 // import React, {useState} from 'react';
