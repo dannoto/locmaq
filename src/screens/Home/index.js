@@ -22,9 +22,14 @@ export default () => {
 
 
     const [coordenadas, setCoordenadas] = useState();
-    const [estado, setEstado] = useState();
 
+    // Localização do Usuário.
     const [json, setJson] = useState();
+    const [estado, setEstado] = useState();
+    const [cidade, setCidade] = useState();
+    const [cep, setCep] = useState();
+
+   
 
 
     const handleLocation = async () => {
@@ -36,6 +41,7 @@ export default () => {
             PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
         );
 
+      
         if (result == 'granted') {
 
             Geolocation.getCurrentPosition((info) => {
@@ -43,38 +49,21 @@ export default () => {
                 setCoordenadas(null)
             
                  var base_url = 'http://api.positionstack.com/v1/reverse?access_key=';
-                 var latitude = info.coords.latitude;
-                 var longitude = info.coords.longitude;
+                 // var latitude = info.coords.latitude;
+                 // var longitude = info.coords.longitude;
+                 var latitude =  -16.8098994
+                 var longitude = -49.3125790
                  var key = '9ea96881c31e67477314c1f574b77f3b';
-                 var limit = 1;
-// -16.8098994,-49.3125790
-           
-                  
+                          
             fetch(base_url+key+'&query='+latitude+','+longitude+'&limit=1')
             .then((r)=>r.json())
             .then((json)=>{
-               
                 setJson(json)
-                    // var endereco = json.results[0].formatted_address;
-                    // var estadox = json.results[0].address_components[4].short_name; 
-                    // var cidade = json.results[0].address_components[3].short_name; 
-                    // var cep = json.results[0].address_components[6].short_name;
-              
-               
             });
-
-
-                 // // setEstado('GO')
-                 // console.log(endereco);
-                 // console.log(estadox);
-                 // console.log(cidade);
-                 // console.log(cep);
-
-
-
-                 // console.log(json.data[0].region_code);
-                   console.log(json);
-
+               
+                setEstado(json.data[0].region_code)
+                setCidade(json.data[0].locality)
+                setCep(json.data[0].postal_code)
                  
             })
         } else {
@@ -194,6 +183,9 @@ export default () => {
                             color="#222"
                         />
                     </TouchableOpacity>
+                    
+
+
                 </View>
 
                 <View style={styles.areaRecentes}>
