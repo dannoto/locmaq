@@ -67,6 +67,14 @@ export default () => {
                  
             })
         } else {
+            
+                setEstado('GO')
+                setCidade('Goiânia')
+                setCep('74957720')
+
+                console.log(estado)
+                console.log(cidade)
+                console.log(cep)
            
         }
     }
@@ -176,6 +184,8 @@ export default () => {
                     <TouchableOpacity style={styles.areaBtn}  onPress={handleLocation}>
                         
                         <Text style={styles.location}>Informar localização</Text>
+                             
+                        <Text style={styles.location}>{setEstado}</Text>
 
                         <FontAwesome
                             name='sort-desc'

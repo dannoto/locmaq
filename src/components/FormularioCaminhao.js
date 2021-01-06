@@ -14,6 +14,7 @@ export default () => {
     const [ano, setAno] = useState('');
     const [modelo, setModelo] = useState('');
     const [tipo, setTipo] = useState("");
+
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'TOCO'}, 
@@ -130,7 +131,7 @@ export default () => {
                         placeholder=""
                         value={ano}
                         onChangeText={(text) => setAno(text)}
-                        keyboardType={'default'}
+                        keyboardType={'numeric'}
                     />
                 </View>
 

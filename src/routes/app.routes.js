@@ -39,6 +39,7 @@ import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormMQCn08fEkf
 import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
 import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormMP96RRAkNan7K7LKHJs'; //Britadores
 import FormMP9NalqoSxqzv9vJROd from '../screens/Forms/Formularios/FormMP9NalqoSxqzv9vJROd'; //Equipamentos em Geral
+import SegundoForm from '../screens/Forms/Formularios/SegundoForm'; //Segunda parte do formulário
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -112,6 +113,7 @@ export default function AppRoutes() {
             <Stack.Screen name="FormMP96Or2Unms_Wf1gWlI" component={FormMP96Or2Unms_Wf1gWlI} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96RRAkNan7K7LKHJs" component={FormMP96RRAkNan7K7LKHJs} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP9NalqoSxqzv9vJROd" component={FormMP9NalqoSxqzv9vJROd} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoForm" component={SegundoForm} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
        </Stack.Navigator>
     )
 }

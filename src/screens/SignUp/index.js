@@ -15,22 +15,14 @@ export default () => {
     const { cadastrar } = useContext(AuthContext);
     const errors = {}
 
-
-
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmpassword, setConfirmPassword] = useState('');
     const [show, setShow] = React.useState(false);
     const [visible, setVisible] = React.useState(true);
     const status = isValid(cpf);
     const isstring = isString(nome);
-
-
-
-
-
 
     const inputElementRef = useRef(null);
 
