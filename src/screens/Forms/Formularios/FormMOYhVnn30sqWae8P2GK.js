@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, StyleSheet, Platform } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, StyleSheet, Platform, Alert } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
@@ -112,11 +112,8 @@ export default function FormCaminhao ({route}) {
                 errors.modelo = Alert.alert('Oops!', 'Limite de caracteres excedido em Modelo.')
             }
         } 
-        else if (typeof(ano) != "number") {
-            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')   
-            if (ano.length < 4 && ano.length > 4) {
-                errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')   
-            }           
+        else if (ano.length < 4 || ano.length > 4) {
+            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')     
         } 
         else if (tipo.length < 1) {     
             errors.tipo = Alert.alert('Opps!', 'Informe o Tipo.')
@@ -136,11 +133,8 @@ export default function FormCaminhao ({route}) {
         else if (seguro.length < 1) {           
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
         }  
-        else if (typeof(anobau.length) != "number") {
-            errors.anobau = Alert.alert('Oops!', 'Informe um Ano válido.')   
-            if (ano.length < 4 && ano.length > 4) {
-                errors.anobau = Alert.alert('Oops!', 'Informe um Ano válido.')   
-            }    
+        else if (anobau.length < 4 || anobau.length > 4) {
+            errors.anobau = Alert.alert('Oops!', 'Informe um Ano válido. ')   
         } else {
             navigation.navigate('SegundoForm', {fabricantebau:fabricantebau, anobau:anobau, dimensoesbau:dimensoesbau, condicao:condicao, fabricante:fabricante, ano:ano, modelo:modelo, tipo:tipo, tracao:tracao, consumo:consumo, hodometro:hodometro, horimetro:horimetro, seguro:seguro, categoria:categoria,subcategoria:subcategoria})
         }
@@ -174,6 +168,7 @@ export default function FormCaminhao ({route}) {
                         value={fabricante}
                         onChangeText={(text) => setFabricante(text)}
                         keyboardType={'default'}
+                        maxLength={50}
                     />
                 </View>
 
@@ -185,6 +180,7 @@ export default function FormCaminhao ({route}) {
                         value={modelo}
                         onChangeText={(text) => setModelo(text)}
                         keyboardType={'default'}
+                        maxLength={50}
                     />
                 </View>
 
@@ -196,6 +192,7 @@ export default function FormCaminhao ({route}) {
                         value={ano}
                         onChangeText={(text) => setAno(text)}
                         keyboardType={'numeric'}
+                        maxLength={4}
                     />
                 </View>
 
@@ -232,6 +229,7 @@ export default function FormCaminhao ({route}) {
                         value={consumo}
                         onChangeText={(text) => setConsumo(text)}
                         keyboardType={'numeric'}
+                        maxLength={20}
                     />
                 </View>
 
@@ -244,6 +242,7 @@ export default function FormCaminhao ({route}) {
                         value={hodometro}
                         onChangeText={(text) => setHodometro(text)}
                         keyboardType={'numeric'}
+                        maxLength={20}
                     />
                 </View>
 
@@ -256,6 +255,7 @@ export default function FormCaminhao ({route}) {
                         value={horimetro}
                         onChangeText={(text) => setHorimetro(text)}
                         keyboardType={'numeric'}
+                        maxLength={20}
                     />
                 </View>
 
@@ -284,6 +284,7 @@ export default function FormCaminhao ({route}) {
                                     value={fabricantebau}
                                     onChangeText={(text) => setFabricanteBau(text)}
                                     keyboardType={'default'}
+                                    maxLength={50}
                                 />
                             </View>
 
@@ -295,6 +296,7 @@ export default function FormCaminhao ({route}) {
                                     value={anobau}
                                     onChangeText={(text) => setAnoBau(text)}
                                     keyboardType={'numeric'}
+                                    maxLength={4}
                                 />
                             </View>
 
@@ -307,6 +309,7 @@ export default function FormCaminhao ({route}) {
                                     value={dimensoesbau}
                                     onChangeText={(text) => setDimensoesBau(text)}
                                     keyboardType={'numeric'}
+                                    maxLength={50}
                                 />
                             </View>
                         </View>   

@@ -5,6 +5,7 @@ import firebase from '../../services/firebaseConnection';
 import {useNavigation} from '@react-navigation/native';
 
 export default () => {
+
 const navigation = useNavigation();
 
 const [categorias, setCategorias] = useState([]);

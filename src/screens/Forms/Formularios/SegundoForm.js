@@ -48,21 +48,24 @@ export default ({route, navigate}) => {
     const [cidade, setCidade] = useState('');
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
-    const [preco, setPreco] = useState('1000');
+    const [preco, setPreco] = useState('');
     const [photos, setPhotos] = useState([]);
 
     function handleRegister() {
         if (estado.length < 1) {            
             errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
         }  
-        else if (cidade.length < 1) {          
+        else if (cidade.key == 0) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
         else if (preco.length < 1) {       
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
         } 
         else {
-            cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco, usuario, subcategoria, categoria);
+            if (cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco, usuario, subcategoria, categoria)) {
+                Alert.alert('','Cadastrado com Sucesso!');
+                navigation.navigate('Anuncie');
+            }
         }  
     }
 
@@ -77,7 +80,7 @@ export default ({route, navigate}) => {
     }, []);
                      
     function pegaCidades(v,k) {
-        var todasCidades = [{key: 0, nome: "SELECIONAR"},];
+        var todasCidades = [{key: 0, nome: "SELECIONAR"}];
      
         if (v.key !== 0) {
          
