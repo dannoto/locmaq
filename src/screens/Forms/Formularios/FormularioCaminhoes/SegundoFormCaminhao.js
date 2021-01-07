@@ -8,7 +8,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 
 // Segunda parte do Formulário Caminhão
-export default ({route, navigate}) => {
+export default ({route, navigation}) => {
+    
     const [imagens, setImagens] = useState([]);
 
     function abreGaleria() {
@@ -37,8 +38,9 @@ export default ({route, navigate}) => {
           })
           .catch((e) => alert(e));
     }
+
+    navigation.setOptions({headerTitle: oi})
  
-    
     const {
         condicao, 
         fabricante, 
@@ -74,14 +76,12 @@ export default ({route, navigate}) => {
         modeloplataforma,
         capacidadepoliguidaste,
         poliguidaste,
-        estado, 
-        cidade, 
-        preco, 
         subcategoria, 
-        categoria
+        categoria,
+        titulo
     } = route.params;
 
-    const navigation = useNavigation();
+    const navegacao = useNavigation();
     const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
     const usuario = {key:user.uid,nome:user.nome};
     const errors = {}
@@ -178,7 +178,7 @@ export default ({route, navigate}) => {
                 )) 
             {
                 Alert.alert('','Cadastrado com Sucesso!');
-                navigation.navigate('Anuncie');
+                navegacao.navigate('Anuncie');
             }
         }  
     }

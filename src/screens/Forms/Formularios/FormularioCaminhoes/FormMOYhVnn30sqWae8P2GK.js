@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, StyleSheet, Platform, Alert } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 //Formulário Caminhões
-export default function FormCaminhao ({route}) {
+export default function FormCaminhao ({ navigation, route }) {
 
-    const {titulo, subnome,subkey,catkey} = route.params;
-    const navigation = useNavigation();
+    navigation.setOptions({headerTitle: subnome})
+
+    const {titulo, subnome, subkey, catkey} = route.params;
+    console.log()
+    const navegacao = useNavigation();
     const categoria = {key:catkey,nome:'Caminhões'};
     const subcategoria = {key:subkey,nome:subnome}
     const errors = {}
-
 
     const [condicao, setCondicao] = useState('');
     const [condicoes, setCondicoes] = useState([
@@ -218,7 +220,7 @@ export default function FormCaminhao ({route}) {
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
         }  
         else {
-            navigation.navigate('SegundoFormCaminhao', 
+            navegacao.navigate('SegundoFormCaminhao', 
             {fabricantebau: fabricantebau,
             anobau: anobau,
             dimensoesbau: dimensoesbau,
@@ -254,7 +256,9 @@ export default function FormCaminhao ({route}) {
             capacidade: capacidade,
             seguro:seguro, 
             categoria:categoria,
-            subcategoria:subcategoria})
+            subcategoria:subcategoria,
+            titulo: titulo
+        })
         }
     }
 
@@ -960,7 +964,6 @@ export default function FormCaminhao ({route}) {
                         null
                     )
                 }
-
 
                 <TouchableOpacity style={styles.btnProximo} onPress={handleValidacao}>
                     <Text style={styles.txtBtn}>PRÓXIMO</Text>
