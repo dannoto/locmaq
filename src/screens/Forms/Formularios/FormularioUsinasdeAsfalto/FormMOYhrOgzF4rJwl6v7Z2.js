@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-import FormularioUsinadeAsfalto from '../../../components/FormularioUsinadeAsfalto'
-
 //Formulário Usina de Asfalto
 export default () => {
 
@@ -14,8 +12,6 @@ export default () => {
             enabled>
 
                 <Text style={styles.titulo}>PREENCHA OS CAMPOS ABAIXO</Text>
-
-                <FormularioUsinadeAsfalto/>
 
                 <TouchableOpacity style={styles.btnCadastrar} >
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>

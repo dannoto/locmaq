@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Home from '../screens/Home';
 import Busca from '../screens/Busca';
@@ -27,19 +27,18 @@ import SobreAssinatura from '../screens/ScreensConta/SobreAssinatura';
 import Termos from '../screens/ScreensConta/Termos';
 import Categorias from '../screens/Forms/Categorias';
 import Subcategorias from '../screens/Forms/Subcategorias';
-import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormMOYhVnn30sqWae8P2GK'; //Caminhões
-import FormMOYhb9TriP8ideQfsOc from '../screens/Forms/Formularios/FormMOYhb9TriP8ideQfsOc'; //Escavadeiras
-import FormMOYheKfAJRaaIkK4iNN from '../screens/Forms/Formularios/FormMOYheKfAJRaaIkK4iNN'; //Empilhadeiras
-import FormMOYhhGcyYZ48yNzorkY from '../screens/Forms/Formularios/FormMOYhhGcyYZ48yNzorkY'; //Compactadores
-import FormMOYhjWTHG77Uf6JCH7W from '../screens/Forms/Formularios/FormMOYhjWTHG77Uf6JCH7W'; //Tratores
-import FormMOYhrOgzF4rJwl6v7Z2 from '../screens/Forms/Formularios/FormMOYhrOgzF4rJwl6v7Z2'; //Usina de Asfalto
-import FormMOYiJQ9nhcKzGiBotsr from '../screens/Forms/Formularios/FormMOYiJQ9nhcKzGiBotsr'; //Guindastes
-import FormMP966g82MJ3W_1v_dUc from '../screens/Forms/Formularios/FormMP966g82MJ3W_1v_dUc'; //Plataformas Aérea
-import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormMQCn08fEkfPwhfOVxWr'; //Martelos Hidraúlico
-import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
-import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormMP96RRAkNan7K7LKHJs'; //Britadores
-import FormMP9NalqoSxqzv9vJROd from '../screens/Forms/Formularios/FormMP9NalqoSxqzv9vJROd'; //Equipamentos em Geral
-import SegundoForm from '../screens/Forms/Formularios/SegundoForm'; //Segunda parte do formulário
+import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormularioCaminhoes/FormMOYhVnn30sqWae8P2GK'; //Caminhões
+import FormMOYhb9TriP8ideQfsOc from '../screens/Forms/Formularios/FormularioEscavadeiras/FormMOYhb9TriP8ideQfsOc'; //Escavadeiras
+import FormMOYheKfAJRaaIkK4iNN from '../screens/Forms/Formularios/FormularioEmpilhadeiras/FormMOYheKfAJRaaIkK4iNN'; //Empilhadeiras
+import FormMOYhhGcyYZ48yNzorkY from '../screens/Forms/Formularios/FormularioCompactadores/FormMOYhhGcyYZ48yNzorkY'; //Compactadores
+import FormMOYhjWTHG77Uf6JCH7W from '../screens/Forms/Formularios/FormularioTratores/FormMOYhjWTHG77Uf6JCH7W'; //Tratores
+import FormMOYhrOgzF4rJwl6v7Z2 from '../screens/Forms/Formularios/FormularioUsinasdeAsfalto/FormMOYhrOgzF4rJwl6v7Z2'; //Usina de Asfalto
+import FormMOYiJQ9nhcKzGiBotsr from '../screens/Forms/Formularios/FormularioGuidastes/FormMOYiJQ9nhcKzGiBotsr'; //Guindastes
+import FormMP966g82MJ3W_1v_dUc from '../screens/Forms/Formularios/FormularioPlataformasAerea/FormMP966g82MJ3W_1v_dUc'; //Plataformas Aérea
+import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormularioMartelosHidraulico/FormMQCn08fEkfPwhfOVxWr'; //Martelos Hidraúlico
+import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormularioManipuladoresTelescopico/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
+import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormularioBritadeiras/FormMP96RRAkNan7K7LKHJs'; //Britadores
+import SegundoFormCaminhao from '../screens/Forms/Formularios/FormularioCaminhoes/SegundoFormCaminhao'; //Segunda parte do formulário Caminhões
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -68,7 +67,7 @@ function Tabs() {
                 <EvilIcons name="search" color={color} size={40}/>
             )}}/>
             <Tab.Screen name="Anuncie" component={Anuncie} options={{tabBarIcon: ({color, size}) => (
-                <AntDesign name="notification" color={color} size={30}/>
+                <Ionicons name="megaphone-outline" color={color} size={31}/>
             )}}/>
             <Tab.Screen name="Negociações" component={Negociacoes} options={{tabBarIcon: ({color, size}) => (
                 <EvilIcons name="comment" color={color} size={40}/>
@@ -112,8 +111,7 @@ export default function AppRoutes() {
             <Stack.Screen name="FormMQCn08fEkfPwhfOVxWr" component={FormMQCn08fEkfPwhfOVxWr} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96Or2Unms_Wf1gWlI" component={FormMP96Or2Unms_Wf1gWlI} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96RRAkNan7K7LKHJs" component={FormMP96RRAkNan7K7LKHJs} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
-            <Stack.Screen name="FormMP9NalqoSxqzv9vJROd" component={FormMP9NalqoSxqzv9vJROd} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
-            <Stack.Screen name="SegundoForm" component={SegundoForm} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormCaminhao" component={SegundoFormCaminhao} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
        </Stack.Navigator>
     )
 }

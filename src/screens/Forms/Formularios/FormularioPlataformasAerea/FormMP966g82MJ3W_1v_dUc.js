@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-import FormularioManipuladorTelescopico from '../../../components/FormularioManipuladorTelescopico'
-
-//Formulário Manipuladores Telescópico
+//Formulário Plataformas Aérea
 export default () => {
 
     return (
@@ -14,8 +12,6 @@ export default () => {
             enabled>
 
                 <Text style={styles.titulo}>PREENCHA OS CAMPOS ABAIXO</Text>
-
-                <FormularioManipuladorTelescopico/>
 
                 <TouchableOpacity style={styles.btnCadastrar} >
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>

@@ -3,12 +3,84 @@ import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInp
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
-import { AuthContext } from '../../../contexts/auth';
+import { AuthContext } from '../../../../contexts/auth';
+import ImagePicker from 'react-native-image-crop-picker';
+
 
 // Segunda parte do Formulário Caminhão
 export default ({route, navigate}) => {
+    const [imagens, setImagens] = useState([]);
+
+    function abreGaleria() {
+        ImagePicker.openPicker({
+            multiple: true,
+           
+          }) .then((image) => {
+           
+            var arrayImagens = [];
+
+           for (var i = 0;i <  image.length; i++) {
+              
+                arrayImagens.push( {           
+                    uri:  image[i].path,
+                    width: image[i].width,
+                    height: image[i].height,
+
+                });
+                
+                
+           }
+
+            setImagens(arrayImagens);
+            console.log(imagens)
+           
+          })
+          .catch((e) => alert(e));
+    }
+ 
     
-    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, subcategoria,categoria} = route.params;
+    const {
+        condicao, 
+        fabricante, 
+        ano, 
+        modelo, 
+        tipo, 
+        tracao, 
+        consumo, 
+        hodometro, 
+        horimetro, 
+        capacidade, 
+        seguro, 
+        fabricantebau, 
+        anobau, 
+        dimensoesbau,
+        fabricantetanque,
+        anotanque,
+        capacidadetanque,
+        fabricantecarroceria,
+        anocarroceria,
+        capacidadecarroceria,
+        fabricantecacamba,
+        anocacamba,
+        capacidadecacamba,
+        cacamba,
+        fabricantecomboio,
+        anocomboio,
+        modelocomboio,
+        capacidadecomboio,
+        larguraplataforma,
+        alturaplataforma,
+        capacidadesilo, 
+        modeloplataforma,
+        capacidadepoliguidaste,
+        poliguidaste,
+        estado, 
+        cidade, 
+        preco, 
+        subcategoria, 
+        categoria
+    } = route.params;
+
     const navigation = useNavigation();
     const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
     const usuario = {key:user.uid,nome:user.nome};
@@ -62,7 +134,49 @@ export default ({route, navigate}) => {
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
         } 
         else {
-            if (cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco, usuario, subcategoria, categoria)) {
+            if (cadastrarEquipamentosCaminhao (
+                condicao, 
+                fabricante, 
+                ano, 
+                modelo, 
+                tipo, 
+                tracao, 
+                consumo, 
+                hodometro, 
+                horimetro, 
+                capacidade, 
+                seguro, 
+                fabricantebau, 
+                anobau, 
+                dimensoesbau,
+                fabricantetanque,
+                anotanque,
+                capacidadetanque,
+                fabricantecarroceria,
+                anocarroceria,
+                capacidadecarroceria,
+                fabricantecacamba,
+                anocacamba,
+                capacidadecacamba,
+                cacamba,
+                fabricantecomboio,
+                anocomboio,
+                modelocomboio,
+                capacidadecomboio,
+                larguraplataforma,
+                alturaplataforma,
+                capacidadesilo, 
+                modeloplataforma,
+                capacidadepoliguidaste,
+                poliguidaste,
+                estado, 
+                cidade, 
+                preco, 
+                usuario, 
+                subcategoria, 
+                categoria
+                )) 
+            {
                 Alert.alert('','Cadastrado com Sucesso!');
                 navigation.navigate('Anuncie');
             }
@@ -108,7 +222,7 @@ export default ({route, navigate}) => {
     })
 
     function SelectPadraoCidades(v,i) {
-        if (v !== 0) {
+        if (v.key !== 0) {
            setCidade(v);
         }  
     }
@@ -166,10 +280,19 @@ export default ({route, navigate}) => {
                 </View> 
 
                 <Text style={styles.tituloInput}>ADICIONAR IMAGENS</Text>
-                <TouchableOpacity style={styles.areaBtnPhoto}>
+                <TouchableOpacity style={styles.areaBtnPhoto} onPress={abreGaleria}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
+                  
+                 
+                                    
+                   
                 </TouchableOpacity>
-                            
+                <Image
+                        style={{ width: 50, height: 50, resizeMode: 'contain' }}
+                        source={imagens.uri}
+                    />
+                 
+                      
                 <TouchableOpacity style={styles.btnAnunciar} onPress={handleRegister}>
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>
                 </TouchableOpacity>

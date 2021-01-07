@@ -129,50 +129,93 @@ function AuthProvider({ children }) {
     // }, []);
 
     // Inserindo Equipamentos - Caminhão
-    async function cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco,usuario,subcategoria,categoria) {
-        console.log(condicao)
-        console.log(fabricante)
-        console.log(ano)
-        console.log(modelo)
-        console.log(tipo)
-        console.log(tracao)
-        console.log(consumo)
-        console.log(hodometro)
-        console.log(horimetro)
-        console.log(seguro)
-        console.log(fabricantebau)
-        console.log( anobau)
-        console.log( dimensoesbau)
-        console.log( estado)
-        console.log( cidade)
-        console.log( typeof(preco))
+    async function cadastrarEquipamentosCaminhao(
+        condicao, 
+        fabricante, 
+        ano, 
+        modelo, 
+        tipo, 
+        tracao, 
+        consumo, 
+        hodometro, 
+        horimetro, 
+        capacidade, 
+        seguro, 
+        fabricantebau, 
+        anobau, 
+        dimensoesbau,
+        fabricantetanque,
+        anotanque,
+        capacidadetanque,
+        fabricantecarroceria,
+        anocarroceria,
+        capacidadecarroceria,
+        fabricantecacamba,
+        anocacamba,
+        capacidadecacamba,
+        cacamba,
+        fabricantecomboio,
+        anocomboio,
+        modelocomboio,
+        capacidadecomboio,
+        larguraplataforma,
+        alturaplataforma,
+        capacidadesilo, 
+        modeloplataforma,
+        capacidadepoliguidaste,
+        poliguidaste,
+        estado, 
+        cidade, 
+        preco, 
+        usuario, 
+        subcategoria, 
+        categoria) {
 
-        let equipamentos = await firebase.database().ref('equipamentos');
-        let chave = equipamentos.push().key;
+        let caminhao = await firebase.database().ref('equipamentos');
+        let chave = caminhao.push().key;
 
-       
-            equipamentos.child(chave).set({
-                usuario: usuario,
-                condicao: condicao,
-                fabricante: fabricante,
-                ano: ano,
-                modelo: modelo,
-                tipo: tipo,
-                tracao: tracao,
-                consumo: consumo,
-                hodometro: hodometro,
-                horimetro: horimetro,
-                seguro: seguro,
-                estado: estado,
-                cidade: cidade,
-                preco: preco,
-                fabricanteBau: fabricantebau,
-                anoBau: anobau,
-                dimensoesBau: dimensoesbau,
-                categoria: categoria,
-                subcategoria:subcategoria,
-            
-            });
+        caminhao.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            ano: ano,
+            modelo: modelo,
+            tipo: tipo,
+            tracao: tracao,
+            consumo: consumo,
+            hodometro: hodometro,
+            horimetro: horimetro,
+            capacidade: capacidade,
+            seguro: seguro,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            fabricanteBau: fabricantebau,
+            anoBau: anobau,
+            dimensoesBau: dimensoesbau,
+            fabricanteTanque: fabricantetanque,
+            anoTanque: anotanque,
+            capacidadeTanque: capacidadetanque,
+            fabricanteCarroceria: fabricantecarroceria,
+            anoCarroceria: anocarroceria,
+            capacidadeCarroceria: capacidadecarroceria,
+            fabricanteCacamba: fabricantecacamba,
+            anoCacamba: anocacamba,
+            capacidadeCacamba: capacidadecacamba,
+            caracteristicasCacamba: cacamba,
+            fabricanteComboio: fabricantecomboio,
+            anoComboio: anocomboio,
+            modeloComboio: modelocomboio,
+            modeloPlataforma: modeloplataforma,
+            capacidadePoliguidaste: capacidadepoliguidaste,
+            capacidadeComboio: capacidadecomboio,
+            larguraPlataforma:larguraplataforma,
+            alturaPlataforma:alturaplataforma,
+            capacidadesilo: capacidadesilo, 
+            caracteristicasPoliguidaste: poliguidaste,
+            categoria: categoria,
+            subcategoria:subcategoria
+        });
     }
 
     return(

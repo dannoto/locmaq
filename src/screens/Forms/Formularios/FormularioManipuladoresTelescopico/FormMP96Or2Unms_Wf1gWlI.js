@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-import FormularioGuindaste from '../../../components/FormularioGuindaste'
-
-//Formulário Guindastes
+//Formulário Manipuladores Telescópico
 export default () => {
 
     return (
@@ -14,8 +12,6 @@ export default () => {
             enabled>
 
                 <Text style={styles.titulo}>PREENCHA OS CAMPOS ABAIXO</Text>
-
-                <FormularioGuindaste/>
 
                 <TouchableOpacity style={styles.btnCadastrar} >
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>
