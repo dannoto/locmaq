@@ -128,8 +128,55 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
+    // Inserindo Equipamentos - Caminhão
+    async function cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco,usuario,subcategoria,categoria) {
+        console.log(condicao)
+        console.log(fabricante)
+        console.log(ano)
+        console.log(modelo)
+        console.log(tipo)
+        console.log(tracao)
+        console.log(consumo)
+        console.log(hodometro)
+        console.log(horimetro)
+        console.log(seguro)
+        console.log(fabricantebau)
+        console.log( anobau)
+        console.log( dimensoesbau)
+        console.log( estado)
+        console.log( cidade)
+        console.log( typeof(preco))
+
+        let equipamentos = await firebase.database().ref('equipamentos');
+        let chave = equipamentos.push().key;
+
+       
+            equipamentos.child(chave).set({
+                usuario: usuario,
+                condicao: condicao,
+                fabricante: fabricante,
+                ano: ano,
+                modelo: modelo,
+                tipo: tipo,
+                tracao: tracao,
+                consumo: consumo,
+                hodometro: hodometro,
+                horimetro: horimetro,
+                seguro: seguro,
+                estado: estado,
+                cidade: cidade,
+                preco: preco,
+                fabricanteBau: fabricantebau,
+                anoBau: anobau,
+                dimensoesBau: dimensoesbau,
+                categoria: categoria,
+                subcategoria:subcategoria,
+            
+            });
+    }
+
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarEquipamentosCaminhao }}>
         {children}
         </AuthContext.Provider>
     );

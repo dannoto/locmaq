@@ -14,6 +14,7 @@ export default function App() {
         <AuthProvider>
              <Routes/>
         </AuthProvider>
+       
     </NavigationContainer>
     
   );

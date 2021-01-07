@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
-import { ImageBrowser } from 'expo-image-picker-multiple';
-import firebase from '../../../services/firebaseConnection';
+import { AuthContext } from '../../../contexts/auth';
 
-// Segunda parte do Formulário
-export default () => {
+// Segunda parte do Formulário Caminhão
+export default ({route, navigate}) => {
+    
+    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, subcategoria,categoria} = route.params;
     const navigation = useNavigation();
+    const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
+    const usuario = {key:user.uid,nome:user.nome};
+    const errors = {}
 
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
@@ -44,17 +48,34 @@ export default () => {
     const [cidade, setCidade] = useState('');
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
-    const [preco, setPreco] = useState('');
+    const [preco, setPreco] = useState('1000');
     const [photos, setPhotos] = useState([]);
+
+    function handleRegister() {
+        if (estado.length < 1) {            
+            errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
+        }  
+        else if (cidade.length < 1) {          
+            errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
+        }  
+        else if (preco.length < 1) {       
+            errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
+        } 
+        else {
+            cadastrarEquipamentosCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, cidade, preco, usuario, subcategoria, categoria);
+        }  
+    }
+
+    useEffect (() => {
+        fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
+        .then((r)=>r.json())
+        .then((json)=>{
+    
+            setCidadesData(json.estados);
+    
+        });
+    }, []);
                      
-    fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
-    .then((r)=>r.json())
-    .then((json)=>{
-
-        setCidadesData(json.estados);
-
-    });
-
     function pegaCidades(v,k) {
         var todasCidades = [{key: 0, nome: "SELECIONAR"},];
      
@@ -71,7 +92,6 @@ export default () => {
                     setCidades(todasCidades);
                 }
             }  
-
             setEstado(v);
         }  
     }
@@ -132,13 +152,13 @@ export default () => {
                         onChangeText={(text) => setPreco(text)}
                         keyboardType={'numeric'}
                         type={'money'}
-                        options = { {
+                        options = {{
                             precision :  2 ,
                             separator :  ' , ' ,
                             delimiter :  ' . ' ,
                             unidade :  ' R $ ' ,
                             sufixoUnidade :  ' ' 
-                         } } 
+                         }} 
                     />
                 </View> 
 
@@ -146,22 +166,8 @@ export default () => {
                 <TouchableOpacity style={styles.areaBtnPhoto}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
                 </TouchableOpacity>
-
-                {/* < ImageBrowser 
-                    max = { 5 } 
-                    onChange = { ( callback )  =>  {
-
-                        console.log(callback)
-                        
-                    } } 
-                    callback = { ( num ,  onSubmit )  =>  {
-                        console.log(num)
-                        console.log(onSubmit)
-
-                    } } 
-                /> */}
                             
-                <TouchableOpacity style={styles.btnAnunciar}>
+                <TouchableOpacity style={styles.btnAnunciar} onPress={handleRegister}>
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>
                 </TouchableOpacity>
 

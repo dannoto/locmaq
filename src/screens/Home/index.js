@@ -185,7 +185,7 @@ export default () => {
                         
                         <Text style={styles.location}>Informar localização</Text>
                              
-                        <Text style={styles.location}>{setEstado}</Text>
+                     
 
                         <FontAwesome
                             name='sort-desc'

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Alert } from 'react-native';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { Background, Container, Logo, TextTitulo, AreaInput, TituloInput, Input, IconButton, CustomButton, InputCaracter, CustomButtonText, SignMessageButton, SignMessageButtonText, SignMessage, SignMessageText } from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInputMask } from 'react-native-masked-text';
@@ -32,13 +31,13 @@ export default () => {
         });
     }, [visible]);
 
-             // Validade name
+        // Validade nome
         function isString(nome) {
             var letters = /^[A-Za-z]+$/;
             if (nome.match(letters)) {
-            
                 return true;
-            } else {
+            } 
+            else {
                 return false;
             }
         }
@@ -51,9 +50,7 @@ export default () => {
             } else {
                 return false;
             }
-
         }
-
 
         function handleSignUp() {
             if (nome.length < 5) {
@@ -61,10 +58,11 @@ export default () => {
                 } else {
                     errors.nome = Alert.alert('Opps!', 'Informe seu nome.')
                 }
-            }  else if (status == false) {
+            }  
+            else if (status == false) {
                 errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
-
-            } else {
+            } 
+            else {
                 cadastrar(nome, cpf, email, password);
             }
         }

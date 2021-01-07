@@ -76,7 +76,7 @@ export default ({route}) => {
                                 data={subcategoriasfiltradas.sort((a,b) => a.nome.localeCompare(b.nome))}
                                 renderItem={({item}) => (
                                    
-                                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Form' + item.categoria.replace("-",""),{titulo:item.nome})}>
+                                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Form' + item.categoria.replace("-",""),{titulo:item.nome, subnome:item.nome,subkey:item.key, catkey:item.categoria})}>
                                         <Text style={styles.txtBtn}>{item.nome}</Text>
                                     </TouchableOpacity>
                                 )}
