@@ -3,12 +3,14 @@ import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, Tou
 import { useNavigation } from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import { set } from 'react-native-reanimated';
 import firebase from '../../services/firebaseConnection';
 import Recentes from '../../components/Recentes';
 import FiltroHome from '../../components/FiltroHome';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default () => {
 
@@ -19,8 +21,6 @@ export default () => {
     const [produtos, setProdutos] = useState([]);
     const [destaques, setDestaques] = useState([]);
     const [condicao, setCondicao] = useState([]);
-
-
     const [coordenadas, setCoordenadas] = useState();
 
     // Localização do Usuário.
@@ -29,60 +29,42 @@ export default () => {
     const [cidade, setCidade] = useState();
     const [cep, setCep] = useState();
 
-   
-
-
-    const handleLocation = async () => {
-      
-        let result = await request(
-            Platform.OS === 'ios' ?
-            PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-            :
-            PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-        );
-
-      
-        if (result == 'granted') {
-
-            Geolocation.getCurrentPosition((info) => {
-
-                setCoordenadas(null)
-            
-                 var base_url = 'http://api.positionstack.com/v1/reverse?access_key=';
-                 // var latitude = info.coords.latitude;
-                 // var longitude = info.coords.longitude;
-                 var latitude =  -16.8098994
-                 var longitude = -49.3125790
-                 var key = '9ea96881c31e67477314c1f574b77f3b';
-                          
-            fetch(base_url+key+'&query='+latitude+','+longitude+'&limit=1')
-            .then((r)=>r.json())
-            .then((json)=>{
-                setJson(json)
-            });
-               
-                setEstado(json.data[0].region_code)
-                setCidade(json.data[0].locality)
-                setCep(json.data[0].postal_code)
-                 
-            })
-        } else {
-            
-                setEstado('GO')
-                setCidade('Goiânia')
-                setCep('74957720')
-
-                console.log(estado)
-                console.log(cidade)
-                console.log(cep)
-           
-        }
-    }
-  
-
+    // Lat e Long
+    const [lat, setLat] = useState();
+    const [long, setLong] = useState();
 
     // Buscando Categorias
     useEffect(() => {
+        async function handleLocation() {
+      
+            let result = await request(
+                Platform.OS === 'ios' ?
+                PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+                :
+                PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+            );
+    
+          
+            if (result == 'granted') {
+    
+                 Geolocation.getCurrentPosition((info) => {
+    
+                    setCoordenadas(null)
+                
+                   
+                    //  var latitude = info.coords.latitude;
+                    //  var longitude = info.coords.longitude;
+                     var latitude =  -16.8098994;
+                     var longitude = -49.3125790;
+
+                     setLat(latitude);
+                     setLong(longitude);
+
+                     
+                  });
+              } 
+        }
+
         async function getCategories() {
             await firebase.database().ref('categorias').on('value', (snapshot) => {
                 setCategorias([]);
@@ -104,9 +86,71 @@ export default () => {
         }
 
         getCategories();
+        handleLocation();
     }, []);
 
+     async function buscaEndereco() {
 
+        if (lat == "" || long == "") {
+                let result = await request(
+                    Platform.OS === 'ios' ?
+                    PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+                    :
+                    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+                );
+        
+            
+                if (result == 'granted') {
+        
+                    Geolocation.getCurrentPosition((info) => {
+        
+                        setCoordenadas(null)
+                    
+                    
+                        //  var latitude = info.coords.latitude;
+                        //  var longitude = info.coords.longitude;
+                        var latitude =  -16.8098994;
+                        var longitude = -49.3125790;
+
+                        setLat(latitude);
+                        setLong(longitude);
+
+                        var base_url = 'http://api.positionstack.com/v1/reverse?access_key=';
+                        var key = '9ea96881c31e67477314c1f574b77f3b';
+                
+                        fetch(base_url+key+'&query='+lat+','+long+'&limit=1')
+                        .then((r)=>r.json())
+                        .then((json)=>{
+                                setEstado(json.data[0].region_code)
+                                setCidade(json.data[0].locality)
+                                setCep(json.data[0].postal_code)
+
+                               
+                              
+                        
+                        });
+
+                        
+                    });
+                } 
+        } else {
+            var base_url = 'http://api.positionstack.com/v1/reverse?access_key=';
+                        var key = '9ea96881c31e67477314c1f574b77f3b';
+                
+                        fetch(base_url+key+'&query='+lat+','+long+'&limit=1')
+                        .then((r)=>r.json())
+                        .then((json)=>{
+                                setEstado(json.data[0].region_code)
+                                setCidade(json.data[0].locality)
+                                setCep(json.data[0].postal_code)
+                                
+                               
+                        
+                        });
+                        console.log(cidade)
+        }
+       
+     }
    
         async function condAluguel(estado) {
             await firebase.database().ref('categorias').on('value', (snapshot) => {
@@ -172,31 +216,57 @@ export default () => {
         <ScrollView style={styles.background} showsVerticalIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled>               
+            enabled>    
 
-                <View style={styles.header}>
-                    <EvilIcons
-                        name='location'
+                <View style={styles.areaLocalizacao}>
+                    <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between',}} onPress={buscaEndereco}>
+
+                            
+                            {/* <Text style={styles.location}>{buscaPlaceHolder}</Text> */}
+
+                            { !estado ?
+
+                            (
+                                <Text style={styles.location}>BUSQUE PELA LOCALIZAÇÃO</Text>
+                            )
+                            :
+                            (
+                               
+                                <Text style={styles.location}>{cidade} - {estado}</Text>
+                            )
+                            
+                            }
+                          
+                      
+
+                        <MaterialIcons
+                        name='gps-fixed'
                         size= {30}
                         color="#222"
-                    />
-
-                    <TouchableOpacity style={styles.areaBtn}  onPress={handleLocation}>
-                        
-                        <Text style={styles.location}>Informar localização</Text>
-                             
-                     
-
-                        <FontAwesome
-                            name='sort-desc'
-                            size= {22}
-                            color="#222"
                         />
                     </TouchableOpacity>
-                    
-
-
                 </View>
+
+              {/* <View>
+                    <Text style={styles.location}>{cidade } {estado}</Text>
+                 
+                </View>            */}
+
+                {/* <View style={styles.header}>
+
+                    <TouchableOpacity style={styles.Busca} onPress={buscaEndereco}  >
+                    
+                     <Text style={styles.headerText}>Busque pela Localização   </Text>
+                     { <EvilIcons
+                         name='location'
+                        size= {45}
+                        color="#222"
+                       
+                        
+                     /> }
+                    </TouchableOpacity> */}
+
+                {/* </View> */}
 
                 <View style={styles.areaRecentes}>
                     <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
@@ -262,27 +332,41 @@ const styles = StyleSheet.create ({
         flex: 1,
         backgroundColor: '#fff'
     },
-
     container: {
         flex: 1,
     },
     header: {
-        height: 55,
+        height: 70,
         marginBottom: 20,
         backgroundColor: '#fff',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'stretch',
         paddingLeft: 15,
         shadowOffset: {width: 0, height: 4},
         shadowColor: '#222',
         shadowRadius: 2,
-        elevation: 7
+        elevation: 7,
+        margin:20,
+        borderRadius:15,
+    },
+    areaLocalizacao: {
+        backgroundColor: 'transparent',
+        height: 60,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#222',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+        marginVertical: 30,
+        marginHorizontal: 15,
     },
     location: {
-        color: '#222',
+        marginTop: 3,
         fontSize: 18,
-        paddingLeft: 5,
-        paddingRight: 10
+        color: '#222',
     },
     areaBtn: {
         height: 55,
@@ -316,7 +400,7 @@ const styles = StyleSheet.create ({
         color: '#222',
         fontWeight: 'bold',
         marginTop: 25
-    },
+    }
 })
 
 // import React, {useState} from 'react';

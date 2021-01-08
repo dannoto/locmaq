@@ -1,45 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, Image, StyleSheet, Alert, Platform } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
 import { AuthContext } from '../../../../contexts/auth';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 // Segunda parte do Formulário Caminhão
 export default ({route, navigation}) => {
-    
-    const [imagens, setImagens] = useState([]);
 
-    function abreGaleria() {
-        ImagePicker.openPicker({
-            multiple: true,
-           
-          }) .then((image) => {
-           
-            var arrayImagens = [];
-
-           for (var i = 0;i <  image.length; i++) {
-              
-                arrayImagens.push( {           
-                    uri:  image[i].path,
-                    width: image[i].width,
-                    height: image[i].height,
-
-                });
-                
-                
-           }
-
-            setImagens(arrayImagens);
-            console.log(imagens)
-           
-          })
-          .catch((e) => alert(e));
-    }
-
-    navigation.setOptions({headerTitle: oi})
+    // navigation.setOptions({headerTitle:})
  
     const {
         condicao, 
@@ -85,7 +57,7 @@ export default ({route, navigation}) => {
     const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
     const usuario = {key:user.uid,nome:user.nome};
     const errors = {}
-
+    
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
         {key: 0, nome: 'SELECIONAR'},
@@ -121,7 +93,9 @@ export default ({route, navigation}) => {
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [preco, setPreco] = useState('');
-    const [photos, setPhotos] = useState([]);
+    const [imagens, setImagens] = useState([]);
+    const [modalvisible, setModalVisible] = useState(false);
+    const [countimagens, setCountImagens] = useState([]);
 
     function handleRegister() {
         if (estado.length < 1) {            
@@ -132,6 +106,8 @@ export default ({route, navigation}) => {
         }  
         else if (preco.length < 1) {       
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
+        }  else if (imagens.length < 1) {       
+            errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma imagem.')
         } 
         else {
             if (cadastrarEquipamentosCaminhao (
@@ -213,6 +189,7 @@ export default ({route, navigation}) => {
         }  
     }
 
+
     let estadoItem = estados.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
     })
@@ -227,8 +204,97 @@ export default ({route, navigation}) => {
         }  
     }
 
+    function onClickAddImage() {
+
+        if (imagens.length == 6) {
+            Alert.alert('Máximo de 6 imagens!')
+        } else {
+            setModalVisible(true);
+        }
+        
+    }
+
+    function CloseModal() { 
+        setModalVisible(false)
+    };
+
+    function takePhotoFromCamera() {
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+           
+        }).then(image => {
+           
+            onSelectedImageCamera(image)
+            setModalVisible(false)
+           
+        });
+    }
+
+    function choosePhotoFromLibrary() {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            multiple: true,
+            minFiles: 6,
+            maxFiles: 6
+          }).then(image => {
+           
+            onSelectedImageLibrary(image)
+            setModalVisible(false)
+        });
+    }
+
+    function onSelectedImageCamera(image) {
+        let newDataImg = imagens;
+
+            newDataImg.push({
+                id: Math.floor (Math.random () * Date.now ()),
+                url: image.path,
+            });     
+            
+        setImagens(newDataImg);
+        console.log(image)
+    }
+
+    function onSelectedImageLibrary(image) {
+        let newDataImg = imagens;
+            if (image.length > 1) {
+                for (var i = 0; i < 6; i++) {
+                    newDataImg.push({
+                        id: Math.floor (Math.random () * Date.now ()),
+                        url: image[i].path,
+                    
+                    });
+                }
+                    
+            } else {
+                newDataImg.push({
+                    id: Math.floor (Math.random () * Date.now ()),
+                    url: image[0].path,
+                });     
+            }
+
+        setImagens(newDataImg);
+    }
+
+    function removerImg (id) {
+
+        imagens.forEach(function (item, index){
+            
+            if (id == item.id) { 
+                var count = 0;
+                count =  imagens.splice(imagens[index],1)
+                
+                setCountImagens(count)   
+            }
+            
+        });
+    }
+
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
+            
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -279,20 +345,46 @@ export default ({route, navigation}) => {
                     />
                 </View> 
 
-                <Text style={styles.tituloInput}>ADICIONAR IMAGENS</Text>
-                <TouchableOpacity style={styles.areaBtnPhoto} onPress={abreGaleria}>
+                <Text style={styles.tituloImagens}>ADICIONAR IMAGENS</Text>
+                <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
-                  
-                 
-                                    
-                   
                 </TouchableOpacity>
-                <Image
-                        style={{ width: 50, height: 50, resizeMode: 'contain' }}
-                        source={imagens.uri}
-                    />
-                 
-                      
+
+                <Modal animationType="fade" transparent={true} visible={modalvisible} onRequestClose={() => {}}>
+                    <View style={styles.modalWindow}>
+                        <View style={styles.modalBody}>
+
+                            <TouchableOpacity style={styles.areaBtnModalClose} onPress={CloseModal}>
+                                <AntDesign
+                                style={{marginRight: 20, marginBottom: 5}}
+                                name='closecircleo'
+                                size= {34}
+                                color="#fff"
+                                />
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity style={styles.areaBtnModal} onPress={takePhotoFromCamera}>
+                                <Text style={styles.txtBtnModal}>TIRAR FOTO</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.areaBtnModal} onPress={choosePhotoFromLibrary}>
+                                <Text style={styles.txtBtnModal}>ESCOLHER FOTO</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View>
+                </Modal>
+
+                <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    data={imagens}
+                    numColumns={3}
+                    renderItem={({item}) => renderItem (item, removerImg)}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+                   
                 <TouchableOpacity style={styles.btnAnunciar} onPress={handleRegister}>
                     <Text style={styles.txtBtn}>ANUNCIAR</Text>
                 </TouchableOpacity>
@@ -300,7 +392,26 @@ export default ({route, navigation}) => {
             </KeyboardAvoidingView>
         </ScrollView>
     );
-}
+};
+
+function renderItem(item, removerImg) {
+    return (
+        <View style={styles.areaImage}>
+            <TouchableOpacity onPress={() => removerImg(item.id)}>
+                <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
+                    <View style={{flexDirection: 'row-reverse'}}>
+                        <FontAwesome
+                            style={{marginRight: 3}}
+                            name='close'
+                            size= {30}
+                            color="red"
+                        />
+                    </View>
+                </ImageBackground>
+            </TouchableOpacity>
+        </View>
+    )
+};
 
 const styles = StyleSheet.create ({
 background: {
@@ -340,6 +451,12 @@ tituloInput: {
     marginTop: 20,
     fontWeight: 'bold'
 },
+tituloImagens: {
+    fontSize: 20,
+    color: '#fff',
+    marginTop: 40,
+    fontWeight: 'bold'
+},
 areaInput: {
     flexDirection: 'row',
     width: '100%',
@@ -369,12 +486,59 @@ areaBtnPhoto: {
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 20,
 },
 txtBtnPhoto: {
     fontSize: 22,
     color: '#ffa500',
     fontWeight: 'bold'
-}
+},
+areaImage: {
+    height: 105,
+    width: 105,
+    borderWidth: 2,
+    borderColor: '#fff',
+    margin: 10 
+},
+itemImage: {
+    height: 101,
+    width: 101,
+    resizeMode: 'cover',
+},
+modalWindow: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+},
+modalBody:{
+    width: 350,
+    height: 250,
+    backgroundColor: '#ffa500',
+    borderRadius: 10,
+},
+tituloModal: {
+    fontSize: 20,
+    color: '#222',
+    marginTop: 20,
+    fontWeight: 'bold'
+},
+areaBtnModal: {
+    width: '80%',
+    marginLeft: '10%',
+    height: 60,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+},
+txtBtnModal: {
+    fontSize: 22,
+    color: '#ffa500',
+    fontWeight: 'bold'
+},
+areaBtnModalClose: {
+    marginTop: 20,
+    flexDirection: 'row-reverse'
+},
 })
