@@ -1,4 +1,4 @@
-// Segunda parte do Formulário Caminhão
+// Segunda parte do Formulário Britador
 
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground, ImageComponent} from 'react-native';
@@ -37,47 +37,21 @@ window.fetch = new Fetch({
 export default ({route, navigation}) => {
  
     const {
-        condicao, 
+        condicao,
         fabricante, 
         ano, 
         modelo, 
-        tipo, 
-        tracao, 
-        consumo, 
-        hodometro, 
-        horimetro, 
-        capacidade, 
+        caracteristica, 
+        capacidade,
+        peso, 
         seguro, 
-        fabricantebau, 
-        anobau, 
-        dimensoesbau,
-        fabricantetanque,
-        anotanque,
-        capacidadetanque,
-        fabricantecarroceria,
-        anocarroceria,
-        capacidadecarroceria,
-        fabricantecacamba,
-        anocacamba,
-        capacidadecacamba,
-        cacamba,
-        fabricantecomboio,
-        anocomboio,
-        modelocomboio,
-        capacidadecomboio,
-        larguraplataforma,
-        alturaplataforma,
-        capacidadesilo, 
-        modeloplataforma,
-        capacidadepoliguidaste,
-        poliguidaste,
-        subcategoria, 
-        categoria
+        categoria,
+        subcategoria
     } = route.params;
     navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
 
     const navegacao = useNavigation();
-    const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
+    const { cadastrarEquipamentosBritador, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
     
@@ -124,6 +98,20 @@ export default ({route, navigation}) => {
     const [countimagens, setCountImagens] = useState([]);
     const [imagensURL, setImagensURL] = useState([]);
 
+    let estadoItem = estados.map( (v, k) => {
+        return <Picker.Item key={k} value={v} label={v.nome}/>
+    })
+
+    let cidadeItem = cidades.map( (v, k) => {
+        return <Picker.Item key={k} value={v} label={v.nome}/>
+    })
+    
+    function SelectPadraoCidades(v,i) {
+        if (v.key !== 0) {
+           setCidade(v);
+        }  
+    }
+
     function handleRegister() {
         if (estado.length < 1) {            
             errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
@@ -131,6 +119,7 @@ export default ({route, navigation}) => {
         else if (cidade.key == 0) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
+
         else if (preco.length < 1) {       
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
         }  
@@ -140,21 +129,15 @@ export default ({route, navigation}) => {
         else {
             salvarImagem(imagens)
 
-            if (cadastrarEquipamentosCaminhao (
+            if (cadastrarEquipamentosBritador (
                 condicao, 
                 fabricante, 
                 ano, 
                 modelo, 
-                tipo, 
-                tracao, 
-                consumo, 
-                hodometro, 
-                horimetro, 
-                capacidade, 
+                caracteristica, 
+                capacidade,
+                peso, 
                 seguro, 
-                fabricantebau, 
-                anobau, 
-                dimensoesbau,
                 estado, 
                 cidade, 
                 preco, 
@@ -233,21 +216,6 @@ export default ({route, navigation}) => {
                 }
             }  
             setEstado(v);
-        }  
-    }
-
-
-    let estadoItem = estados.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    let cidadeItem = cidades.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    function SelectPadraoCidades(v,i) {
-        if (v.key !== 0) {
-           setCidade(v);
         }  
     }
 
@@ -339,6 +307,8 @@ export default ({route, navigation}) => {
             }
         });
     }
+
+    console.log(condicao)
 
     return (
         <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>

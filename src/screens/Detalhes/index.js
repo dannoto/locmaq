@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
+import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, StyleSheet, TextInput, ActivityIndicator, Image} from 'react-native';
 import firebase from '../../services/firebaseConnection';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Categories from '../../components/Categories';
+import Swiper from 'react-native-swiper';
 
 export default () => {
 
@@ -13,35 +12,65 @@ export default () => {
     const [emptyList, setEmptyList] = useState(false);
     const [list, setList] = useState([]);
 
-    // Buscando Categorias
-    useEffect(() => {
-        async function getCategories() {
-            await firebase.database().ref('categorias').on('value', (snapshot) => {
-                setCategorias([]);
+    // // Buscando Equipamentos
+    // useEffect(() => {
+    //     async function getCategories() {
+    //         await firebase.database().ref('equipamentos').on('value', (snapshot) => {
+    //             setCategorias([]);
 
-                snapshot.forEach((childItem) => {
-                    let data = {
-                        key: childItem.key,
-                        nome: childItem.val().categoria,
-                        imagem: childItem.val().imagem
-                    };
+    //             snapshot.forEach((childItem) => {
+    //                 let data = {
+    //                     key: childItem.key,
+    //                     nome: childItem.val().categoria,
+    //                     imagem: childItem.val().imagem
+    //                 };
 
-                    setCategorias(oldArray => [...oldArray, data]);
-                })
+    //                 setCategorias(oldArray => [...oldArray, data]);
+    //             })
 
-                setLoadingCat(false)
-            })
-        }
+    //             setLoadingCat(false)
+    //         })
+    //     }
 
-        getCategories();
-    }, []);
+    //     getCategories();
+    // }, []);
 
 
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled>               
+            enabled>       
+
+                <Swiper
+                style={styles.wrapper}
+                dotStyle={{
+                    backgroundColor: '#000',
+                    borderColor: '#000',
+                    width: 10,
+                    height: 10,
+                    borderRadius: 10
+                }}
+                activeDotColor='#fff'
+                activeDotStyle={{
+                    borderColor: '#000',
+                    borderWidth: 1,
+                    width: 10,
+                    height: 10,
+                    borderRadius: 10
+                }}
+                >
+                    <View style={styles.slide}>
+
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/logo.png')}/>
+
+                    </View>
+                </Swiper>     
 
                 <View style={styles.header}>
                     <EvilIcons
@@ -112,7 +141,7 @@ const styles = StyleSheet.create ({
         flex: 1,
     },
     header: {
-        height: 60,
+        height: 55,
         marginBottom: 20,
         backgroundColor: '#fff',
         flexDirection: 'row',
@@ -135,5 +164,15 @@ const styles = StyleSheet.create ({
         paddingLeft: 20, 
         borderBottomWidth: 2,
         borderColor: '#ddd'
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    img: {
+        width: '100%',
+        height: 400
     }
 })

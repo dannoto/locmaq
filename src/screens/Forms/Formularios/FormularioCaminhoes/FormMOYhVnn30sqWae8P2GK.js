@@ -6,13 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 //Formulário Caminhões
 export default function FormCaminhao ({ navigation, route }) {
 
-    navigation.setOptions({headerTitle: subnome})
-
     const {titulo, subnome, subkey, catkey} = route.params;
-    console.log()
+    navigation.setOptions({headerTitle: subnome.toUpperCase()})
+
     const navegacao = useNavigation();
-    const categoria = {key:catkey,nome:'Caminhões'};
-    const subcategoria = {key:subkey,nome:subnome}
+    const categoria = {key:catkey, nome:'Caminhões'};
+    const subcategoria = {key:subkey, nome:subnome}
     const errors = {}
 
     const [condicao, setCondicao] = useState('');
@@ -21,9 +20,9 @@ export default function FormCaminhao ({ navigation, route }) {
         {key: 1, nome: 'ALUGUEL'}, 
         {key: 2, nome: 'VENDA'}
     ]);
-    const [fabricante, setFabricante] = useState('ford');
-    const [ano, setAno] = useState('1999');
-    const [modelo, setModelo] = useState('kkl-9');
+    const [fabricante, setFabricante] = useState('cfhcxhxj,');
+    const [ano, setAno] = useState('5599');
+    const [modelo, setModelo] = useState('ccgiuho');
     const [tipo, setTipo] = useState('')
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
@@ -45,18 +44,18 @@ export default function FormCaminhao ({ navigation, route }) {
         {key: 8, nome: '8x6'},
         {key: 9, nome: '8x8'}
     ]);
-    const [consumo, setConsumo] = useState('10');
-    const [hodometro, setHodometro] = useState('500');
-    const [horimetro, setHorimetro] = useState('63');
+    const [consumo, setConsumo] = useState('56462');
+    const [hodometro, setHodometro] = useState('5161');
+    const [horimetro, setHorimetro] = useState('5465');
     const [seguro, setSeguro] = useState('');
     const [segurooption, setSeguroOption] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'SIM'}, 
         {key: 2, nome: 'NÃO'}
     ]);
-    const [fabricantebau, setFabricanteBau] = useState('Ford');
-    const [anobau, setAnoBau] = useState('1999');
-    const [dimensoesbau, setDimensoesBau] = useState('20x20x20');
+    const [fabricantebau, setFabricanteBau] = useState('yuguihj');
+    const [anobau, setAnoBau] = useState('6888');
+    const [dimensoesbau, setDimensoesBau] = useState('bj859');
     const [fabricantetanque, setFabricanteTanque] = useState('');
     const [anotanque, setAnoTanque] = useState('');
     const [capacidadetanque, setCapacidadeTanque] = useState('');
@@ -241,23 +240,22 @@ export default function FormCaminhao ({ navigation, route }) {
             modeloplataforma: modeloplataforma,
             capacidadepoliguidaste: capacidadepoliguidaste,
             poliguidaste: poliguidaste,
-            larguraplataforma:larguraplataforma,
-            alturaplataforma:alturaplataforma,
+            larguraplataforma: larguraplataforma,
+            alturaplataforma: alturaplataforma,
             capacidadesilo: capacidadesilo, 
-            condicao:condicao, 
-            fabricante:fabricante, 
-            ano:ano, 
-            modelo:modelo, 
-            tipo:tipo, 
-            tracao:tracao, 
-            consumo:consumo, 
-            hodometro:hodometro, 
-            horimetro:horimetro, 
+            condicao: condicao, 
+            fabricante: fabricante, 
+            ano: ano, 
+            modelo: modelo, 
+            tipo: tipo, 
+            tracao: tracao, 
+            consumo: consumo, 
+            hodometro: hodometro, 
+            horimetro: horimetro, 
             capacidade: capacidade,
-            seguro:seguro, 
-            categoria:categoria,
-            subcategoria:subcategoria,
-            titulo: titulo
+            seguro: seguro, 
+            categoria: categoria,
+            subcategoria: subcategoria
         })
         }
     }
