@@ -120,7 +120,7 @@ function AuthProvider({ children }) {
     //         let subcategorias = firebase.database().ref('subcategorias');
     //         let chave = subcategorias.push().key;
     //         await subcategorias.child(chave).set({ 
-    //            nome: 'Trator Agrícola',
+    //            nome: 'Trator de Esteira',
     //            categoria: '-MOYhjWTHG77Uf6JCH7W'
     //         });  
     //     }
@@ -166,14 +166,10 @@ function AuthProvider({ children }) {
         poliguidaste,
         estado, 
         cidade, 
-        preco,
-        precoDiaria,
-        precoSemanal,
-        precoMensal, 
+        preco, 
         usuario, 
         subcategoria, 
-        categoria,
-        imagensURL) {
+        categoria) {
 
         let caminhao = await firebase.database().ref('equipamentos');
         let chave = caminhao.push().key;
@@ -194,9 +190,6 @@ function AuthProvider({ children }) {
             estado: estado,
             cidade: cidade,
             preco: preco,
-            precoDiaria: precoDiaria,
-            precoSemanal: precoSemanal,
-            precoMensal: precoMensal,
             fabricanteBau: fabricantebau,
             anoBau: anobau,
             dimensoesBau: dimensoesbau,
@@ -221,59 +214,12 @@ function AuthProvider({ children }) {
             capacidadesilo: capacidadesilo, 
             caracteristicasPoliguidaste: poliguidaste,
             categoria: categoria,
-            subcategoria:subcategoria,
-            imagensURL: imagensURL
-        });
-    }
-
-     // Inserindo Equipamentos - Britador
-     async function cadastrarEquipamentosBritador(
-        condicao, 
-        fabricante, 
-        ano, 
-        modelo, 
-        caracteristica, 
-        capacidade,
-        peso, 
-        seguro, 
-        estado, 
-        cidade, 
-        preco, 
-        precoDiaria,
-        precoSemanal,
-        precoMensal,
-        usuario, 
-        subcategoria, 
-        categoria,
-        imagensURL) {
-
-        let britador = await firebase.database().ref('equipamentos');
-        let chave = britador.push().key;
-
-        caminhao.child(chave).set({
-            usuario: usuario,
-            condicao: condicao,
-            fabricante: fabricante,
-            ano: ano,
-            modelo: modelo,
-            caracteristica: caracteristica,
-            capacidadeProducao: capacidade,
-            pesoOperacional: peso,
-            seguro: seguro,
-            estado: estado,
-            cidade: cidade,
-            preco: preco,
-            precoDiaria: precoDiaria,
-            precoSemanal: precoSemanal,
-            precoMensal: precoMensal,
-            categoria: categoria,
-            subcategoria:subcategoria,
-            imagensURL: imagensURL
+            subcategoria:subcategoria
         });
     }
 
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarEquipamentosCaminhao, cadastrarEquipamentosBritador }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarEquipamentosCaminhao }}>
         {children}
         </AuthContext.Provider>
     );

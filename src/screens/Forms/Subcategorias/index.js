@@ -47,10 +47,16 @@ export default ({route}) => {
             let catfiltradas = {
                 key: data.key,
                 nome: data.nome,
-                categoria: data.categoria 
+                categoria: data.categoria
             };
-            setSubCategoriasFiltradas(oldArray => [...oldArray, catfiltradas]);
-        } 
+
+            setSubCategoriasFiltradas(oldArray => [...oldArray, catfiltradas].sort());
+        } else {
+           
+        }
+       
+        console.log(catfiltradas);
+
     }
 
     return (
@@ -78,7 +84,6 @@ export default ({route}) => {
                             />
                         )
                     }
-                    
                 </View>             
             </KeyboardAvoidingView>
         </ScrollView>

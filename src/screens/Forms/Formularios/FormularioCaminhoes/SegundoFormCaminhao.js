@@ -1,7 +1,5 @@
-// Segunda parte do Formulário Caminhão
-
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground, ImageComponent} from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
@@ -9,32 +7,11 @@ import { AuthContext } from '../../../../contexts/auth';
 import ImagePicker from 'react-native-image-crop-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import firebase from '../../../../services/firebaseConnection';
-import RNFetchBlob from 'react-native-fetch-blob';
 
-window.Blob = RNFetchBlob.polyfill.Blob;
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-window.Blob = Blob;
-
-const Fetch = RNFetchBlob.polyfill.Fetch
-window.fetch = new Fetch({
-    // enable this option so that the response data conversion handled automatically
-    auto : true,
-    // when receiving response data, the module will match its Content-Type header
-    // with strings in this array. If it contains any one of string in this array, 
-    // the response body will be considered as binary data and the data will be stored
-    // in file system instead of in memory.
-    // By default, it only store response data to file system when Content-Type 
-    // contains string `application/octet`.
-    binaryContentTypes : [
-        'image/',
-        'video/',
-        'audio/',
-        'foo/',
-    ]
-}).build()
-
+// Segunda parte do Formulário Caminhão
 export default ({route, navigation}) => {
+
+    // navigation.setOptions({headerTitle:})
  
     const {
         condicao, 
@@ -72,14 +49,14 @@ export default ({route, navigation}) => {
         capacidadepoliguidaste,
         poliguidaste,
         subcategoria, 
-        categoria
+        categoria,
+        titulo
     } = route.params;
-    navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
 
     const navegacao = useNavigation();
     const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
-    const usuario = {key:user.uid, nome:user.nome};
-    const errors = {};
+    const usuario = {key:user.uid,nome:user.nome};
+    const errors = {}
     
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
@@ -116,13 +93,9 @@ export default ({route, navigation}) => {
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [preco, setPreco] = useState('');
-    const [precoDiaria, setPrecoDiaria] = useState('');
-    const [precoSemanal, setPrecoSemanal] = useState('');
-    const [precoMensal, setPrecoMensal] = useState('');
     const [imagens, setImagens] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
-    const [imagensURL, setImagensURL] = useState([]);
 
     function handleRegister() {
         if (estado.length < 1) {            
@@ -133,13 +106,10 @@ export default ({route, navigation}) => {
         }  
         else if (preco.length < 1) {       
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
-        }  
-        else if (imagens.length < 1) {       
-            errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma Foto.')
+        }  else if (imagens.length < 1) {       
+            errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma imagem.')
         } 
         else {
-            salvarImagem(imagens)
-
             if (cadastrarEquipamentosCaminhao (
                 condicao, 
                 fabricante, 
@@ -155,55 +125,38 @@ export default ({route, navigation}) => {
                 fabricantebau, 
                 anobau, 
                 dimensoesbau,
+                fabricantetanque,
+                anotanque,
+                capacidadetanque,
+                fabricantecarroceria,
+                anocarroceria,
+                capacidadecarroceria,
+                fabricantecacamba,
+                anocacamba,
+                capacidadecacamba,
+                cacamba,
+                fabricantecomboio,
+                anocomboio,
+                modelocomboio,
+                capacidadecomboio,
+                larguraplataforma,
+                alturaplataforma,
+                capacidadesilo, 
+                modeloplataforma,
+                capacidadepoliguidaste,
+                poliguidaste,
                 estado, 
                 cidade, 
                 preco, 
-                precoDiaria,
-                precoSemanal,
-                precoMensal,
                 usuario, 
                 subcategoria, 
-                categoria,
-                imagensURL
+                categoria
                 )) 
-            { 
+            {
                 Alert.alert('','Cadastrado com Sucesso!');
                 navegacao.navigate('Anuncie');
             }
         }  
-    }
-
-    async function salvarImagem(imagens) {
-
-        var URLImagens = imagensURL;
-        for (var b =0; b < imagens.length; b++ ) {
-
-            let tipoImagem = imagens[b].tipo.replace('image/','');
-            let random = Math.random () * Date.now();
-            let nomeImagem = random + '' + imagens[b].id + '.' + tipoImagem;
-
-            let imagem = firebase.storage().ref().child('equipamentos').child(nomeImagem);
-            
-            let uri = imagens[b].url.replace('file://', '');
-            let mime = imagens[b].tipo;
-
-            RNFetchBlob.fs.readFile(uri, 'base64')
-            .then((data) => {
-            return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
-            })
-            .then((blob) => {
-               imagem.put(blob, {contentType:mime})
-                .then(() => {
-                    return imagem.getDownloadURL().then((e) => { 
-                        URLImagens.push({url:e});
-                    });
-                })
-                .catch((error) => {
-                    Alert.alert('Erro ao carregar foto.', error.code)
-                })
-            });
-        }
-        setImagensURL(URLImagens)
     }
 
     useEffect (() => {
@@ -252,11 +205,13 @@ export default ({route, navigation}) => {
     }
 
     function onClickAddImage() {
+
         if (imagens.length == 6) {
-            Alert.alert('Opps!', 'Máximo de 6 Fotos!')
+            Alert.alert('Máximo de 6 imagens!')
         } else {
             setModalVisible(true);
-        }  
+        }
+        
     }
 
     function CloseModal() { 
@@ -267,10 +222,9 @@ export default ({route, navigation}) => {
         ImagePicker.openCamera({
             width: 300,
             height: 400,
-            compressImageQuality: 0.7,
-            includeBase64: true,   
-
+           
         }).then(image => {
+           
             onSelectedImageCamera(image)
             setModalVisible(false)
            
@@ -281,16 +235,13 @@ export default ({route, navigation}) => {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
-            compressImageQuality: 0.7,
-            includeBase64: true,
             multiple: true,
             minFiles: 6,
             maxFiles: 6
-
           }).then(image => {
+           
             onSelectedImageLibrary(image)
             setModalVisible(false)
-            
         });
     }
 
@@ -300,43 +251,44 @@ export default ({route, navigation}) => {
             newDataImg.push({
                 id: Math.floor (Math.random () * Date.now ()),
                 url: image.path,
-                tipo: image[i].mime,
             });     
             
         setImagens(newDataImg);
+        console.log(image)
     }
 
     function onSelectedImageLibrary(image) {
-        let limit = (6 - imagens.length);
         let newDataImg = imagens;
-        if (image.length > 1) {
-            for (var i = 0; i < limit; i++) {
+            if (image.length > 1) {
+                for (var i = 0; i < 6; i++) {
+                    newDataImg.push({
+                        id: Math.floor (Math.random () * Date.now ()),
+                        url: image[i].path,
+                    
+                    });
+                }
+                    
+            } else {
                 newDataImg.push({
                     id: Math.floor (Math.random () * Date.now ()),
-                    url: image[i].path,
-                    tipo: image[i].mime, 
-                });
+                    url: image[0].path,
+                });     
             }
-                
-        } else {
-            newDataImg.push({
-                id: Math.floor (Math.random () * Date.now ()),
-                url: image[0].path,
-                tipo: image[0].mime,
-            });     
-        }
+
         setImagens(newDataImg);
     }
 
     function removerImg (id) {
+
         imagens.forEach(function (item, index){
-        
+            
             if (id == item.id) { 
                 var count = 0;
                 count =  imagens.splice(imagens[index],1)
                 
                 setCountImagens(count)   
             }
+            
         });
     }
 
@@ -373,101 +325,27 @@ export default ({route, navigation}) => {
                     </Picker>
                 </View>
 
-                {condicao == 'ALUGUEL' ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoDiaria}
-                                    onChangeText={(text) => setPrecoDiaria(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
+                <Text style={styles.tituloInput}>PREÇO</Text>
+                <View style={styles.areaInput}>
+                    <TextInputMask
+                        style={styles.input}
+                        placeholder="R$"
+                        placeholderTextColor='#fff'
+                        value={preco}
+                        onChangeText={(text) => setPreco(text)}
+                        keyboardType={'numeric'}
+                        type={'money'}
+                        options = {{
+                            precision :  2 ,
+                            separator :  ' , ' ,
+                            delimiter :  ' . ' ,
+                            unidade :  ' R $ ' ,
+                            sufixoUnidade :  ' ' 
+                         }} 
+                    />
+                </View> 
 
-                            <View>
-                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoSemanal}
-                                    onChangeText={(text) => setPrecoSemanal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoMensal}
-                                    onChangeText={(text) => setPrecoMensal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-                        </View>
-                    ) :
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={preco}
-                                    onChangeText={(text) => setPreco(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-                    )
-                }
-
-                <Text style={styles.tituloImagens}>ADICIONAR FOTOS</Text>
-                <Text style={styles.subImagens}>Máximo de 6 Fotos.</Text>
+                <Text style={styles.tituloImagens}>ADICIONAR IMAGENS</Text>
                 <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
                 </TouchableOpacity>
@@ -578,11 +456,6 @@ tituloImagens: {
     color: '#fff',
     marginTop: 40,
     fontWeight: 'bold'
-},
-subImagens: {
-    fontSize: 17,
-    color: '#fff',
-    marginTop: 5
 },
 areaInput: {
     flexDirection: 'row',
