@@ -128,53 +128,14 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
-    // Inserindo Equipamentos - Caminhão
-    async function cadastrarEquipamentosCaminhao(
-        condicao, 
-        fabricante, 
-        ano, 
-        modelo, 
-        tipo, 
-        tracao, 
-        consumo, 
-        hodometro, 
-        horimetro, 
-        capacidade, 
-        seguro, 
-        fabricantebau, 
-        anobau, 
-        dimensoesbau,
-        fabricantetanque,
-        anotanque,
-        capacidadetanque,
-        fabricantecarroceria,
-        anocarroceria,
-        capacidadecarroceria,
-        fabricantecacamba,
-        anocacamba,
-        capacidadecacamba,
-        cacamba,
-        fabricantecomboio,
-        anocomboio,
-        modelocomboio,
-        capacidadecomboio,
-        larguraplataforma,
-        alturaplataforma,
-        capacidadesilo, 
-        modeloplataforma,
-        capacidadepoliguidaste,
-        poliguidaste,
-        estado, 
-        cidade, 
-        preco, 
-        usuario, 
-        subcategoria, 
-        categoria) {
+     // Inserindo Equipamentos - Caminhão Baú
+     async function cadastrarCaminhaoBau(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, 
+        cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
 
-        let caminhao = await firebase.database().ref('equipamentos');
-        let chave = caminhao.push().key;
+        let caminhaoBau = await firebase.database().ref('equipamentos');
+        let chave = caminhaoBau.push().key;
 
-        caminhao.child(chave).set({
+        caminhaoBau.child(chave).set({
             usuario: usuario,
             condicao: condicao,
             fabricante: fabricante,
@@ -185,41 +146,53 @@ function AuthProvider({ children }) {
             consumo: consumo,
             hodometro: hodometro,
             horimetro: horimetro,
-            capacidade: capacidade,
             seguro: seguro,
             estado: estado,
             cidade: cidade,
             preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
             fabricanteBau: fabricantebau,
             anoBau: anobau,
             dimensoesBau: dimensoesbau,
-            fabricanteTanque: fabricantetanque,
-            anoTanque: anotanque,
-            capacidadeTanque: capacidadetanque,
-            fabricanteCarroceria: fabricantecarroceria,
-            anoCarroceria: anocarroceria,
-            capacidadeCarroceria: capacidadecarroceria,
-            fabricanteCacamba: fabricantecacamba,
-            anoCacamba: anocacamba,
-            capacidadeCacamba: capacidadecacamba,
-            caracteristicasCacamba: cacamba,
-            fabricanteComboio: fabricantecomboio,
-            anoComboio: anocomboio,
-            modeloComboio: modelocomboio,
-            modeloPlataforma: modeloplataforma,
-            capacidadePoliguidaste: capacidadepoliguidaste,
-            capacidadeComboio: capacidadecomboio,
-            larguraPlataforma:larguraplataforma,
-            alturaPlataforma:alturaplataforma,
-            capacidadesilo: capacidadesilo, 
-            caracteristicasPoliguidaste: poliguidaste,
             categoria: categoria,
-            subcategoria:subcategoria
+            subcategoria:subcategoria,
+            imagensURL: imagensURL
+        });
+    }
+
+    // Inserindo Equipamentos - Britador
+    async function cadastrarBritador(condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, seguro, estado, cidade, preco, 
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
+
+        let britador = await firebase.database().ref('equipamentos');
+        let chave = britador.push().key;
+
+        britador.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            ano: ano,
+            modelo: modelo,
+            caracteristica: caracteristica,
+            capacidadeProducao: capacidade,
+            pesoOperacional: peso,
+            seguro: seguro,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            imagensURL: imagensURL
         });
     }
 
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarEquipamentosCaminhao }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarCaminhaoBau, cadastrarBritador }}>
         {children}
         </AuthContext.Provider>
     );

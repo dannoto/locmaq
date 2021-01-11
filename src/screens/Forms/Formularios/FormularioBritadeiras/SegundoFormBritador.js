@@ -1,4 +1,4 @@
-// Segunda parte do Formulário Caminhão
+// Segunda parte do Formulário Britador
 
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground, ImageComponent} from 'react-native';
@@ -36,18 +36,24 @@ window.fetch = new Fetch({
 
 export default ({route, navigation}) => {
  
-    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, capacidade, 
-    fabricantetanque, anotanque, capacidadetanque, fabricantecarroceria, anocarroceria, capacidadecarroceria, fabricantecacamba, anocacamba,
-    capacidadecacamba, cacamba, fabricantecomboio, anocomboio, modelocomboio, capacidadecomboio, larguraplataforma, alturaplataforma,
-    capacidadesilo, modeloplataforma, capacidadepoliguidaste, poliguidaste, subcategoria, categoria} = route.params;
-    
+    const {
+        condicao,
+        fabricante, 
+        ano, 
+        modelo, 
+        caracteristica, 
+        capacidade,
+        peso, 
+        seguro, 
+        categoria,
+        subcategoria
+    } = route.params;
     navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
 
     const navegacao = useNavigation();
-    const { cadastrarCaminhaoBau, user } = useContext(AuthContext);   
+    const { cadastrarEquipamentosBritador, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
-
     
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
@@ -92,6 +98,20 @@ export default ({route, navigation}) => {
     const [countimagens, setCountImagens] = useState([]);
     const [imagensURL, setImagensURL] = useState([]);
 
+    let estadoItem = estados.map( (v, k) => {
+        return <Picker.Item key={k} value={v} label={v.nome}/>
+    })
+
+    let cidadeItem = cidades.map( (v, k) => {
+        return <Picker.Item key={k} value={v} label={v.nome}/>
+    })
+    
+    function SelectPadraoCidades(v,i) {
+        if (v.key !== 0) {
+           setCidade(v);
+        }  
+    }
+
     function handleRegister() {
         if (estado.length < 1) {            
             errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
@@ -99,6 +119,7 @@ export default ({route, navigation}) => {
         else if (cidade.key == 0) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
+
         else if (preco.length < 1) {       
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
         }  
@@ -108,11 +129,29 @@ export default ({route, navigation}) => {
         else {
             salvarImagem(imagens)
 
-            if (cadastrarCaminhaoBau (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, 
-                anobau, dimensoesbau,estado, cidade, preco, precoDiaria,precoSemanal,precoMensal,usuario, subcategoria, categoria, imagensURL)) 
+            if (cadastrarEquipamentosBritador (
+                condicao, 
+                fabricante, 
+                ano, 
+                modelo, 
+                caracteristica, 
+                capacidade,
+                peso, 
+                seguro, 
+                estado, 
+                cidade, 
+                preco, 
+                precoDiaria,
+                precoSemanal,
+                precoMensal,
+                usuario, 
+                subcategoria, 
+                categoria,
+                imagensURL
+                )) 
             { 
                 Alert.alert('','Cadastrado com Sucesso!');
-                // navegacao.navigate('Anuncie');
+                navegacao.navigate('Anuncie');
             }
         }  
     }
@@ -180,21 +219,6 @@ export default ({route, navigation}) => {
         }  
     }
 
-
-    let estadoItem = estados.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    let cidadeItem = cidades.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    function SelectPadraoCidades(v,i) {
-        if (v.key !== 0) {
-           setCidade(v);
-        }  
-    }
-
     function onClickAddImage() {
         if (imagens.length == 6) {
             Alert.alert('Opps!', 'Máximo de 6 Fotos!')
@@ -210,7 +234,7 @@ export default ({route, navigation}) => {
     function takePhotoFromCamera() {
         ImagePicker.openCamera({
             width: 300,
-            height: 400, 
+            height: 400,
             compressImageQuality: 0.7,
             includeBase64: true,   
 
@@ -284,6 +308,8 @@ export default ({route, navigation}) => {
         });
     }
 
+    console.log(condicao)
+
     return (
         <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
             
@@ -317,9 +343,7 @@ export default ({route, navigation}) => {
                     </Picker>
                 </View>
 
-                
-                {condicao.nome == 'ALUGUEL' ?
-               
+                {condicao == 'ALUGUEL' ?
                     (
                         <View>
                             <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
@@ -342,7 +366,7 @@ export default ({route, navigation}) => {
                                 />
                             </View> 
 
-                            <View> 
+                            <View>
                             <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
                             <View style={styles.areaInput}>
                                 <TextInputMask

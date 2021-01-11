@@ -1,4 +1,4 @@
-// Segunda parte do Formulário Caminhão
+// Segunda parte do Formulário Guindaste
 
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground, ImageComponent} from 'react-native';
@@ -36,18 +36,51 @@ window.fetch = new Fetch({
 
 export default ({route, navigation}) => {
  
-    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, capacidade, 
-    fabricantetanque, anotanque, capacidadetanque, fabricantecarroceria, anocarroceria, capacidadecarroceria, fabricantecacamba, anocacamba,
-    capacidadecacamba, cacamba, fabricantecomboio, anocomboio, modelocomboio, capacidadecomboio, larguraplataforma, alturaplataforma,
-    capacidadesilo, modeloplataforma, capacidadepoliguidaste, poliguidaste, subcategoria, categoria} = route.params;
-    
+    const {
+        condicao, 
+        fabricante, 
+        ano, 
+        modelo, 
+        tipo, 
+        tracao, 
+        consumo, 
+        hodometro, 
+        horimetro, 
+        capacidade, 
+        seguro, 
+        fabricantebau, 
+        anobau, 
+        dimensoesbau,
+        fabricantetanque,
+        anotanque,
+        capacidadetanque,
+        fabricantecarroceria,
+        anocarroceria,
+        capacidadecarroceria,
+        fabricantecacamba,
+        anocacamba,
+        capacidadecacamba,
+        cacamba,
+        fabricantecomboio,
+        anocomboio,
+        modelocomboio,
+        capacidadecomboio,
+        larguraplataforma,
+        alturaplataforma,
+        capacidadesilo, 
+        modeloplataforma,
+        capacidadepoliguidaste,
+        poliguidaste,
+        subcategoria, 
+        categoria,
+        titulo
+    } = route.params;
     navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
 
     const navegacao = useNavigation();
-    const { cadastrarCaminhaoBau, user } = useContext(AuthContext);   
-    const usuario = {key:user.uid, nome:user.nome};
+    const { cadastrarEquipamentosCaminhao, user } = useContext(AuthContext);   
+    const usuario = {key:user.uid,nome:user.nome};
     const errors = {};
-
     
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
@@ -84,9 +117,6 @@ export default ({route, navigation}) => {
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [preco, setPreco] = useState('');
-    const [precoDiaria, setPrecoDiaria] = useState('');
-    const [precoSemanal, setPrecoSemanal] = useState('');
-    const [precoMensal, setPrecoMensal] = useState('');
     const [imagens, setImagens] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
@@ -108,11 +138,32 @@ export default ({route, navigation}) => {
         else {
             salvarImagem(imagens)
 
-            if (cadastrarCaminhaoBau (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, 
-                anobau, dimensoesbau,estado, cidade, preco, precoDiaria,precoSemanal,precoMensal,usuario, subcategoria, categoria, imagensURL)) 
+            if (cadastrarEquipamentosCaminhao (
+                condicao, 
+                fabricante, 
+                ano, 
+                modelo, 
+                tipo, 
+                tracao, 
+                consumo, 
+                hodometro, 
+                horimetro, 
+                capacidade, 
+                seguro, 
+                fabricantebau, 
+                anobau, 
+                dimensoesbau,
+                estado, 
+                cidade, 
+                preco, 
+                usuario, 
+                subcategoria, 
+                categoria,
+                imagensURL
+                )) 
             { 
                 Alert.alert('','Cadastrado com Sucesso!');
-                // navegacao.navigate('Anuncie');
+                navegacao.navigate('Anuncie');
             }
         }  
     }
@@ -197,7 +248,7 @@ export default ({route, navigation}) => {
 
     function onClickAddImage() {
         if (imagens.length == 6) {
-            Alert.alert('Opps!', 'Máximo de 6 Fotos!')
+            Alert.alert('Máximo de 6 imagens!')
         } else {
             setModalVisible(true);
         }  
@@ -210,7 +261,7 @@ export default ({route, navigation}) => {
     function takePhotoFromCamera() {
         ImagePicker.openCamera({
             width: 300,
-            height: 400, 
+            height: 400,
             compressImageQuality: 0.7,
             includeBase64: true,   
 
@@ -317,103 +368,27 @@ export default ({route, navigation}) => {
                     </Picker>
                 </View>
 
-                
-                {condicao.nome == 'ALUGUEL' ?
-               
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoDiaria}
-                                    onChangeText={(text) => setPrecoDiaria(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-
-                            <View> 
-                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoSemanal}
-                                    onChangeText={(text) => setPrecoSemanal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoMensal}
-                                    onChangeText={(text) => setPrecoMensal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-                        </View>
-                    ) :
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={preco}
-                                    onChangeText={(text) => setPreco(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-                    )
-                }
+                <Text style={styles.tituloInput}>PREÇO</Text>
+                <View style={styles.areaInput}>
+                    <TextInputMask
+                        style={styles.input}
+                        placeholder="R$"
+                        placeholderTextColor='#fff'
+                        value={preco}
+                        onChangeText={(text) => setPreco(text)}
+                        keyboardType={'numeric'}
+                        type={'money'}
+                        options = {{
+                            precision :  2 ,
+                            separator :  ' , ' ,
+                            delimiter :  ' . ' ,
+                            unidade :  ' R $ ' ,
+                            sufixoUnidade :  ' ' 
+                         }} 
+                    />
+                </View> 
 
                 <Text style={styles.tituloImagens}>ADICIONAR FOTOS</Text>
-                <Text style={styles.subImagens}>Máximo de 6 Fotos.</Text>
                 <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
                 </TouchableOpacity>
@@ -524,11 +499,6 @@ tituloImagens: {
     color: '#fff',
     marginTop: 40,
     fontWeight: 'bold'
-},
-subImagens: {
-    fontSize: 17,
-    color: '#fff',
-    marginTop: 5
 },
 areaInput: {
     flexDirection: 'row',

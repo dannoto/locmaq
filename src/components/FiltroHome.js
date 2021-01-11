@@ -6,9 +6,9 @@ export default function FiltroHome({data}){
         <View style={styles.container}>
 
             <TouchableOpacity onPress={() => {}} style={styles.areabtn}> 
-                <Image style={styles.img} source={{uri: data.imagem}}/>
+                {/* <Image style={styles.img} source={{uri: data.imagem}}/> */}
                 <Text style={styles.txtCat}>SERVIÇO</Text>
-                <Text style={styles.txtProd}>{data.nome}</Text>
+                {/* <Text style={styles.txtProd}>{data.nome}</Text> */}
             </TouchableOpacity>
 
         </View>      

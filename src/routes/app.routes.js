@@ -25,6 +25,7 @@ import Politica from '../screens/ScreensConta/Politica';
 import Sobre from '../screens/ScreensConta/Sobre';
 import SobreAssinatura from '../screens/ScreensConta/SobreAssinatura';
 import Termos from '../screens/ScreensConta/Termos';
+import Detalhes from '../screens/Detalhes';
 import Categorias from '../screens/Forms/Categorias';
 import Subcategorias from '../screens/Forms/Subcategorias';
 import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormularioCaminhoes/FormMOYhVnn30sqWae8P2GK'; //Caminhões
@@ -39,6 +40,16 @@ import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormularioMart
 import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormularioManipuladoresTelescopico/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
 import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormularioBritadeiras/FormMP96RRAkNan7K7LKHJs'; //Britadores
 import SegundoFormCaminhao from '../screens/Forms/Formularios/FormularioCaminhoes/SegundoFormCaminhao'; //Segunda parte do formulário Caminhões
+import SegundoFormEscavadeira from '../screens/Forms/Formularios/FormularioEscavadeiras/SegundoFormEscavadeira'; //Segunda parte do formulário Escavadeiras
+import SegundoFormEmpilhadeira from '../screens/Forms/Formularios/FormularioEmpilhadeiras/SegundoFormEmpilhadeira'; //Segunda parte do formulário Empilhadeiras
+import SegundoFormCompactador from '../screens/Forms/Formularios/FormularioCompactadores/SegundoFormCompactador'; //Segunda parte do formulário Compactadores
+import SegundoFormTrator from '../screens/Forms/Formularios/FormularioTratores/SegundoFormTrator'; //Segunda parte do formulário Tratores
+import SegundoFormUsina from '../screens/Forms/Formularios/FormularioUsinasdeAsfalto/SegundoFormUsina'; //Segunda parte do formulário Usina de Asfalto
+import SegundoFormGuindaste from '../screens/Forms/Formularios/FormularioGuidastes/SegundoFormGuindaste'; //Segunda parte do formulário Guindastes
+import SegundoFormPlataforma from '../screens/Forms/Formularios/FormularioPlataformasAerea/SegundoFormPlataforma'; //Segunda parte do formulário Plataformas Aérea
+import SegundoFormMartelo from '../screens/Forms/Formularios/FormularioMartelosHidraulico/SegundoFormMartelo'; //Segunda parte do formulário Martelos Hidraúlico
+import SegundoFormManipulador from '../screens/Forms/Formularios/FormularioManipuladoresTelescopico/SegundoFormManipulador'; //Segunda parte do formulário Manipuladores Telescópico
+import SegundoFormBritador from '../screens/Forms/Formularios/FormularioBritadeiras/SegundoFormBritador'; //Segunda parte do formulário Britadores
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -98,6 +109,7 @@ export default function AppRoutes() {
             <Stack.Screen name="Sobre" component={Sobre} options={{headerTitle: 'SOBRE A LOCMAQ', headerTintColor: '#222'}}/>
             <Stack.Screen name="Termos" component={Termos} options={{headerTitle: 'TERMOS DE USO', headerTintColor: '#222'}}/>
             <Stack.Screen name="Politica" component={Politica} options={{headerTitle: 'POLÍTICA DE PRIVACIDADE', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Detalhes" component={Detalhes} options={{headerTitle: 'DETALHES', headerTintColor: '#222'}}/>
             <Stack.Screen name="Categorias" component={Categorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="Subcategorias" component={Subcategorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYhVnn30sqWae8P2GK" component={FormMOYhVnn30sqWae8P2GK} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 
@@ -112,6 +124,16 @@ export default function AppRoutes() {
             <Stack.Screen name="FormMP96Or2Unms_Wf1gWlI" component={FormMP96Or2Unms_Wf1gWlI} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96RRAkNan7K7LKHJs" component={FormMP96RRAkNan7K7LKHJs} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormCaminhao" component={SegundoFormCaminhao} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormEscavadeira" component={SegundoFormEscavadeira} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormEmpilhadeira" component={SegundoFormEmpilhadeira} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormCompactador" component={SegundoFormCompactador} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormTrator" component={SegundoFormTrator} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormUsina" component={SegundoFormUsina} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormGuindaste" component={SegundoFormGuindaste} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormPlataforma" component={SegundoFormPlataforma} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormMartelo" component={SegundoFormMartelo} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormManipulador" component={SegundoFormManipulador} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormBritador" component={SegundoFormBritador} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
        </Stack.Navigator>
     )
 }

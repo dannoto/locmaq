@@ -1,8 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
@@ -10,7 +8,6 @@ import { set } from 'react-native-reanimated';
 import firebase from '../../services/firebaseConnection';
 import Recentes from '../../components/Recentes';
 import FiltroHome from '../../components/FiltroHome';
-import { TextInput } from 'react-native-gesture-handler';
 
 export default () => {
 
@@ -221,24 +218,16 @@ export default () => {
                 <View style={styles.areaLocalizacao}>
                     <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between',}} onPress={buscaEndereco}>
 
-                            
-                            {/* <Text style={styles.location}>{buscaPlaceHolder}</Text> */}
-
-                            { !estado ?
-
+                        { !estado ?
                             (
                                 <Text style={styles.location}>BUSQUE PELA LOCALIZAÇÃO</Text>
                             )
                             :
                             (
-                               
                                 <Text style={styles.location}>{cidade} - {estado}</Text>
                             )
-                            
-                            }
+                        }
                           
-                      
-
                         <MaterialIcons
                         name='gps-fixed'
                         size= {30}
@@ -246,27 +235,6 @@ export default () => {
                         />
                     </TouchableOpacity>
                 </View>
-
-              {/* <View>
-                    <Text style={styles.location}>{cidade } {estado}</Text>
-                 
-                </View>            */}
-
-                {/* <View style={styles.header}>
-
-                    <TouchableOpacity style={styles.Busca} onPress={buscaEndereco}  >
-                    
-                     <Text style={styles.headerText}>Busque pela Localização   </Text>
-                     { <EvilIcons
-                         name='location'
-                        size= {45}
-                        color="#222"
-                       
-                        
-                     /> }
-                    </TouchableOpacity> */}
-
-                {/* </View> */}
 
                 <View style={styles.areaRecentes}>
                     <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
@@ -281,11 +249,13 @@ export default () => {
                                 showsHorizontalScrollIndicator={false}
                                 showsVerticalScrollIndicator={false}
                                 data={categorias}
-                                renderItem={({item}) => (<Recentes data={item}/>)}
+                                renderItem={({item}) => (<Recentes  data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
                         )
                     }
+
+                  
                 </View>
 
                 <View style={styles.areaFiltros}>
@@ -314,7 +284,7 @@ export default () => {
                                 showsHorizontalScrollIndicator={false}
                                 showsVerticalScrollIndicator={false}
                                 data={condicao}
-                                numColumns={2}
+                                
                                 renderItem={({item}) => (<FiltroHome data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
