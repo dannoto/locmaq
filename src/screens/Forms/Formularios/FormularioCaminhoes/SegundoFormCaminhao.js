@@ -47,38 +47,37 @@ export default ({route, navigation}) => {
     const { cadastrarCaminhaoBau, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
-
-    
+ 
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
         {key: 0, nome: 'SELECIONAR'},
-        {key:'AC', nome: 'Acre'},
-        {key:'AL', nome: 'Alagoas'},
-        {key:'AP', nome: 'Amapá'},
-        {key:'AM', nome: 'Amazonas'},
-        {key:'BA', nome: 'Bahia'},
-        {key:'CE', nome: 'Ceará'},
-        {key:'DF', nome: 'Distrito Federal'},
-        {key:'ES', nome: 'Espírito Santo'},
-        {key:'GO', nome: 'Goiás'},
-        {key:'MA', nome: 'Maranhão'},
-        {key:'MT', nome: 'Mato Grosso'},
-        {key:'MS', nome: 'Mato Grosso do Sul'},
-        {key:'MG', nome: 'Minas Gerais '},
-        {key:'PA', nome: 'Pará '},
-        {key:'PB', nome: 'Paraíba '},
-        {key:'PR', nome: 'Paraná '},
-        {key:'PE', nome: 'Pernambuco '},
-        {key:'PI', nome: 'Piauí '},
-        {key:'RJ', nome: 'Rio de Janeiro '},
-        {key:'RN', nome: 'Rio Grande do Norte '},
-        {key:'RS', nome: 'Rio Grande do Sul '},
-        {key:'RO', nome: 'Rondônia '},
-        {key:'RR', nome: 'Roraima '},
-        {key:'SC', nome: 'Santa Catarina '},
-        {key:'SP', nome: 'São Paulo '},
-        {key:'SE', nome: 'Sergipe '},
-        {key:'TO', nome: 'Tocantins '}
+        {key: 'AC', nome: 'Acre'},
+        {key: 'AL', nome: 'Alagoas'},
+        {key: 'AP', nome: 'Amapá'},
+        {key: 'AM', nome: 'Amazonas'},
+        {key: 'BA', nome: 'Bahia'},
+        {key: 'CE', nome: 'Ceará'},
+        {key: 'DF', nome: 'Distrito Federal'},
+        {key: 'ES', nome: 'Espírito Santo'},
+        {key: 'GO', nome: 'Goiás'},
+        {key: 'MA', nome: 'Maranhão'},
+        {key: 'MT', nome: 'Mato Grosso'},
+        {key: 'MS', nome: 'Mato Grosso do Sul'},
+        {key: 'MG', nome: 'Minas Gerais '},
+        {key: 'PA', nome: 'Pará '},
+        {key: 'PB', nome: 'Paraíba '},
+        {key: 'PR', nome: 'Paraná '},
+        {key: 'PE', nome: 'Pernambuco '},
+        {key: 'PI', nome: 'Piauí '},
+        {key: 'RJ', nome: 'Rio de Janeiro '},
+        {key: 'RN', nome: 'Rio Grande do Norte '},
+        {key: 'RS', nome: 'Rio Grande do Sul '},
+        {key: 'RO', nome: 'Rondônia '},
+        {key: 'RR', nome: 'Roraima '},
+        {key: 'SC', nome: 'Santa Catarina '},
+        {key: 'SP', nome: 'São Paulo '},
+        {key: 'SE', nome: 'Sergipe '},
+        {key: 'TO', nome: 'Tocantins '}
     ]);
     const [cidade, setCidade] = useState('');
     const [cidadesdata, setCidadesData] = useState([]);
@@ -99,9 +98,12 @@ export default ({route, navigation}) => {
         else if (cidade.key == 0) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
-        else if (preco.length < 1) {       
-            errors.preco = Alert.alert('Opps!', 'Informe o Preço.')
+        else if (condicao.nome == 'VENDA' && preco.length < 1) {  
+            errors.preco = Alert.alert('Opps!', 'Informe o Preço.')   
         }  
+        else if (condicao.nome == 'ALUGUEL' && precoDiaria.length < 1) {  
+            errors.precoDiaria = Alert.alert('Opps!', 'Informe o Preço da Diária.')   
+        }
         else if (imagens.length < 1) {       
             errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma Foto.')
         } 
@@ -109,10 +111,10 @@ export default ({route, navigation}) => {
             salvarImagem(imagens)
 
             if (cadastrarCaminhaoBau (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, 
-                anobau, dimensoesbau,estado, cidade, preco, precoDiaria,precoSemanal,precoMensal,usuario, subcategoria, categoria, imagensURL)) 
+                anobau, dimensoesbau, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
             { 
                 Alert.alert('','Cadastrado com Sucesso!');
-                // navegacao.navigate('Anuncie');
+                navegacao.navigate('Anuncie');
             }
         }  
     }
@@ -213,7 +215,6 @@ export default ({route, navigation}) => {
             height: 400, 
             compressImageQuality: 0.7,
             includeBase64: true,   
-
         }).then(image => {
             onSelectedImageCamera(image)
             setModalVisible(false)

@@ -53,7 +53,7 @@ export default () => {
                         <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
                     </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MinhasAssinaturas')}>
+                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Detalhes')}>
                     <EvilIcons
                         name={'retweet'}
                         size={40}

@@ -206,9 +206,6 @@ export default () => {
             })
         }
 
-
-
-
     return (
         <ScrollView style={styles.background} showsVerticalIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
@@ -249,19 +246,17 @@ export default () => {
                                 showsHorizontalScrollIndicator={false}
                                 showsVerticalScrollIndicator={false}
                                 data={categorias}
-                                renderItem={({item}) => (<Recentes  data={item}/>)}
+                                renderItem={({item}) => (<Recentes data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
                         )
-                    }
-
-                  
+                    } 
                 </View>
 
                 <View style={styles.areaFiltros}>
               
                     <TouchableOpacity>
-                        <Text style={styles.txtFiltros} onPress={condAluguel} >ALUGUEL</Text>
+                        <Text style={styles.txtFiltros} onPress={navigation.navigate('Detalhes')} >ALUGUEL</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity>

@@ -64,12 +64,8 @@ export default () => {
                 >
                     <View style={styles.slide}>
 
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
-                    <Image style={styles.img} source={require('../../assets/Logo.png')}/>
+                    <Image style={styles.img} source={require('../../assets/caminhao.jpg')}/>
+                    
 
                     </View>
                 </Swiper>     
@@ -85,7 +81,7 @@ const styles = StyleSheet.create ({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#000'
     },
     img: {
         width: '100%',
