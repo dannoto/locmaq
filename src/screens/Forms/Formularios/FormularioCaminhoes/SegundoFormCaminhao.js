@@ -142,7 +142,6 @@ export default ({route, navigation}) => {
                 .then(() => {
                     return imagem.getDownloadURL().then((e) => { 
                         URLImagens.push({url:e});
-                        console.log(e);
                     });
                 })
                 .catch((error) => {
@@ -217,7 +216,7 @@ export default ({route, navigation}) => {
             compressImageQuality: 0.7,
             includeBase64: true,   
         }).then(image => {
-            onSelectedImageCamera(image)           
+            onSelectedImageCamera(image)
             setModalVisible(false)
            
         });
@@ -246,7 +245,7 @@ export default ({route, navigation}) => {
             newDataImg.push({
                 id: Math.floor (Math.random () * Date.now ()),
                 url: image.path,
-                tipo: image.mime,
+                tipo: image[i].mime,
             });     
             
         setImagens(newDataImg);

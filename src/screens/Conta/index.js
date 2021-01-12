@@ -11,187 +11,166 @@ export default () => {
     const navigation = useNavigation();
 
     return (
-        <ScrollView style={styles.background}>
-            <KeyboardAvoidingView style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled>               
+        <View style={styles.background}>
 
-                <View style={styles.header}>
-                    {/* {avatar != '' ?
-                        <Image source={{uri: avatar}}/>
-                        : */}
-                        <Ionicons
-                            name={'md-person-circle'}
-                            size={70}
-                            color="#bbb"        
+            <View style={styles.header}>
+                {/* {avatar != '' ?
+                    <Image source={{uri: avatar}}/>
+                    : */}
+                    <Ionicons
+                        name={'md-person-circle'}
+                        size={70}
+                        color="#bbb"        
+                    /> 
+                {/* } */}
+            
+
+                <Text style={styles.nome}>{ user && user.nome }</Text>
+
+            </View>
+
+            <ScrollView style={styles.background}>
+                <KeyboardAvoidingView style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : ''}
+                enabled>                            
+
+                    <View style={styles.areaBtn}>
+                        <Text style={[styles.titulo1, {marginTop: 20}]}>CONFIGURAÇÕES DA CONTA</Text>
+
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusDados')}>
+                        <EvilIcons style={styles.icon}
+                            name={'user'}
+                            size={40}
+                            color="#ffa500"
                         /> 
-                    {/* } */}
-                
+                            <Text style={styles.btnTitulo}>MEUS DADOS</Text>
+                        </TouchableOpacity> 
 
-                    <Text style={styles.nome}>{ user && user.nome }</Text>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Anunciar')}>
+                        <EvilIcons
+                            name={'tag'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
+                        </TouchableOpacity> 
 
-                </View>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Detalhes')}>
+                        <EvilIcons
+                            name={'retweet'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>MINHAS ASSINATURAS</Text>
+                        </TouchableOpacity> 
 
-                <View style={styles.areaBtn}>
-                    <Text style={styles.titulo1}>CONFIGURAÇÕES DA CONTA</Text>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('HistoricoPagamentos')}>
+                        <EvilIcons
+                            name={'credit-card'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>HISTÓRICO DE PAGAMENTOS</Text>
+                        </TouchableOpacity> 
+    
+                    </View>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusDados')}>
-                    <EvilIcons style={styles.icon}
-                        name={'user'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>MEUS DADOS</Text>
-                    </TouchableOpacity> 
+                    <View style={styles.areaBtn}>
+                        <Text style={styles.titulo2}>SERVIÇOS E CONTEÚDO</Text>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusAnuncios')}>
-                    <EvilIcons
-                        name={'tag'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
-                    </TouchableOpacity> 
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Anunciar')}>
+                        <EvilIcons style={styles.icon}
+                            name={'tag'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>ANUNCIAR</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Detalhes')}>
-                    <EvilIcons
-                        name={'retweet'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>MINHAS ASSINATURAS</Text>
-                    </TouchableOpacity> 
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SobreAssinatura')}>
+                        <EvilIcons style={styles.icon}
+                            name={'retweet'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>SOBRE A ASSINATURA</Text>
+                        </TouchableOpacity> 
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('HistoricoPagamentos')}>
-                    <EvilIcons
-                        name={'credit-card'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>HISTÓRICO DE PAGAMENTOS</Text>
-                    </TouchableOpacity> 
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Planos')}>
+                        <EvilIcons style={styles.icon}
+                            name={'plus'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>CONHEÇA NOSSOS PLANOS</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Notificacoes')}>
-                    <EvilIcons
-                        name={'bell'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>NOTIFICAÇÕES</Text>
-                    </TouchableOpacity> 
+                    </View>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Favoritos')}>
-                    <EvilIcons
-                        name={'heart'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>FAVORITOS</Text>
-                    </TouchableOpacity> 
-                </View>
+                    <View style={styles.areaBtn}>
+                        <Text style={styles.titulo2}>CENTRAL DE ATENDIMENTO</Text>
 
-                <View style={styles.areaBtn}>
-                    <Text style={styles.titulo2}>SERVIÇOS E CONTEÚDO</Text>
+                    
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Anunciar')}>
-                    <EvilIcons style={styles.icon}
-                        name={'tag'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>ANUNCIAR</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Erro')}>
+                        <EvilIcons style={styles.icon}
+                            name={'exclamation'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>ENCONTROU ALGUM ERRO?</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('SobreAssinatura')}>
-                    <EvilIcons style={styles.icon}
-                        name={'retweet'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>SOBRE A ASSINATURA</Text>
-                    </TouchableOpacity> 
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Perguntas')}>
+                        <EvilIcons style={styles.icon}
+                            name={'question'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>PERGUNTAS FREQUENTES</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Planos')}>
-                    <EvilIcons style={styles.icon}
-                        name={'plus'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>CONHEÇA NOSSOS PLANOS</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Sobre')}>
+                        <EvilIcons style={styles.icon}
+                            name={'heart'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>SOBRE A LOCMAQ</Text>
+                        </TouchableOpacity>
 
-                </View>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Termos')}>
+                        <EvilIcons style={styles.icon}
+                            name={'arrow-right'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>TERMOS DE USO</Text>
+                        </TouchableOpacity>
 
-                <View style={styles.areaBtn}>
-                    <Text style={styles.titulo2}>CENTRAL DE ATENDIMENTO</Text>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Politica')}>
+                        <EvilIcons style={styles.icon}
+                            name={'arrow-right'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>POLÍTICA DE PRIVACIDADE</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Feedback')}>
-                    <EvilIcons style={styles.icon}
-                        name={'comment'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>ENVIAR FEEDBACK</Text>
-                    </TouchableOpacity> 
+                        <TouchableOpacity style={styles.btn} onPress={ () => sair()}>
+                        <EvilIcons style={styles.icon}
+                            name={'external-link'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>SAIR</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Erro')}>
-                    <EvilIcons style={styles.icon}
-                        name={'exclamation'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>ENCONTROU ALGUM ERRO?</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Perguntas')}>
-                    <EvilIcons style={styles.icon}
-                        name={'question'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>PERGUNTAS FREQUENTES</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Sobre')}>
-                    <EvilIcons style={styles.icon}
-                        name={'heart'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>SOBRE A LOCMAQ</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Termos')}>
-                    <EvilIcons style={styles.icon}
-                        name={'arrow-right'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>TERMOS DE USO</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Politica')}>
-                    <EvilIcons style={styles.icon}
-                        name={'arrow-right'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>POLÍTICA DE PRIVACIDADE</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={ () => sair()}>
-                    <EvilIcons style={styles.icon}
-                        name={'external-link'}
-                        size={40}
-                        color="#ffa500"
-                    /> 
-                        <Text style={styles.btnTitulo}>SAIR</Text>
-                    </TouchableOpacity>
-
-                </View>
-                
-            </KeyboardAvoidingView>
-        </ScrollView>
+                    </View>
+                    
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -206,7 +185,6 @@ const styles = StyleSheet.create ({
     },
     header: {
         height: 90,
-        marginBottom: 20,
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',

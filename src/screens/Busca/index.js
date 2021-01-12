@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, StyleSheet, TextInput, ActivityIndicator} from 'react-native';
+import { Platform, ScrollView, KeyboardAvoidingView, View, Text, FlatList, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity } from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Categories from '../../components/Categories';
@@ -7,7 +7,7 @@ import Categories from '../../components/Categories';
 export default () => {
 
     const [categorias, setCategorias] = useState([]);
-    const [search, setSearch] = useState();
+    const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [loadingCat, setLoadingCat] = useState(true);
     const [emptyList, setEmptyList] = useState(false);
@@ -38,68 +38,77 @@ export default () => {
 
 
     return (
-        <ScrollView style={styles.background}>
-            <KeyboardAvoidingView style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled>               
+        <View style={styles.background}>
+            <View style={styles.header}>
+                <EvilIcons
+                    name='search'
+                    size= {30}
+                    color="#222"
+                />
 
-                <View style={styles.header}>
-                    <EvilIcons
-                        name='search'
-                        size= {30}
-                        color="#222"
-                    />
+                <TextInput 
+                    style={{width: '78%', color: '#222', fontSize: 18, marginLeft: 10}}
+                    placeholder="O que você está procurando?"
+                    placeholderTextColor= "#777"
+                    value={search}
+                    onChangeText={(text) => setSearch(text)}
+                    keyboardType={'default'}
+                    returnKeyType="search"
+                    autofocus
+                    selectTextOnFocus
+                />  
 
-                    <TextInput 
-                        style={{color: '#222', fontSize: 18, marginLeft: 10}}
-                        placeholder="O que você está procurando?"
-                        placeholderTextColor= "#777"
-                        value={search}
-                        onChangeText={(text) => setSearch(text)}
-                        keyboardType={'default'}
-                        returnKeyType="search"
-                        autofocus
-                        selectTextOnFocus
-                    />      
-                    
-                    {/* <TouchableOpacity style={{justifyContent: 'space-evenly'}}>
-                        <EvilIcons
-                            name='close'
-                            size= {30}
-                            color="#222"
-                        />
-                    </TouchableOpacity> */}
-                </View>
-
-                {/* <View>
-                    {loading &&
-                        <ActivityIndicator size={"large"} color={"#ffffff"}/>
-                    }
-                    {emptyList &&
-                        <Text>Nenhum resultado encontrado!</Text>
-                    }
-                    
-                </View> */}
-
-                <View style={styles.areaCategorias}>
-                    <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
-                    {loadingCat ?
-                        (
-                            <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                        ) :
-                        (
-                            <FlatList
-                                data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
-                                renderItem={({item}) => (<Categories data={item}/>)}
-                                keyExtractor={item => item.key}
+                {search.length > 0 ? 
+                    ( 
+                        <TouchableOpacity onPress={() => {setSearch('')}}>
+                            <EvilIcons  
+                                name='close'
+                                size= {30}
+                                color="#222"
                             />
-                        )
-                    }
-                </View>
-            
-            </KeyboardAvoidingView>
-        </ScrollView>
-        
+                        </TouchableOpacity>
+                    ) :
+                    (
+                        null
+                    )
+                }     
+                
+            </View>
+
+            <ScrollView>
+                <KeyboardAvoidingView style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : ''}
+                enabled>               
+
+                    {/* <View>
+                        {loading &&
+                            <ActivityIndicator size={"large"} color={"#ffffff"}/>
+                        }
+                        {emptyList &&
+                            <Text>Nenhum resultado encontrado!</Text>
+                        }
+                        
+                    </View> */}
+
+                    <View style={styles.areaCategorias}>
+                        <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
+                        {loadingCat ?
+                            (
+                                <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
+                            ) :
+                            (
+                                <FlatList
+                                    data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
+                                    renderItem={({item}) => (<Categories data={item}/>)}
+                                    keyExtractor={item => item.key}
+                                />
+                            )
+                        }
+                    </View>
+                
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>    
     );
 }
 
@@ -112,8 +121,7 @@ const styles = StyleSheet.create ({
         flex: 1,
     },
     header: {
-        height: 55,
-        marginBottom: 20,
+        height: 60,
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
@@ -130,7 +138,7 @@ const styles = StyleSheet.create ({
     tituloCat: {
         color: '#222',
         fontSize: 18,
-        marginTop: 10,
+        marginTop: 20,
         paddingBottom: 20,
         paddingLeft: 20, 
         borderBottomWidth: 2,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect } from 'react';
-import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -209,15 +209,11 @@ export default () => {
             })
         }
 
-    return (
-        <ScrollView style={styles.background} showsVerticalIndicator={false}>
-            <KeyboardAvoidingView style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled>    
-
-                <View style={styles.areaLocalizacao}>
-                    <TouchableOpacity style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between',}} onPress={buscaEndereco}>
-
+    return (   
+        <View style={styles.background}>
+            <SafeAreaView>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.btn} onPress={buscaEndereco}>
                         { !estado ?
                             (
                                 <Text style={styles.location}>BUSQUE PELA LOCALIZAÇÃO</Text>
@@ -227,7 +223,7 @@ export default () => {
                                 <Text style={styles.location}>{cidade} - {estado}</Text>
                             )
                         }
-                          
+                        
                         <MaterialIcons
                         name='gps-fixed'
                         size= {30}
@@ -235,63 +231,70 @@ export default () => {
                         />
                     </TouchableOpacity>
                 </View>
+            </SafeAreaView>
 
-                <View style={styles.areaRecentes}>
-                    <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
-                    
-                    {loadingCat ?
-                        (
-                            <ActivityIndicator size={"large"} color={"#222"}/>
-                        ) :
-                        (
-                            <FlatList
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                showsVerticalScrollIndicator={false}
-                                data={produtos}
-                                renderItem={({item}) => (<Recentes data={item}/>)}
-                                keyExtractor={item => item.key}
-                            />
-                        )
-                    } 
-                </View>
+            <ScrollView>
+                <KeyboardAvoidingView style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : ''}
+                enabled> 
 
-                <View style={styles.areaFiltros}>
-              
-                    <TouchableOpacity>
-                        <Text style={styles.txtFiltros}>ALUGUEL</Text>
-                    </TouchableOpacity>
+                    <View style={styles.areaRecentes}>
+                        <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
+                        
+                        {loadingCat ?
+                            (
+                                <ActivityIndicator size={"large"} color={"#222"}/>
+                            ) :
+                            (
+                                <FlatList
+                                    horizontal
+                                    showsHorizontalScrollIndicator={false}
+                                    showsVerticalScrollIndicator={false}
+                                    data={produtos}
+                                    renderItem={({item}) => (<Recentes data={item}/>)}
+                                    keyExtractor={item => item.key}
+                                />
+                            )
+                        } 
+                    </View>
 
-                    <TouchableOpacity>
-                        <Text style={styles.txtFiltros} onPress={condVendas} >VENDAS</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Text style={styles.txtFiltros} onPress={condServicos} >SERVIÇOS</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.produtos}>
-                    
-                    {loadingCat ?
-                        (
-                            <ActivityIndicator size={"large"} color={"#222"}/>
-                        ) :
-                        (
-                            <FlatList
-                                showsHorizontalScrollIndicator={false}
-                                showsVerticalScrollIndicator={false}
-                                data={condicao}
-                                
-                                renderItem={({item}) => (<FiltroHome data={item}/>)}
-                                keyExtractor={item => item.key}
-                            />
-                        )
-                    }
-                </View>
+                    <View style={styles.areaFiltros}>
                 
-            </KeyboardAvoidingView>
-        </ScrollView>
+                        <TouchableOpacity>
+                            <Text style={styles.txtFiltros}>ALUGUEL</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <Text style={styles.txtFiltros} onPress={condVendas} >VENDAS</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <Text style={styles.txtFiltros} onPress={condServicos} >SERVIÇOS</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.produtos}>
+                        
+                        {loadingCat ?
+                            (
+                                <ActivityIndicator size={"large"} color={"#222"}/>
+                            ) :
+                            (
+                                <FlatList
+                                    showsHorizontalScrollIndicator={false}
+                                    showsVerticalScrollIndicator={false}
+                                    data={condicao}
+                                    
+                                    renderItem={({item}) => (<FiltroHome data={item}/>)}
+                                    keyExtractor={item => item.key}
+                                />
+                            )
+                        }
+                    </View>
+                    
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -304,31 +307,17 @@ const styles = StyleSheet.create ({
         flex: 1,
     },
     header: {
-        height: 70,
-        marginBottom: 20,
-        backgroundColor: '#fff',
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        paddingLeft: 15,
-        shadowOffset: {width: 0, height: 4},
-        shadowColor: '#222',
-        shadowRadius: 2,
-        elevation: 7,
-        margin:20,
-        borderRadius:15,
-    },
-    areaLocalizacao: {
         backgroundColor: 'transparent',
-        height: 60,
+        height: 50,
         borderRadius: 15,
         borderWidth: 1,
         borderColor: '#222',
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
-        marginVertical: 30,
+        paddingHorizontal: 20,
+        marginTop: 20,
+        marginBottom: 5,
         marginHorizontal: 15,
     },
     location: {
@@ -340,6 +329,11 @@ const styles = StyleSheet.create ({
         height: 55,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    btn: {
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'space-between'
     },
     categorias: {
         flex: 1,
@@ -354,6 +348,7 @@ const styles = StyleSheet.create ({
         color: '#ffa500',
         fontWeight: 'bold',
         paddingHorizontal: 10,
+        marginTop: 15,
         marginBottom: 15
     },
     areaFiltros: {
@@ -370,91 +365,3 @@ const styles = StyleSheet.create ({
         marginTop: 25
     }
 })
-
-// import React, {useState} from 'react';
-// import { Platform } from 'react-native';
-// import { Background, Container, HeaderArea, HeaderTitle, SearchButton, LocationArea, LocationInput, IconButton, LoadingIcon } from './styles';
-// import { useNavigation } from '@react-navigation/native';
-// import { AuthContext } from '../../contexts/auth';
-// import EvilIcons from 'react-native-vector-icons/EvilIcons';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import { request, PERMISSIONS } from 'react-native-permissions';
-// import Geolocation from '@react-native-community/geolocation';
-// import { set } from 'react-native-reanimated';
-
-// export default () => {
-
-//     const navigation = useNavigation();
-
-//     const [locationText, setLocationText] = useState('');
-//     const [coords, setCoords] = useState(null);
-//     const [loading, setLoading] = useState(false);
-//     const [list, setList] = useState([]);
-
-//     const handleLocation = async () => {
-//         setCoords(null);
-//         let result = await request(
-//             Platform.OS === 'ios' ?
-//             PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-//             :
-//             PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-//         );
-
-//         if (result == 'granted') {
-
-//             setLoading(true);
-//             setLocationText('');
-//             setList([]);
-
-//             Geolocation.getCurrentPosition((info) => {
-//                 setCoords(info.coords);
-//                 getInfo();
-//                 // console.log(info);
-//             })
-//         }
-//     }
-
-//     const get = () => {}
-
-//     return (
-//         <Background>
-//             <Container
-//             behavior={Platform.OS === 'ios' ? 'padding' : ''}
-//             enabled
-//             >
-//                 <HeaderArea>
-//                     <HeaderTitle numberOfLines={2}>O que você está procurando?</HeaderTitle>
-//                     <SearchButton onPress={()=>navigation.navigate('Search')}>
-//                         <EvilIcons
-//                         name='search'
-//                         size= {35}
-//                         color="#222"
-//                         />
-//                     </SearchButton>
-//                 </HeaderArea>
-
-//                 <LocationArea>
-//                     <LocationInput
-//                      placeholder="Onde você está?"
-//                      placeholderTextColor="#d2d2d2"
-//                      value={locationText}
-//                      onChangeText={t => setLocationText(t)}
-//                     />
-
-//                     <IconButton onPress={handleLocation}>
-//                         <MaterialIcons
-//                         name='gps-fixed'
-//                         size= {28}
-//                         color="#222"
-//                         />
-//                     </IconButton>
-//                 </LocationArea>
-
-//                 {loading &&
-//                 <LoadingIcon size="large" color="#222"/>
-//                 }
-    
-//             </Container>
-//         </Background>
-//     );
-// }

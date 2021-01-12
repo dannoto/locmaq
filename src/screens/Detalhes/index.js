@@ -7,8 +7,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import SlideDetalhes from '../../components/SlideDetalhes';
 
-import Flat from '../../components/Flat';
-
 export default ({route}) => {
 
     const {key} = route.params; 
@@ -247,12 +245,6 @@ export default ({route}) => {
                         <Text style={styles.resultadoInfo}>5X5X5</Text>
                     </View>
                 </View>
-
-                <FlatList
-                    data={detalhes}
-                    renderItem={({item}) => (<Flat data={item}/>)}
-                    keyExtractor={item => item.key}
-                />
                 
             </KeyboardAvoidingView>
         </ScrollView>

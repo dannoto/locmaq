@@ -36,11 +36,8 @@ useEffect(() => {
 }, []);
 
     return (
-        <ScrollView style={styles.background}>
-            <KeyboardAvoidingView style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : ''}
-            enabled> 
-            <View>
+        <View style={styles.background}>
+            <View style={styles.header}>
                 <View style={styles.areaBtnAnunciar}>
                     <Text style={styles.tituloAnuncios}>MEUS ANÚNCIOS</Text>
                     <TouchableOpacity style={styles.btnAnunciar} onPress={() => navigation.navigate ('Anunciar')}>
@@ -58,24 +55,32 @@ useEffect(() => {
                     </TouchableOpacity>
                 </View>
             </View>
-                
 
-                <View style={styles.areaEquipamentos}>
-                    {loading ?
-                        (
-                            <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                        ) :
-                        (
-                            <FlatList
-                                data={equipamentos}
-                                renderItem={({item}) => (<Anuncios data={item}/>)}
-                                keyExtractor={item => item.key}
-                            />
-                        )
-                    }
-                </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+            <ScrollView>
+                <KeyboardAvoidingView style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : ''}
+                enabled> 
+                
+                    
+
+                    <View style={styles.areaEquipamentos}>
+                        {loading ?
+                            (
+                                <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
+                            ) :
+                            (
+                                <FlatList
+                                    data={equipamentos}
+                                    renderItem={({item}) => (<Anuncios data={item}/>)}
+                                    keyExtractor={item => item.key}
+                                />
+                            )
+                        }
+                    </View>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
+        
     );
 }
 
@@ -87,11 +92,19 @@ const styles = StyleSheet.create ({
     container: {
         flex:1
     },
+    header:{
+        backgroundColor: '#fff',
+        shadowOffset: {width: 0, height: 4},
+        shadowColor: '#222',
+        shadowRadius: 2,
+        elevation: 7
+    },
     areaBtnAnunciar: {
         justifyContent: 'space-between',
         marginRight: 20,
         marginTop: 20,
         flexDirection: 'row',
+        
     },
     tituloAnuncios: {
         marginLeft: 20,

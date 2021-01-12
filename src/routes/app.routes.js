@@ -70,24 +70,24 @@ function Tabs() {
             showLabel: false,
             showIcon: true,
             activeTintColor: '#222',
-            inactiveTintColor: '#fff',
+            inactiveTintColor: '#fff'
         }}
         >
             <Tab.Screen name="Home" component={Home} options={{tabBarIcon: ({color, size}) => (
-                <Entypo name="home" color={color} size={30}/>
-            )}}/>
+                <Entypo name="home" color={color} size={30}/>)
+            }}/>
             <Tab.Screen name="Busca" component={Busca} options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="search" color={color} size={40}/>
-            )}}/>
+                <EvilIcons name="search" color={color} size={40}/>)
+            }}/>
             <Tab.Screen name="Anuncie" component={Anuncie} options={{tabBarIcon: ({color, size}) => (
-                <Ionicons name="megaphone-outline" color={color} size={31}/>
-            )}}/>
+                <Ionicons name="megaphone-outline" color={color} size={31}/>)
+            }}/>
             <Tab.Screen name="Negociações" component={Negociacoes} options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="comment" color={color} size={40}/>
-            )}}/>
+                <EvilIcons name="comment" color={color} size={40}/>)
+            }}/>
             <Tab.Screen name="Conta" component={Conta} options={{tabBarIcon: ({color, size}) => (
-                <EvilIcons name="user" color={color} size={40}/>
-            )}}/>
+                <EvilIcons name="user" color={color} size={40}/>)
+            }}/>
         </Tab.Navigator>
     );
 }
@@ -103,7 +103,7 @@ export default function AppRoutes() {
             <Stack.Screen name="HistoricoPagamentos" component={HistoricoPagamentos} options={{headerTitle: 'HISTÓRICO DE PAGAMENTOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerTitle: 'NOTIFICAÇÕES', headerTintColor: '#222'}}/>
             <Stack.Screen name="Favoritos" component={Favoritos} options={{headerTitle: 'FAVORITOS', headerTintColor: '#222'}}/>
-            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: 'MEUS ANÚNCIOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="SobreAssinatura" component={SobreAssinatura} options={{headerTitle: 'SOBRE A ASSINATURA', headerTintColor: '#222'}}/>
             <Stack.Screen name="Planos" component={Planos} options={{headerTitle: 'CONHEÇA NOSSOS PLANOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Feedback" component={Feedback} options={{headerTitle: 'ENVIAR FEEDBACK', headerTintColor: '#222'}}/>

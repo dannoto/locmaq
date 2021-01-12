@@ -160,6 +160,7 @@ function AuthProvider({ children }) {
             subcategoria:subcategoria,
             imagensURL: imagensURL
         });
+        return chave;
     }
 
     // Inserindo Equipamentos - Britador
