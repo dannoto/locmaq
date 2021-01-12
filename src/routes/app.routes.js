@@ -26,6 +26,8 @@ import Sobre from '../screens/ScreensConta/Sobre';
 import SobreAssinatura from '../screens/ScreensConta/SobreAssinatura';
 import Termos from '../screens/ScreensConta/Termos';
 import Detalhes from '../screens/Detalhes';
+import BuscaCategoria from '../screens/BuscaCategoria';
+import Chat from '../screens/Chat';
 import Categorias from '../screens/Forms/Categorias';
 import Subcategorias from '../screens/Forms/Subcategorias';
 import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormularioCaminhoes/FormMOYhVnn30sqWae8P2GK'; //Caminhões
@@ -90,6 +92,7 @@ function Tabs() {
     );
 }
 
+
 export default function AppRoutes() {
     return (
         <Stack.Navigator>
@@ -110,6 +113,8 @@ export default function AppRoutes() {
             <Stack.Screen name="Termos" component={Termos} options={{headerTitle: 'TERMOS DE USO', headerTintColor: '#222'}}/>
             <Stack.Screen name="Politica" component={Politica} options={{headerTitle: 'POLÍTICA DE PRIVACIDADE', headerTintColor: '#222'}}/>
             <Stack.Screen name="Detalhes" component={Detalhes} options={{headerTitle: 'DETALHES', headerTintColor: '#222'}}/>
+            <Stack.Screen name="BuscaCategoria" component={BuscaCategoria} options={{headerTitle: '', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Chat" component={Chat} options={{headerTitle: '', headerTintColor: '#222'}}/>
             <Stack.Screen name="Categorias" component={Categorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="Subcategorias" component={Subcategorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYhVnn30sqWae8P2GK" component={FormMOYhVnn30sqWae8P2GK} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 

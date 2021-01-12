@@ -9,13 +9,15 @@ import firebase from '../../services/firebaseConnection';
 import Recentes from '../../components/Recentes';
 import FiltroHome from '../../components/FiltroHome';
 
-export default () => {
+export default ({route}) => {
 
     const navigation = useNavigation();
 
-    const [produtos, setProdutos] = useState([]);
-    const [loadingCat, setLoadingCat] = useState(true);
+    const  {key} = route.params;
 
+    const [categorias, setCategorias] = useState([]);
+    const [loadingCat, setLoadingCat] = useState(true);
+    const [produtos, setProdutos] = useState([]);
     const [destaques, setDestaques] = useState([]);
     const [condicao, setCondicao] = useState([]);
     const [coordenadas, setCoordenadas] = useState();
@@ -62,21 +64,18 @@ export default () => {
               } 
         }
 
-        async function getProdutos() {
-            await firebase.database().ref('equipamentos').on('value', (snapshot) => {
-                setProdutos([]);
+        async function getCategories() {
+            await firebase.database().ref('categorias').on('value', (snapshot) => {
+                setCategorias([]);
 
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        condicao: childItem.val().condicao.nome,
-                        fabricante: childItem.val().fabricante,
-                        ano: childItem.val().ano.ano,
-                        modelo: childItem.val().modelo,
-                        // imagem: childItem.val().imagem,
+                        nome: childItem.val().nome,
+                        imagem: childItem.val().imagem
                     };
 
-                    setProdutos(oldArray => [...oldArray, data]);
+                    setCategorias(oldArray => [...oldArray, data]);
 
                 })
 
@@ -85,7 +84,7 @@ export default () => {
             })
         }
 
-        getProdutos();
+        getCategories();
         handleLocation();
     }, []);
 
@@ -248,7 +247,7 @@ export default () => {
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
                                 showsVerticalScrollIndicator={false}
-                                data={produtos}
+                                data={categorias}
                                 renderItem={({item}) => (<Recentes data={item}/>)}
                                 keyExtractor={item => item.key}
                             />

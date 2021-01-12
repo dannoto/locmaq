@@ -6,32 +6,33 @@ import {useNavigation} from '@react-navigation/native';
 
 export default () => {
 
+const user = firebase.auth().currentUser;
 const navigation = useNavigation();
 
-const [categorias, setCategorias] = useState([]);
-const [loadingCat, setLoadingCat] = useState(true);
+const [equipamentos, setEquipamentos] = useState([]);
+const [loading, setLoading] = useState(false);
 
-// Buscando Categorias
 useEffect(() => {
-    async function getCategories() {
-        await firebase.database().ref('categorias').on('value', (snapshot) => {
-            setCategorias([]);
+    async function getEquipamentos() {
+        await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
+            setEquipamentos([]);
 
             snapshot.forEach((childItem) => {
                 let data = {
                     key: childItem.key,
-                    nome: childItem.val().categoria,
-                    imagem: childItem.val().imagem
+                    condicao: childItem.val().condicao.nome,
+                    subcategoria: childItem.val().subcategoria.nome,
+                    ano: childItem.val().ano.ano,
+                    modelo: childItem.val().modelo,
+                    // imagem: childItem.val().imagensURL,
                 };
 
-                setCategorias(oldArray => [...oldArray, data].sort());
+                setEquipamentos(oldArray => [...oldArray, data]);
             })
-
-            setLoadingCat(false)
+            setLoading(false)
         })
     }
-
-    getCategories();
+    getEquipamentos();
 }, []);
 
     return (
@@ -39,6 +40,7 @@ useEffect(() => {
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled> 
+            <View>
                 <View style={styles.areaBtnAnunciar}>
                     <Text style={styles.tituloAnuncios}>MEUS ANÚNCIOS</Text>
                     <TouchableOpacity style={styles.btnAnunciar} onPress={() => navigation.navigate ('Anunciar')}>
@@ -55,15 +57,17 @@ useEffect(() => {
                         <Text style={styles.txtBtnAnuncios}>SERVIÇOS</Text>
                     </TouchableOpacity>
                 </View>
+            </View>
+                
 
-                <View style={styles.areaCategorias}>
-                    {loadingCat ?
+                <View style={styles.areaEquipamentos}>
+                    {loading ?
                         (
                             <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
                         ) :
                         (
                             <FlatList
-                                data={categorias}
+                                data={equipamentos}
                                 renderItem={({item}) => (<Anuncios data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
@@ -116,7 +120,10 @@ const styles = StyleSheet.create ({
         color: '#222',
         fontSize: 19,
         fontWeight: 'bold',
-        marginTop: 40,
-        marginBottom: 10
+        marginTop: 30,
+        marginBottom: 15
     },
+    areaEquipamentos: {
+
+    }
 })
