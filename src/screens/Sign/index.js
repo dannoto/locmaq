@@ -19,7 +19,7 @@ export default () => {
                     <CustomButtonTextSignIn>ENTRAR</CustomButtonTextSignIn>
                 </CustomButtonSignIn> 
 
-                <CustomButtonSignUp onPress={ () => navigation.navigate('SignUp')}>
+                <CustomButtonSignUp onPress={ () => navigation.navigate('SignUpOption')}>
                     <CustomButtonTextSignUp>CADASTRAR</CustomButtonTextSignUp>
                 </CustomButtonSignUp> 
 

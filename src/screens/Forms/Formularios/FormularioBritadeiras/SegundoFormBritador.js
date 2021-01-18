@@ -292,8 +292,6 @@ export default ({route, navigation}) => {
         });
     }
 
-    console.log(condicao)
-
     return (
         <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
             

@@ -34,7 +34,7 @@ export default function ListaConversas({data}){
               </View>
 
               <View style={styles.areaTxt}>
-                <Text style={styles.titulo}>{filterTitulo('SUBCATEGORIA - MODELO - ANO')}</Text>
+                <Text style={styles.titulo}>{filterTitulo('FABRICANTE - MODELO - ANO')}</Text>
                 <Text style={styles.nome}>{filterNome('MONNIK JESUS DA SILVA')}</Text>
                 <Text style={styles.mensagem}>{filterMensagem('Olá, Tudo bem?')}</Text>
                 <Text style={styles.data}>12/01/2021 às 18:34</Text>

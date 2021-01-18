@@ -46,7 +46,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>MEUS DADOS</Text>
                         </TouchableOpacity> 
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Anunciar')}>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MeusAnuncios')}>
                         <EvilIcons
                             name={'tag'}
                             size={40}
@@ -55,7 +55,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
                         </TouchableOpacity> 
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Detalhes')}>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MinhasAssinaturas')}>
                         <EvilIcons
                             name={'retweet'}
                             size={40}
@@ -64,7 +64,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>MINHAS ASSINATURAS</Text>
                         </TouchableOpacity> 
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('HistoricoPagamentos')}>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Chat2')}>
                         <EvilIcons
                             name={'credit-card'}
                             size={40}

@@ -1,136 +1,65 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import firebase from '../../../services/firebaseConnection';
-import {useNavigation} from '@react-navigation/native';
-
-import Anuncios from '../../../components/Anuncios';
+import React from 'react';
+import { View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default () => {
-
-const user = firebase.auth().currentUser;
-const navigation = useNavigation();
-
-const [equipamentos, setEquipamentos] = useState([]);
-const [loading, setLoading] = useState(false);
-
-useEffect(() => {
-    async function getEquipamentos() {
-        await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
-            setEquipamentos([]);
-
-            snapshot.forEach((childItem) => {
-                let data = {
-                    key: childItem.key,
-                    condicao: childItem.val().condicao.nome,
-                    subcategoria: childItem.val().subcategoria.nome,
-                    ano: childItem.val().ano.ano,
-                    modelo: childItem.val().modelo,
-                    // imagem: childItem.val().imagensURL,
-                };
-
-                setEquipamentos(oldArray => [...oldArray, data]);
-            })
-            setLoading(false)
-        })
-    }
-    getEquipamentos();
-}, []);
+    const navigation = useNavigation();
 
     return (
-        <View style={styles.background}>
-            <View>
-                <View style={styles.areaBtnFiltro}>
-                    <TouchableOpacity style={styles.btnAnuncios}>
-                        <Text style={styles.txtBtnAnuncios}>EQUIPAMENTOS</Text>
+        <ScrollView style={styles.background}>
+            <KeyboardAvoidingView style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : ''}
+            enabled> 
+                <View style={styles.area}>
+                    <Text style={styles.titulo}>O QUE VOCÊ DESEJA ANUNCIAR?</Text>
+
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Categorias')}>
+                        <Text style={styles.txtBtn}>EQUIPAMENTOS</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btnAnuncios}>
-                        <Text style={styles.txtBtnAnuncios}>SERVIÇOS</Text>
+                    <TouchableOpacity style={styles.btn}>
+                        <Text style={styles.txtBtn}>SERVIÇOS</Text>
                     </TouchableOpacity>
-                </View>
-            </View>
-
-            <ScrollView>
-                <KeyboardAvoidingView style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : ''}
-                enabled> 
-                
-                    
-
-                    <View style={styles.areaEquipamentos}>
-                        {loading ?
-                            (
-                                <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                            ) :
-                            (
-                                <FlatList
-                                    data={equipamentos}
-                                    renderItem={({item}) => (<Anuncios data={item}/>)}
-                                    keyExtractor={item => item.key}
-                                />
-                            )
-                        }
-                    </View>
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
-        
+                </View>             
+            </KeyboardAvoidingView>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create ({
     background: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#ffa500'
     },
     container: {
-        flex:1
+        flex: 1,
     },
-    header:{
-        backgroundColor: '#fff',
-        shadowOffset: {width: 0, height: 4},
-        shadowColor: '#222',
-        shadowRadius: 2,
-        elevation: 7
+    area: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 40
     },
-    areaBtnAnunciar: {
-        justifyContent: 'space-between',
-        marginRight: 20,
-        marginTop: 20,
-        flexDirection: 'row',
-        
-    },
-    tituloAnuncios: {
-        marginLeft: 20,
-        marginTop: 10,
-        color: '#222',
+    titulo: {
+        color: '#fff',
         fontSize: 20,
-        fontWeight: 'bold'
-    },
-    btnAnunciar: {
-        backgroundColor: '#ffa500',
-        width: '30%',
-        padding: 10,
-        borderRadius: 5,
-    },
-    txtBtnAnunciar: {
-        color: '#fff', 
-        fontSize: 18,
         textAlign: 'center',
+        textTransform: 'uppercase',
+        marginBottom: 20,
         fontWeight: 'bold'
     },
-    areaBtnFiltro: {
-        flexDirection: 'row',
-        justifyContent: 'space-around'
+    btn: {
+        width: '100%',
+        height: 60,
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        borderWidth: 2,
+        borderColor: '#fff'
     },
-    txtBtnAnuncios: {
-        color: '#222',
-        fontSize: 19,
+    txtBtn:{
+        fontSize: 20,
+        color: '#fff',
         fontWeight: 'bold',
-        marginTop: 30,
-        marginBottom: 15
-    },
-    areaEquipamentos: {
-
     }
 })

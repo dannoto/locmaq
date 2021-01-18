@@ -10,22 +10,24 @@ function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    //Cadastrar Usuário
-    async function cadastrar(nome, cpf, email, password) {
+    //Cadastrar Usuário PF
+    async function cadastrarPF(nome, cpf, tipo, email, password) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async (value) => {
             let uid = value.user.uid;
             await firebase.database().ref('users').child(uid).set({
                 nome: nome,
                 email: email,
-                cpf: cpf
+                cpf: cpf,
+                tipo: tipo
             })
             .then(() => {
                 let data = {
                     uid: uid,
                     nome: nome,
                     cpf: value.user.cpf,
-                    email: value.user.email
+                    email: value.user.email,
+                    tipo: value.user.tipo
                 };
                 setUser(data);
                 storageUser(data);
@@ -46,7 +48,48 @@ function AuthProvider({ children }) {
         })
     }
 
-    //Logar Usuário
+    //Cadastrar Usuário PJ
+    async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(async (value) => {
+            let uid = value.user.uid;
+            await firebase.database().ref('users').child(uid).set({
+                empresa: empresa,
+                email: email,
+                cnpj: cnpj,
+                tipo: tipo,
+                // limite:
+                // plano:
+                // verificado:
+            })
+            .then(() => {
+                let data = {
+                    uid: uid,
+                    empresa: empresa,
+                    cnpj: value.user.cnpj,
+                    email: value.user.email,
+                    tipo: value.user.tipo
+                };
+                setUser(data);
+                storageUser(data);
+            })
+        })
+        .catch((error) => {
+            if(error.code === 'auth/weak-password'){
+                Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
+            if(error.code === 'auth/email-already-in-use'){
+                Alert.alert('Oops!', 'E-mail já cadastrado.');
+                return;
+            }
+            if(error.code === 'auth/invalid-email'){
+                Alert.alert('Oops!', 'E-mail inválido.')
+            }
+        })
+    }
+
+    //Logar Usuário PF
     async function logar(email, password){
         await firebase.auth().signInWithEmailAndPassword(email, password)
         .then(async (value) => {
@@ -56,8 +99,9 @@ function AuthProvider({ children }) {
                 let data = {
                     uid: uid,
                     nome: snapshot.val().nome,
-                    cpf: snapshot.val.cpf,
-                    email: value.user.email
+                    cpf: snapshot.val().cpf,
+                    email: value.user.email,
+                    tipo: value.user.tipo
                 };
                 setUser(data);
                 storageUser(data);
@@ -70,6 +114,32 @@ function AuthProvider({ children }) {
             }
         })
     }
+
+    // //Logar Usuário PJ
+    // async function logarPJ(email, password){
+    //     await firebase.auth().signInWithEmailAndPassword(email, password)
+    //     .then(async (value) => {
+    //         let uid = value.user.uid;
+    //         await firebase.database().ref('users').child(uid).once('value')
+    //         .then((snapshot) => {
+    //             let data = {
+    //                 uid: uid,
+    //                 empresa: snapshot.val().empresa,
+    //                 cnpj: snapshot.val().cnpj,
+    //                 email: value.user.email,
+    //                 tipo: value.user.tipo
+    //             };
+    //             setUser(data);
+    //             storageUser(data);
+    //         })
+    //     })
+    //     .catch((error) => {
+    //         if(error.code){
+    //             Alert.alert('Oops!', 'E-mail e/ou Senha inválido(s).');
+    //             return;
+    //         }
+    //     })
+    // }
 
     //Salvar dados Login
     async function storageUser(data) {
@@ -193,7 +263,7 @@ function AuthProvider({ children }) {
     }
 
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrar, logar, sair, cadastrarCaminhaoBau, cadastrarBritador }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarCaminhaoBau, cadastrarBritador }}>
         {children}
         </AuthContext.Provider>
     );

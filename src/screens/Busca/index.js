@@ -43,17 +43,17 @@ export default () => {
                 <EvilIcons
                     name='search'
                     size= {30}
-                    color="#222"
+                    color='#222'
                 />
 
                 <TextInput 
                     style={{width: '78%', color: '#222', fontSize: 18, marginLeft: 10}}
-                    placeholder="O que você está procurando?"
+                    placeholder='O que você está procurando?'
                     placeholderTextColor= "#777"
                     value={search}
                     onChangeText={(text) => setSearch(text)}
                     keyboardType={'default'}
-                    returnKeyType="search"
+                    returnKeyType='search'
                     autofocus
                     selectTextOnFocus
                 />  
@@ -64,7 +64,7 @@ export default () => {
                             <EvilIcons  
                                 name='close'
                                 size= {30}
-                                color="#222"
+                                color='#222'
                             />
                         </TouchableOpacity>
                     ) :

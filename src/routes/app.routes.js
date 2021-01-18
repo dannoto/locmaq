@@ -26,8 +26,8 @@ import Sobre from '../screens/ScreensConta/Sobre';
 import SobreAssinatura from '../screens/ScreensConta/SobreAssinatura';
 import Termos from '../screens/ScreensConta/Termos';
 import Detalhes from '../screens/Detalhes';
-import BuscaCategoria from '../screens/BuscaCategoria';
 import Chat from '../screens/Chat';
+import Chat2 from '../screens/Chat2';
 import Categorias from '../screens/Forms/Categorias';
 import Subcategorias from '../screens/Forms/Subcategorias';
 import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormularioCaminhoes/FormMOYhVnn30sqWae8P2GK'; //Caminhões
@@ -103,7 +103,7 @@ export default function AppRoutes() {
             <Stack.Screen name="HistoricoPagamentos" component={HistoricoPagamentos} options={{headerTitle: 'HISTÓRICO DE PAGAMENTOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerTitle: 'NOTIFICAÇÕES', headerTintColor: '#222'}}/>
             <Stack.Screen name="Favoritos" component={Favoritos} options={{headerTitle: 'FAVORITOS', headerTintColor: '#222'}}/>
-            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: 'MEUS ANÚNCIOS', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Anunciar" component={Anunciar} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SobreAssinatura" component={SobreAssinatura} options={{headerTitle: 'SOBRE A ASSINATURA', headerTintColor: '#222'}}/>
             <Stack.Screen name="Planos" component={Planos} options={{headerTitle: 'CONHEÇA NOSSOS PLANOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Feedback" component={Feedback} options={{headerTitle: 'ENVIAR FEEDBACK', headerTintColor: '#222'}}/>
@@ -113,8 +113,8 @@ export default function AppRoutes() {
             <Stack.Screen name="Termos" component={Termos} options={{headerTitle: 'TERMOS DE USO', headerTintColor: '#222'}}/>
             <Stack.Screen name="Politica" component={Politica} options={{headerTitle: 'POLÍTICA DE PRIVACIDADE', headerTintColor: '#222'}}/>
             <Stack.Screen name="Detalhes" component={Detalhes} options={{headerTitle: 'DETALHES', headerTintColor: '#222'}}/>
-            <Stack.Screen name="BuscaCategoria" component={BuscaCategoria} options={{headerTitle: '', headerTintColor: '#222'}}/>
             <Stack.Screen name="Chat" component={Chat} options={{headerTitle: '', headerTintColor: '#222'}}/>
+            <Stack.Screen name="Chat2" component={Chat2} options={{headerTitle: '', headerTintColor: '#222'}}/>
             <Stack.Screen name="Categorias" component={Categorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="Subcategorias" component={Subcategorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYhVnn30sqWae8P2GK" component={FormMOYhVnn30sqWae8P2GK} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 
