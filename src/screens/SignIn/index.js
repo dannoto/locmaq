@@ -11,8 +11,8 @@ export default () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [show, setShow] = React.useState(false);
-    const [visible, setVisible] = React.useState(true);
+    const [show, setShow] = useState(false);
+    const [visible, setVisible] = useState(true);
 
     const { logar } = useContext(AuthContext);
 

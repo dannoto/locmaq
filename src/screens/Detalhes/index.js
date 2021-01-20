@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Platform, ScrollView, KeyboardAvoidingView, View, Text, Modal, TouchableOpacity, FlatList, StyleSheet, TextInput, ActivityIndicator, Image} from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../contexts/auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import SlideDetalhes from '../../components/SlideDetalhes';
@@ -10,99 +11,65 @@ import SlideDetalhes from '../../components/SlideDetalhes';
 export default ({route}) => {
 
     const {key} = route.params; 
-    
-    const [detalhes, setDetalhes] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const { user } = useContext(AuthContext); 
     const navigation = useNavigation();
-    const user = firebase.auth().currentUser;
-    const [modalvisible, setModalVisible] = useState(false);
-
-
-    const [proprietario, setProprietario] = useState();
     const interessado = user.uid;
     const produto= key;
-
+    
+    const [detalhes, setDetalhes] = useState([]);
+    const [modalvisible, setModalVisible] = useState(false);
+    const [desativado, setDesativado] = useState(true);
+    const [ativado, setAtivado] = useState(false);
+    const [proprietario, setProprietario] = useState('');
 
     function CloseModal() { 
         setModalVisible(false)
     };
 
+    function favoritar() {
+        setDesativado(!desativado) 
+        setAtivado(!ativado)
+    }
+
     useEffect(() => {
         async function getDetalhes() {
-            // -MQlouXhBLHzXNtW9qe1
-
-          
             await firebase.database().ref('equipamentos').child(key).once('value')
             .then(function(snapshot) {
-
                 setProprietario({nome:snapshot.val().usuario.nome, codigo:snapshot.val().usuario.key})
              
                 let data = {
-                        
-                    // key: childItem.key,
-                    // condicao: childItem.val().condicao.nome,
+                    key: snapshot.key,
+                    condicao: snapshot.val().condicao.nome,
                     fabricante: snapshot.val().fabricante,
-                    // ano: childItem.val().ano.ano,
-                    // modelo: childItem.val().modelo,
-                    // // tipo: childItem.val().tipo.nome,
-                    // // tracao: childItem.val().tracao.nome,
-                    // consumo: childItem.val().consumo, 
-                    // hodometro: childItem.val().hodometro, 
-                    // horimetro: childItem.val().horimetro,
-                    // capacidade: childItem.val().capacidade, 
-                    // seguro: childItem.val().seguro.nome, 
-                    // fabricantebau: childItem.val().fabricanteBau, 
-                    // anobau: childItem.val().anoBau.anobau, 
-                    // dimensoesbau: childItem.val().dimensoesBau,
-                    // fabricantetanque: childItem.val().fabricanteTanque,
-                    // // anotanque: childItem.val().anoTanque.anotanque, 
-                    // capacidadetanque: childItem.val().capacidadeTanque,
-                    // fabricantecarroceria: childItem.val().fabricanteCarroceria,
-                    // // anocarroceria: childItem.val().anoCarroceria.anocarroceria,
-                    // capacidadecarroceria: childItem.val().capacidadeCarroceria,
-                    // fabricantecacamba: childItem.val().fabricanteCacamba,
-                    // // anocacamba: childItem.val().anoCacamba.anocacamba,
-                    // capacidadecacamba: childItem.val().capacidadeCacamba,
-                    // // cacamba: childItem.val().cacamba.nome,
-                    // fabricantecomboio: childItem.val().fabricanteComboio,
-                    // // anocomboio: childItem.val().anoComboio.anocomboio,
-                    // modelocomboio: childItem.val().modeloComboio,
-                    // capacidadecomboio: childItem.val().capacidadeComboio,
-                    // larguraplataforma: childItem.val().larguraPlataforma,
-                    // alturaplataforma: childItem.val().alturaPlataforma,
-                    // capacidadesilo: childItem.val().capacidadeSilo, 
-                    // modeloplataforma: childItem.val().modeloPlataforma,
-                    // capacidadepoliguidaste: childItem.val().capacidadePoliguidaste,
-                    // // poliguidaste: childItem.val().poliguidaste.nome,
-                    // estado: childItem.val().estado.key, 
-                    // cidade: childItem.val().cidade.nome,
-                    // preco: childItem.val().preco, 
-                    // precoDiaria: childItem.val().precoDiaria,
-                    // precoSemanal: childItem.val().precoSemanal,
-                    // precoMensal: childItem.val().precoMensal,
-                    // subcategoria: childItem.val().subcategoria.nome, 
-                    // categoria: childItem.val().categoria.nome,
-
-                   
+                    ano: snapshot.val().ano,
+                    modelo: snapshot.val().modelo,
+                    tipo: snapshot.val().tipo.nome,
+                    tracao: snapshot.val().tracao.nome,
+                    caracteristica: snapshot.val().caracteristica.nome,
+                    peso: snapshot.val().peso,
+                    consumo: snapshot.val().consumo, 
+                    hodometro: snapshot.val().hodometro, 
+                    horimetro: snapshot.val().horimetro,
+                    capacidade: snapshot.val().capacidade, 
+                    potencia: snapshot.val().potencia, 
+                    seguro: snapshot.val().seguro.nome, 
+                    infoAdicionais: snapshot.val().infoAdicionais, 
+                    estado: snapshot.val().estado.key, 
+                    cidade: snapshot.val().cidade.nome,
+                    preco: snapshot.val().preco, 
+                    precoDiaria: snapshot.val().precoDiaria,
+                    precoSemanal: snapshot.val().precoSemanal,
+                    precoMensal: snapshot.val().precoMensal,
+                    subcategoria: snapshot.val().subcategoria.nome, 
+                    categoria: snapshot.val().categoria.nome,
                 };
-                // console.log(snapshot);
-
                 setDetalhes(data);
-            
             })
-                setLoading(false)
-            
         }
         getDetalhes();
     }, []);
- 
-    // console.log('proprietario')
-    // console.log(proprietario);
-    // console.log('produto')
-    // console.log(produto);
-    // console.log('interessado')
-    // console.log(interessado);
 
+    console.log(detalhes.categoria)
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}
@@ -110,10 +77,32 @@ export default ({route}) => {
             enabled>       
 
                 <SlideDetalhes/>
+                    <View style={styles.areaFavorito}>
+                        <View style={styles.areaTitulo}>
+                            <Text style={styles.titulo}>{detalhes.subcategoria} - {detalhes.modelo}</Text>
+                        </View>
 
-                <Text style={styles.titulo}>CAMINHÃO BAÚ - MK 12233</Text>
+                        <TouchableOpacity onPress={favoritar}>
+                            {ativado === false ?
+                                (
+                                    <Ionicons
+                                        name={'heart-outline'}
+                                        size= {38}
+                                        color="#222"
+                                    />
+                                ) :
+                                (
+                                    <Ionicons
+                                    name={'heart-sharp'}
+                                    size= {38}
+                                    color="#ed4956"
+                                    />
+                                )
+                            }
+                        </TouchableOpacity>
+                    </View>
              
-                <Text style={styles.condicao}>ALUGUEL</Text>
+                <Text style={styles.condicao}>{detalhes.condicao}</Text>
 
                 <View style={styles.areaInteresse}>
                     <View>
@@ -128,30 +117,27 @@ export default ({route}) => {
                         </TouchableOpacity>
                     </View>
 
-                        <Modal animationType="fade" transparent={true} visible={modalvisible} onRequestClose={() => {}}>
-                            <View style={styles.modalWindow}>
-                                <View style={styles.modalBody}>
+                    <Modal animationType="fade" transparent={true} visible={modalvisible} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={CloseModal}>
+                                    <AntDesign
+                                    style={{marginRight: 20, marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
 
-                                    <TouchableOpacity style={styles.areaBtnModalClose} onPress={CloseModal}>
-                                        <AntDesign
-                                        style={{marginRight: 20, marginBottom: 5}}
-                                        name='closecircleo'
-                                        size= {34}
-                                        color="#fff"
-                                        />
-                                    </TouchableOpacity>
-                                    <Text style={styles.txtBtnModalProprietario} >VOCÊ É O PROPRIETÁRIO</Text>
-                                    <TouchableOpacity  onPress={CloseModal} style={styles.areaBtnModal} >
-                                        
-                                        <Text style={styles.txtBtnModal}>ENTENDI</Text>
-                                    </TouchableOpacity>
+                                <Text style={styles.txtBtnModalProprietario} >VOCÊ É O PROPRIETÁRIO</Text>
 
+                                <TouchableOpacity  onPress={CloseModal} style={styles.areaBtnModal} >
                                     
-
-                                </View>
-
+                                    <Text style={styles.txtBtnModal}>ENTENDI</Text>
+                                </TouchableOpacity>
                             </View>
-                        </Modal>
+                        </View>
+                    </Modal>
                 </View>
 
                 <View style={styles.areaLocal}>
@@ -161,21 +147,62 @@ export default ({route}) => {
                     color="#222"
                     />
 
-                    <Text style={styles.local}>Local: Goiânia - GO</Text>
+                    <Text style={styles.local}>Local: {detalhes.cidade} - {detalhes.estado}</Text>
                 </View>
 
-                <View style={styles.areaPrecoGeral}>
-                    <View style={styles.areaPreco}>
-                        <Text style={styles.precoInfo}>Valor Diária: </Text>
-                        <Text style={styles.preco}>R$ 500,00</Text>
-                    </View>
-                    <View style={styles.areaPreco}>
-                        <Text style={styles.precoInfo}>Valor Semanal: </Text>
-                        <Text style={styles.preco}>R$ 2500,00</Text>
-                    </View>
-                    <View style={styles.areaPreco}>
-                        <Text style={styles.precoInfo}>Valor Mensal: </Text>
-                        <Text style={styles.preco}>R$ 7000,00</Text>
+                {detalhes.condicao == 'VENDA' ?
+                    (
+                        <View style={styles.areaPrecoGeral}>
+                            <View style={styles.areaPreco}>
+                                <Text style={styles.precoInfo}>Valor: </Text>
+                                <Text style={styles.preco}>{detalhes.preco}</Text>
+                            </View>
+                        </View>
+                    ) :
+                    (
+                        <View style={styles.areaPrecoGeral}>
+                            <View style={styles.areaPreco}>
+                                <Text style={styles.precoInfo}>Valor Diária: </Text>
+                                <Text style={styles.preco}>{detalhes.precoDiaria}</Text>
+                            </View>
+
+                            {!detalhes.precoSemanal ?
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor Semanal: </Text>
+                                        <Text style={styles.preco}>-</Text>
+                                    </View>
+                                ) :
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor Semanal: </Text>
+                                        <Text style={styles.preco}>{detalhes.precoSemanal}</Text>
+                                    </View>
+                                )
+                            }
+
+                            {!detalhes.precoMensal ?
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor Mensal: </Text>
+                                        <Text style={styles.preco}>-</Text>
+                                    </View>
+                                ) :
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor Mensal: </Text>
+                                        <Text style={styles.preco}>{detalhes.precoMensal}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                    )
+                }
+
+                <View style={styles.areaCategoriaGeral}>
+                    <View style={styles.areaCategoria}>
+                        <Text style={styles.categoriaInfo}>CATEGORIA: </Text>
+                        <Text style={styles.categoria}>{detalhes.categoria}</Text>
                     </View>
                 </View>
 
@@ -184,68 +211,147 @@ export default ({route}) => {
                 <View style={styles.areaInfoGeral}>
                     <View style={styles.areaInfo}>
                         <Text style={styles.info}>FABRICANTE</Text>
-                        <Text style={styles.resultadoInfo}>VOLKSWAGEN</Text>
+                        <Text style={styles.resultadoInfo}>{detalhes.fabricante}</Text>
                     </View>
+
                     <View style={styles.areaInfo}>
                         <Text style={styles.info}>MODELO</Text>
-                        <Text style={styles.resultadoInfo}>MK 12233</Text>
+                        <Text style={styles.resultadoInfo}>{detalhes.modelo}</Text>
                     </View>
+                </View>
+
+                <View style={styles.areaInfoGeral}>
                     <View style={styles.areaInfo}>
                         <Text style={styles.info}>ANO</Text>
-                        <Text style={styles.resultadoInfo}>2016</Text>
+                        <Text style={styles.resultadoInfo}>{detalhes.ano}</Text>
                     </View>
+
+                    {!detalhes.capacidade ?
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>CAPACIDADE</Text>
+                                <Text style={styles.resultadoInfo}>-</Text>
+                            </View> 
+                        ) :
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>CAPACIDADE</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.capacidade} TON</Text>
+                            </View> 
+                        )
+                    }
+                </View>
+
+                {detalhes.categoria == 'Caminhões' ?
+                    (
+                        <View style={styles.areaInfoGeral}>
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>TIPO</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.tipo}</Text>
+                            </View>
+
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>TRAÇÃO</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.tracao}</Text>
+                            </View>
+                        </View>
+                    ) :
+                    (
+                        false
+                    )
+                }
+
+                {detalhes.categoria !== 'Britadores' ?
+                    (
+                        <View style={styles.areaInfoGeral}>
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>HODÔMETRO</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.hodometro} KM</Text>
+                            </View>
+
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>HORÍMETRO</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.horimetro} HOR</Text>
+                            </View>
+                        </View>
+                    ) :
+                    (
+                        false
+                    )
+                }
+
+                {detalhes.categoria == 'Britadores' ?
+                    (
+                        <View style={styles.areaInfoGeral}>
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>PESO OPERACIONAL</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.peso} TON</Text>
+                            </View>
+
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>CARACTERÍSTICA</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.caracteristica}</Text>
+                            </View>
+                        </View>
+                    ) :
+                    (
+                        false
+                    )
+                }
+
+                <View style={styles.areaInfoGeral}>
+                    {!detalhes.consumo ?
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>CONSUMO MÉDIO</Text>
+                                <Text style={styles.resultadoInfo}>-</Text>
+                            </View>
+                        ) :
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>CONSUMO MÉDIO</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.consumo + ' KM/L'}</Text>
+                            </View>
+                        )
+                    }
+                    
+                    {!detalhes.potencia ?
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>POTÊNCIA</Text>
+                                <Text style={styles.resultadoInfo}>-</Text>
+                            </View>
+                        ) :
+                        (
+                            <View style={styles.areaInfo}>
+                                <Text style={styles.info}>POTÊNCIA</Text>
+                                <Text style={styles.resultadoInfo}>{detalhes.potencia} CV</Text>
+                            </View>
+                        )
+                    }
                 </View>
 
                 <View style={styles.areaInfoGeral}>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>TIPO</Text>
-                        <Text style={styles.resultadoInfo}>TOCO</Text>
-                    </View>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>TRAÇÃO</Text>
-                        <Text style={styles.resultadoInfo}>4x2</Text>
-                    </View>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>CONSUMO MÉDIO</Text>
-                        <Text style={styles.resultadoInfo}>20 KM/L</Text>
-                    </View>
-                </View>
-
-                <View style={styles.areaInfoGeral}>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>HODÔMETRO</Text>
-                        <Text style={styles.resultadoInfo}>255555 KM</Text>
-                    </View>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>HORÍMETRO</Text>
-                        <Text style={styles.resultadoInfo}>5550 HOR</Text>
-                    </View>
                     <View style={styles.areaInfo}>
                         <Text style={styles.info}>SEGURO</Text>
-                        <Text style={styles.resultadoInfo}>SIM</Text>
+                        <Text style={styles.resultadoInfo}>{detalhes.seguro}</Text>
                     </View>
                 </View>
 
-                <Text style={styles.tituloInfo}>INFORMAÇÕES ADICIONAIS</Text>
+                {!detalhes.infoAdicionais ?
+                    (
+                        false
+                    ) :
+                    (
+                        <View>
+                            <Text style={styles.tituloInfoAdicionais}>INFORMAÇÕES ADICIONAIS</Text>
 
-                <View style={styles.areaInfoGeral}>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>FABRICANTE BAÚ</Text>
-                        <Text style={styles.resultadoInfo}>VOLKSWAGEN</Text>
-                    </View>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>MODELO BAÚ</Text>
-                        <Text style={styles.resultadoInfo}>MK 12233</Text>
-                    </View>
-                </View>
-
-                <View style={[styles.areaInfoGeral, {marginBottom: 20}]}>
-                    <View style={styles.areaInfo}>
-                        <Text style={styles.info}>DIMENSÕES (M)</Text>
-                        <Text style={styles.resultadoInfo}>5X5X5</Text>
-                    </View>
-                </View>
-                
+                            <View style={styles.areaInfoGeral}>
+                                <Text style={styles.resultadoInfo}>{detalhes.infoAdicionais}</Text>
+                            </View>
+                        </View>
+                    )
+                }    
             </KeyboardAvoidingView>
         </ScrollView>
         
@@ -258,14 +364,22 @@ const styles = StyleSheet.create ({
         backgroundColor: '#fff'
     },
     container: {
-        flex: 1,
+        flex: 1
+    },
+    areaFavorito: {
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        marginTop: 10,
+        alignItems: 'center'
+    },
+    areaTitulo: {
+        width: '90%'
     },
     titulo: {
         color: '#222',
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 10,
-        paddingHorizontal: 10
+        textTransform: 'uppercase'
     },
     areaInteresse: {
         flexDirection: 'row',
@@ -277,8 +391,7 @@ const styles = StyleSheet.create ({
         color: '#ffa500',
         fontSize: 20,
         fontWeight: 'bold',
-        paddingHorizontal: 10,
-        marginTop: 4,
+        paddingHorizontal: 10
     },
     contato: {
         color: '#222',
@@ -314,7 +427,8 @@ const styles = StyleSheet.create ({
     },
     local: {
         color: '#222',
-        fontSize: 18
+        fontSize: 17,
+        textTransform: 'uppercase'
     },
     areaPrecoGeral: {
         marginTop: 10,
@@ -327,36 +441,73 @@ const styles = StyleSheet.create ({
     precoInfo: {
         color: '#222',
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
     },
     preco: {
-        color: '#222',
-        fontSize: 18,
-    },
-    tituloInfo: {
         color: '#ffa500',
         fontSize: 18,
         fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
+    areaCategoriaGeral: {
+        marginTop: 10,
+        paddingHorizontal: 10
+    },
+    areaCategoria: {
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    categoriaInfo: {
+        color: '#222',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
+    categoria: {
+        color: '#ffa500',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
+    tituloInfo: {
+        color: '#222',
+        fontSize: 20,
+        fontWeight: 'bold',
         paddingHorizontal: 10,
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 15,
+        textTransform: 'uppercase'
+    },
+    tituloInfoAdicionais: {
+        color: '#222',
+        fontSize: 20,
+        fontWeight: 'bold',
+        paddingHorizontal: 10,
+        marginTop: 15,
+        marginBottom: 15,
+        textTransform: 'uppercase'
     },
     areaInfoGeral: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingHorizontal: 15
     },
     areaInfo: {
-        marginTop: 15
+        width: '50%'
     },
     info: {
         color: '#222',
         fontSize: 18,
+        textTransform: 'uppercase'
     },
     resultadoInfo: {
         color: '#ffa500',
         fontSize: 17,
         fontWeight: 'bold',
-        marginTop: 4
+        marginTop: 4,
+        marginRight: 10,
+        marginBottom: 15,
+        textTransform: 'uppercase'
     },
     modalWindow: {
         flex: 1,

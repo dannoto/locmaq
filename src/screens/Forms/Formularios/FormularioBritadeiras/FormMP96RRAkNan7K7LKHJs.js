@@ -30,12 +30,19 @@ export default function FormBritador ({ navigation, route }) {
         {key: 2, nome: 'MÓVEL'}]);
     const [capacidade, setCapacidade] = useState('');
     const [peso, setPeso] = useState('5161');
+    const [tipo, setTipo] = useState('');
+    const [tracao, setTracao] = useState('');
+    const [horimetro, setHorimetro] = useState('');
+    const [hodometro, setHodometro] = useState('');
+    const [consumo, setConsumo] = useState('');
+    const [potencia, setPotencia] = useState('');
     const [seguro, setSeguro] = useState('');
     const [segurooption, setSeguroOption] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'SIM'}, 
         {key: 2, nome: 'NÃO'}
     ]);
+    const [infoAdicionais, setInfoAdicionais] = useState('');
 
     let condicaoItem = condicoes.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
@@ -118,9 +125,16 @@ export default function FormBritador ({ navigation, route }) {
             ano: ano, 
             modelo: modelo, 
             caracteristica: caracteristica, 
+            tipo: tipo, 
+            tracao: tracao, 
             capacidade: capacidade,
             peso: peso, 
+            hodometro: hodometro,
+            horimetro: horimetro,
+            consumo: consumo, 
+            potencia: potencia,
             seguro: seguro, 
+            infoAdicionais: infoAdicionais,
             categoria: categoria,
             subcategoria: subcategoria
         })
@@ -195,11 +209,11 @@ export default function FormBritador ({ navigation, route }) {
                     </Picker>
                 </View>
 
-                <Text style={styles.tituloInput}>CAPACIDADE DE PRODUÇÃO (TON/H)</Text>
+                <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
                 <View style={styles.areaInput}>
                     <TextInput
                         style={styles.input}
-                        placeholder="(Toneladas/Hora)"
+                        placeholder="(Toneladas)"
                         placeholderTextColor='#fff'
                         value={capacidade}
                         onChangeText={(text) => setCapacidade(text)}
@@ -232,6 +246,21 @@ export default function FormBritador ({ navigation, route }) {
                         {seguroItem}
                     </Picker>
                 </View>
+
+                <Text style={styles.tituloInput}>INFORMAÇÕES ADICIONAIS</Text>
+                <View style={styles.txtArea}>
+                    <TextInput
+                        style={styles.input}
+                        multiline = {true}
+                        numberOfLines = {1}
+                        placeholder=""
+                        value={infoAdicionais}
+                        onChangeText={(text) => setInfoAdicionais(text)}
+                        keyboardType={'default'}
+                        maxLength={200}
+                    />
+                </View>
+                <Text style={styles.atencao}>Atenção: Informações de contato só poderão ser passadas durante a negociação.</Text>
 
                 <TouchableOpacity style={styles.btnProximo} onPress={handleValidacao}>
                     <Text style={styles.txtBtn}>PRÓXIMO</Text>
@@ -293,6 +322,15 @@ areaInput: {
     borderWidth: 2,
     borderColor: '#fff'
 },
+txtArea: {
+    width: '100%',
+    height: 140,
+    backgroundColor: 'transparent',
+    marginTop: 10,
+    paddingHorizontal: 5,
+    borderWidth: 2,
+    borderColor: '#fff'
+},
 input: {
     width: '100%',
     fontSize: 20,
@@ -308,5 +346,11 @@ tituloInfo: {
     color: '#fff',
     marginTop: 60,
     fontWeight: 'bold'
+},
+atencao: {
+    fontSize: 18,
+    color: '#222',
+    marginTop: 5,
+    textAlign: 'justify'
 }
 })

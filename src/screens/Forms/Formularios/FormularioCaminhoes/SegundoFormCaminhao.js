@@ -36,15 +36,12 @@ window.fetch = new Fetch({
 
 export default ({route, navigation}) => {
  
-    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, capacidade, 
-    fabricantetanque, anotanque, capacidadetanque, fabricantecarroceria, anocarroceria, capacidadecarroceria, fabricantecacamba, anocacamba,
-    capacidadecacamba, cacamba, fabricantecomboio, anocomboio, modelocomboio, capacidadecomboio, larguraplataforma, alturaplataforma,
-    capacidadesilo, modeloplataforma, capacidadepoliguidaste, poliguidaste, subcategoria, categoria} = route.params;
+    const {condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, subcategoria, categoria} = route.params;
     
     navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
 
     const navegacao = useNavigation();
-    const { cadastrarCaminhaoBau, user } = useContext(AuthContext);   
+    const { cadastrarEquipamentos, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
  
@@ -110,8 +107,8 @@ export default ({route, navigation}) => {
         else {
             salvarImagem(imagens)
 
-            if (cadastrarCaminhaoBau (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, 
-                anobau, dimensoesbau, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
+            if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+                potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
             { 
                 Alert.alert('','Cadastrado com Sucesso!');
                 navegacao.navigate('Anuncie');
@@ -320,7 +317,6 @@ export default ({route, navigation}) => {
 
                 
                 {condicao.nome == 'ALUGUEL' ?
-               
                     (
                         <View>
                             <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
@@ -334,16 +330,16 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
                             </View> 
 
-                            <View> 
+                            <View>
                             <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
                             <View style={styles.areaInput}>
                                 <TextInputMask
@@ -355,10 +351,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
@@ -377,10 +373,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
@@ -401,10 +397,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ',
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />

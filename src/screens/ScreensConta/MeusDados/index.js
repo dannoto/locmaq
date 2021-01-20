@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Modal, ImagePickerIOS } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Modal, Image, Alert } from 'react-native';
 import { AuthContext } from '../../../contexts/auth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,8 +26,10 @@ window.fetch = new Fetch({
 export default () => {
     const { user } = useContext( AuthContext );
     const [avatar, setAvatar] = useState([]);
+    const [getUri, setGetUri] = useState('');
     const [modalvisible, setModalVisible] = useState(false);
-    const [imagemURL, setImagemURL] = useState('');
+    const [imagemURL, setImagemURL] = useState([]);
+    const [imagemAtual, setImagemAtual] = useState([]);
 
     function onClickModal() {
         setModalVisible(true);
@@ -47,7 +49,6 @@ export default () => {
         }).then(image => {
             onSelectedImageCamera(image)
             setModalVisible(false)
-           
         });
     }
 
@@ -61,78 +62,129 @@ export default () => {
           }).then(image => {
             onSelectedImageLibrary(image)
             setModalVisible(false)
-            
         });
     }
 
     function onSelectedImageCamera(image) {
+        setAvatar([]);
+       
         let newDataImg = avatar;
 
         newDataImg.push({
             id: Math.floor (Math.random () * Date.now ()),
             url: image.path,
-            tipo: image[i].mime,
+            tipo: image.mime,
         });     
-            
         setAvatar(newDataImg);
+        salvarImagem(newDataImg)   
+        setImagemAtual([])
+        setImagemAtual(avatar[0].url)
+
     }
 
     function onSelectedImageLibrary(image) {
-
+        setAvatar([]);
+      
         let newDataImg = avatar;
 
         newDataImg.push({
             id: Math.floor (Math.random () * Date.now ()),
-            url: image[0].path,
-            tipo: image[0].mime,
-        });     
-
+            url: image.path,
+            tipo: image.mime,
+        }); 
+        
         setAvatar(newDataImg);
+        salvarImagem(newDataImg) 
+        setImagemAtual(avatar[0].url)
+        // console.log(imagemAtual.length)
+        // if (imagemURL.length > 0 ) {
+        //     console.log('É MAIORRRR QUE ZEROOOOOOOOOOOOOO')
+        //     setImagemURL([])
+        
+        // } else {
+        //     console.log('É MENORRRRRRRR QUE ZEROOOOOOOOOOOOOO')
+        // }
+   
+    }
+    
+    useEffect (() => {
+        async function pegarFotoPerfil() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+                setImagemAtual(snapshot.val().avatar);
+            });  
+        }
+        pegarFotoPerfil()
+    }, []);
+
+
+    async function salvarImagem(imagens) {
+        let tipoImagem = imagens[0].tipo.replace('image/','');
+        let random = Math.random () * Date.now();
+        let nomeImagem = random + '' + imagens[0].id + '.' + tipoImagem;
+
+        let imagem = await firebase.storage().ref().child('perfil').child(nomeImagem);
+        
+        let uri = imagens[0].url.replace('file://', '');
+        let mime = imagens[0].tipo;
+
+        let Storage = imagemURL;
+
+        RNFetchBlob.fs.readFile(uri, 'base64')
+        .then((data) => {
+        return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
+        })
+        .then((blob) => {
+            imagem.put(blob, {contentType:mime})
+            .then(() => {
+                return imagem.getDownloadURL().then((e) => { 
+                    console.log('tamanho')
+                    if (Storage.length > 0 ) {
+                       
+                        Storage = "";
+
+                        Storage.push({url:e});
+                        atualizaFoto();
+                        setImagemURL(Storage)
+
+
+                        
+                        console.log('LIMPADO')
+                        console.log(imagemURL);
+                    } else {
+                        
+                        Storage.push({url:e});
+                        atualizaFoto();
+                        setImagemURL(Storage)
+                    
+                        console.log(imagemURL)
+
+                    }
+                    
+                });
+            })
+            .catch((error) => {
+                Alert.alert('Erro ao carregar foto.', error.code)
+            })
+        });
     }
 
-    // async function salvarImagem(imagens) {
-
-    //     var URLImagem = imagemURL;
-    //     for (var b =0; b < imagens.length; b++ ) {
-
-    //         let tipoImagem = imagens[b].tipo.replace('image/','');
-    //         let random = Math.random () * Date.now();
-    //         let nomeImagem = random + '' + imagens[b].id + '.' + tipoImagem;
-
-    //         let imagem = firebase.storage().ref().child('equipamentos').child(nomeImagem);
-            
-    //         let uri = imagens[b].url.replace('file://', '');
-    //         let mime = imagens[b].tipo;
-
-    //         RNFetchBlob.fs.readFile(uri, 'base64')
-    //         .then((data) => {
-    //         return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
-    //         })
-    //         .then((blob) => {
-    //            imagem.put(blob, {contentType:mime})
-    //             .then(() => {
-    //                 return imagem.getDownloadURL().then((e) => { 
-    //                     URLImagens.push({url:e});
-    //                 });
-    //             })
-    //             .catch((error) => {
-    //                 Alert.alert('Erro ao carregar foto.', error.code)
-    //             })
-    //         });
-    //     }
-    //     setImagensURL(URLImagens)
-    // }
+    async function atualizaFoto () {
+        firebase.database().ref('users').child(user.uid).child('avatar').update({
+            url:imagemURL[0].url
+        })
+       console.log('SALVEI')
+    }
 
     return (
         <ScrollView style={[styles.container, modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
             <View style={styles.areaImg}>
-                {avatar != '' ?
-                    <Image style={styles.imgPerfil} source={{uri: avatar.url}}/>
+                {imagemAtual != '' ?
+                    <Image style={styles.imgPerfil} source={{uri: imagemAtual.url}}/>
                     :
                     <Ionicons
                         name={'md-person-circle'}
                         size={200}
-                        color="#bbb"        
+                        color='#bbb'       
                     /> 
                 }
 
@@ -167,7 +219,7 @@ export default () => {
             </View>
 
             <View style={styles. areaNome}>
-                <View style={{width: '85%'}}>
+                <View style={{width: '80%'}}>
                     <Text style={styles.titulo}>NOME</Text>
                     <Text style={[styles.dados, {textTransform: 'uppercase'}]}>{user.nome}</Text>    
                 </View>
@@ -179,8 +231,7 @@ export default () => {
                         size= {28}
                         color='#222'
                     />
-                </TouchableOpacity>
-                
+                </TouchableOpacity>  
             </View>
         
             <Text style={styles.titulo}>CPF</Text>
@@ -220,8 +271,10 @@ const styles = StyleSheet.create ({
         alignItems: 'center'
     },
     imgPerfil: {
-        width: 120,
-        height: 120
+        width: 200,
+        height: 200,
+        borderRadius: 100,
+        marginVertical: 15
     },
     txtImg: {
         fontSize: 18,

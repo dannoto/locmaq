@@ -22,7 +22,7 @@ export default () => {
                         nome: childItem.val().categoria,
                     };
 
-                    setCategorias(oldArray => [...oldArray, data].sort());
+                    setCategorias(oldArray => [...oldArray, data]);
 
                 })
                 setLoading(false)

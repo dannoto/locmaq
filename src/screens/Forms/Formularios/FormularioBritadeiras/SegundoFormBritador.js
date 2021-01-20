@@ -36,22 +36,12 @@ window.fetch = new Fetch({
 
 export default ({route, navigation}) => {
  
-    const {
-        condicao,
-        fabricante, 
-        ano, 
-        modelo, 
-        caracteristica, 
-        capacidade,
-        peso, 
-        seguro, 
-        categoria,
-        subcategoria
-    } = route.params;
-    navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
+    const {condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, subcategoria, categoria} = route.params;
+    
+    navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()});
 
     const navegacao = useNavigation();
-    const { cadastrarBritador, user } = useContext(AuthContext);   
+    const { cadastrarEquipamentos, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
     
@@ -131,8 +121,8 @@ export default ({route, navigation}) => {
         else {
             salvarImagem(imagens)
 
-            if (cadastrarBritador (condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, seguro, 
-            estado, cidade, preco, precoDiaria,precoSemanal,precoMensal,usuario, subcategoria, categoria,imagensURL)) 
+            if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+                potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
             { 
                 Alert.alert('','Cadastrado com Sucesso!');
                 navegacao.navigate('Anuncie');
@@ -339,10 +329,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
@@ -360,10 +350,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
@@ -382,10 +372,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />
@@ -406,10 +396,10 @@ export default ({route, navigation}) => {
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
-                                        precision :  2 ,
-                                        separator :  ' , ' ,
-                                        delimiter :  ' . ' ,
-                                        unidade :  ' R $ ' ,
+                                        precision :  2,
+                                        separator :  ',' ,
+                                        delimiter :  '.' ,
+                                        unidade :  'R$ ' ,
                                         sufixoUnidade :  ' ' 
                                     }} 
                                 />

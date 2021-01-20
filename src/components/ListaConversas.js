@@ -36,7 +36,9 @@ export default function ListaConversas({data}){
               <View style={styles.areaTxt}>
                 <Text style={styles.titulo}>{filterTitulo('FABRICANTE - MODELO - ANO')}</Text>
                 <Text style={styles.nome}>{filterNome('MONNIK JESUS DA SILVA')}</Text>
-                <Text style={styles.mensagem}>{filterMensagem('Olá, Tudo bem?')}</Text>
+                <Text style={styles.nome}>{data.produto}</Text>
+                <Text style={styles.nome}>{data.proprietario}</Text>
+                <Text style={styles.nome}>{data.interessado}</Text>
                 <Text style={styles.data}>12/01/2021 às 18:34</Text>
               </View>
           </View>

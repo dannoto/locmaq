@@ -10,11 +10,11 @@ export default function Recentes({data}){
     const modelo = data.modelo;
     const titulo =  fabricante +' - '+ modelo;
 
-;    function filterNome(nome) {
-        if(nome.length < 18) {
-          return nome;
+;    function filterTitulo(titulo) {
+        if(titulo.length < 16) {
+          return titulo;
         }
-        return `${nome.substring(0, 15)}...`;
+        return `${titulo.substring(0, 16)}...`;
     }
 
     return(
@@ -24,24 +24,21 @@ export default function Recentes({data}){
                 <View style={styles.areaImg}>
                     <ImageBackground style={styles.img} source={{uri: data.imagem}}>
                         <View style={styles.condicao}>
-                            <Text style={styles.txtCondicao}>ALUGUEL</Text>
+                            <Text style={styles.txtCondicao}>{data.condicao}</Text>
                         </View>
                     </ImageBackground>
                 </View>
             
-                <Text style={styles.txtProd}>{filterNome(titulo)}</Text>
+                <Text style={styles.txtProd}>{filterTitulo(titulo)}</Text>
                 
             </TouchableOpacity>
         </View>
-
-        
-        
     );
 }
 
 const styles = StyleSheet.create ({
     container: {
-        marginHorizontal: 10,
+        marginHorizontal: 10
     },
     condicao: {
         flexDirection: 'row-reverse'
@@ -60,7 +57,7 @@ const styles = StyleSheet.create ({
         height: 144,
         borderWidth: 2,
         borderColor: '#ffa500',
-        borderRadius: 10,
+        borderRadius: 10
     },
     img: {
         width: 170,
@@ -68,10 +65,11 @@ const styles = StyleSheet.create ({
         resizeMode: 'cover'
     },
     txtProd: {
-        fontSize: 16,
+        fontSize: 17,
         textAlign: 'center',
         color: '#222',
         marginTop: 10,
-        height: 40
+        height: 40,
+        textTransform: 'uppercase'
     }
 })

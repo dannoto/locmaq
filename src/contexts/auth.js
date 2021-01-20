@@ -190,7 +190,7 @@ function AuthProvider({ children }) {
     //         let subcategorias = firebase.database().ref('subcategorias');
     //         let chave = subcategorias.push().key;
     //         await subcategorias.child(chave).set({ 
-    //            nome: 'Trator de Esteira',
+    //            nome: 'Motoniveladora',
     //            categoria: '-MOYhjWTHG77Uf6JCH7W'
     //         });  
     //     }
@@ -198,72 +198,45 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
-     // Inserindo Equipamentos - Caminhão Baú
-     async function cadastrarCaminhaoBau(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, seguro, fabricantebau, anobau, dimensoesbau, estado, 
-        cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
-
-        let caminhaoBau = await firebase.database().ref('equipamentos');
-        let chave = caminhaoBau.push().key;
-
-        caminhaoBau.child(chave).set({
-            usuario: usuario,
-            condicao: condicao,
-            fabricante: fabricante,
-            ano: ano,
-            modelo: modelo,
-            tipo: tipo,
-            tracao: tracao,
-            consumo: consumo,
-            hodometro: hodometro,
-            horimetro: horimetro,
-            seguro: seguro,
-            estado: estado,
-            cidade: cidade,
-            preco: preco,
-            precoDiaria: precoDiaria,
-            precoSemanal: precoSemanal,
-            precoMensal: precoMensal,
-            fabricanteBau: fabricantebau,
-            anoBau: anobau,
-            dimensoesBau: dimensoesbau,
-            categoria: categoria,
-            subcategoria:subcategoria,
-            imagensURL: imagensURL
-        });
-        return chave;
-    }
-
-    // Inserindo Equipamentos - Britador
-    async function cadastrarBritador(condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, seguro, estado, cidade, preco, 
-        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
-
-        let britador = await firebase.database().ref('equipamentos');
-        let chave = britador.push().key;
-
-        britador.child(chave).set({
-            usuario: usuario,
-            condicao: condicao,
-            fabricante: fabricante,
-            ano: ano,
-            modelo: modelo,
-            caracteristica: caracteristica,
-            capacidadeProducao: capacidade,
-            pesoOperacional: peso,
-            seguro: seguro,
-            estado: estado,
-            cidade: cidade,
-            preco: preco,
-            precoDiaria: precoDiaria,
-            precoSemanal: precoSemanal,
-            precoMensal: precoMensal,
-            categoria: categoria,
-            subcategoria:subcategoria,
-            imagensURL: imagensURL
-        });
-    }
+         // Inserindo Equipamentos
+         async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
+            infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
+    
+            let equipamentos = await firebase.database().ref('equipamentos');
+            let chave = equipamentos.push().key;
+    
+            equipamentos.child(chave).set({
+                usuario: usuario,
+                condicao: condicao,
+                fabricante: fabricante,
+                ano: ano,
+                modelo: modelo,
+                tipo: tipo,
+                tracao: tracao,
+                consumo: consumo,
+                hodometro: hodometro,
+                horimetro: horimetro,
+                caracteristica: caracteristica,
+                peso: peso,
+                capacidade: capacidade,
+                potencia: potencia,
+                seguro: seguro,
+                infoAdicionais: infoAdicionais,
+                estado: estado,
+                cidade: cidade,
+                preco: preco,
+                precoDiaria: precoDiaria,
+                precoSemanal: precoSemanal,
+                precoMensal: precoMensal,
+                categoria: categoria,
+                subcategoria:subcategoria,
+                imagensURL: imagensURL
+            });
+            return chave;
+        }
 
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarCaminhaoBau, cadastrarBritador }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarEquipamentos }}>
         {children}
         </AuthContext.Provider>
     );

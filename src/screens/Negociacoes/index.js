@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import ListaConversas from '../../components/ListaConversas';
+import { validate } from 'gerador-validador-cpf';
 
 export default () => {
 
@@ -16,27 +17,92 @@ const [loading, setLoading] = useState(false);
 const [loadingLista, setLoadingLista] = useState(false);
 
 useEffect(() => {
-    async function getChatList() {
-        await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
+   async function getChatList() {
+        await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
             setChats([]);
 
             snapshot.forEach((childItem) => {
-                let data = {
-                    key: childItem.key,
-                    condicao: childItem.val().condicao.nome,
-                    subcategoria: childItem.val().subcategoria.nome,
-                    ano: childItem.val().ano.ano,
-                    modelo: childItem.val().modelo,
-                    // imagem: childItem.val().imagensURL,
-                };
 
-                setChats(oldArray => [...oldArray, data]);
+                 firebase.database().ref('chats').child(childItem.key).on('value', (dados) => {
+                    dados.forEach((dado) => {
+                   
+                            // let data = {
+                            //     key:dado.key,
+                            //     interessado:dado.interessado,
+                            //     proprietario:dado.proprietario,
+                            //     produto:dado.produto,
+
+                            // };
+
+                            // // console.log(childItem.key)
+                            // setChats(oldArray => [...oldArray, data]);
+                            console.log(dado)
+
+                    })   
+
+                })   
+
+                           
+
+                       
+
             })
-            setLoading(false)
+            
+        
         })
     }
     getChatList();
+    // console.log(chats)
+   
+  
+    // async function getdadosChat() {
+    //     await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
+    //         setChats([]);
+
+    //         snapshot.forEach((childItem) => {
+    //             let data = {
+    //                 key: childItem.key,
+    //                 // condicao: childItem.val().condicao.nome,
+    //                 // subcategoria: childItem.val().subcategoria.nome,
+    //                 // ano: childItem.val().ano.ano,
+    //                 // modelo: childItem.val().modelo,
+    //                 // imagem: childItem.val().imagensURL,
+    //             };
+
+    //             setChats(oldArray => [...oldArray, data]);
+    //         })
+    //         setLoading(false)
+    //         // console.log(snapshot)
+    //     })
+    // }
+
+    // async function geDadosProprietario() {
+    //     await firebase.database().ref('users').child(proprietario.codigo).on('value', (snapshot) => {
+        
+    
+    //         snapshot.forEach((childItem) => {
+    //           let data = {
+               
+    //             nome: childItem.val().nome,
+    //             cpf: childItem.val().cpf,
+    //             email: childItem.val().email,
+    //             // avatar: childItem.val().avatar,
+    //           };
+    
+    //           setDadosProprietario(snapshot.val().avatar.url);
+    
+           
+      
+    //         // })
+           
+             
+    //     })
+    // }
+  
+
+  
 }, []);
+
 
     return (
         <View style={styles.background}>

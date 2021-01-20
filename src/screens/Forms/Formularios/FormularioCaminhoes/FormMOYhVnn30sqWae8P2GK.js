@@ -21,8 +21,8 @@ export default function FormCaminhao ({ navigation, route }) {
         {key: 2, nome: 'VENDA'}
     ]);
     const [fabricante, setFabricante] = useState('cfhcxhxj,');
-    const [ano, setAno] = useState('5599');
     const [modelo, setModelo] = useState('ccgiuho');
+    const [ano, setAno] = useState('5599');
     const [tipo, setTipo] = useState('')
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
@@ -44,51 +44,20 @@ export default function FormCaminhao ({ navigation, route }) {
         {key: 8, nome: '8x6'},
         {key: 9, nome: '8x8'}
     ]);
+    const [caracteristica, setCaracteristica] = useState('');
+    const [peso, setPeso] = useState('');
     const [consumo, setConsumo] = useState('56462');
     const [hodometro, setHodometro] = useState('5161');
     const [horimetro, setHorimetro] = useState('5465');
+    const [capacidade, setCapacidade] = useState('68000');
+    const [potencia, setPotencia] = useState('6888');
     const [seguro, setSeguro] = useState('');
     const [segurooption, setSeguroOption] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'SIM'}, 
         {key: 2, nome: 'NÃO'}
     ]);
-    const [fabricantebau, setFabricanteBau] = useState('yuguihj');
-    const [anobau, setAnoBau] = useState('6888');
-    const [dimensoesbau, setDimensoesBau] = useState('bj859');
-    const [fabricantetanque, setFabricanteTanque] = useState('');
-    const [anotanque, setAnoTanque] = useState('');
-    const [capacidadetanque, setCapacidadeTanque] = useState('');
-    const [fabricantecarroceria, setFabricanteCarroceria] = useState('');
-    const [anocarroceria, setAnoCarroceria] = useState('');
-    const [capacidadecarroceria, setCapacidadeCarroceria] = useState('');
-    const [fabricantecacamba, setFabricanteCacamba] = useState('');
-    const [anocacamba, setAnoCacamba] = useState('');
-    const [capacidadecacamba, setCapacidadeCacamba] = useState('');
-    const [cacamba, setCacamba] = useState('');
-    const [caracteristicascacamba, setCaracteristicasCacamba] = useState([
-        {key: 0, nome: 'SELECIONAR'}, 
-        {key: 1, nome: 'REFORÇADA PARA TRABALHO COM ROCHAS'}, 
-        {key: 2, nome: 'MEIA CANA'}
-    ]);
-    const [fabricantecomboio, setFabricanteComboio] = useState('');
-    const [anocomboio, setAnoComboio] = useState('');
-    const [modelocomboio, setModeloComboio] = useState('');
-    const [capacidadecomboio, setCapacidadeComboio] = useState('');
-    const [modeloplataforma, setModeloPlataforma] = useState('');
-    const [capacidadepoliguidaste, setCapacidadePoliguidaste] = useState('');
-    const [capacidade, setCapacidade] = useState('');
-    const [larguraplataforma, setLarguraPlataforma] = useState('');
-    const [alturaplataforma, setAlturaPlataforma] = useState('');
-    const [capacidadesilo, setCapacidadeSilo] = useState('');
-    const [poliguidaste, setPoliguindaste] = useState('');
-    const [caracteristicaspoliguindaste, setCaracteristicasPoliguindaste] = useState([
-        {key: 0, nome: 'SELECIONAR'}, 
-        {key: 1, nome: 'POLIGUINDASTE SIMPLES'}, 
-        {key: 2, nome: 'POLIGUINDASTE DUPLO DE MESA'},
-        {key: 3, nome: 'POLIGUINDASTE DUPLO ARTICULADO'}, 
-        {key: 4, nome: 'POLIGUINDASTE TRIPLO ARTICULADO'}, 
-    ]);
+    const [infoAdicionais, setInfoAdicionais] = useState('');
 
     let condicaoItem = condicoes.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
@@ -103,14 +72,6 @@ export default function FormCaminhao ({ navigation, route }) {
     })
 
     let seguroItem = segurooption.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    let CacambaItem = caracteristicascacamba.map( (v, k) => {
-        return <Picker.Item key={k} value={v} label={v.nome}/>
-    })
-
-    let PoliguidasteItem = caracteristicaspoliguindaste.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
     })
 
@@ -138,18 +99,6 @@ export default function FormCaminhao ({ navigation, route }) {
         }  
     }
 
-    function SelectPadraoCacamba(v,i) {
-        if (v.key !== 0) {
-           setCacamba(v);
-        }  
-    }
-
-    function SelectPadraoPoliguidaste(v,i) {
-        if (v.key !== 0) {
-           setPoliguindaste(v);
-        }  
-    }
-
     function onChangedAno(text) {
         let newText = '';
         let numbers = '0123456789';
@@ -165,43 +114,18 @@ export default function FormCaminhao ({ navigation, route }) {
         setAno({ ano:newText });
     }
 
-    function onChangedAnoOpcional(text) {
-        let newText = '';
-        let numbers = '0123456789';
-    
-        for (var i=0; i < text.length; i++) {
-            if(numbers.indexOf(text[i]) > -1 ) {
-                newText = newText + text[i];
-            }
-            else {
-                Alert.alert('Oops!', 'Informe um Ano válido.');
-            }
-        }
-        setAnoBau({ anobau: newText });
-        setAnoTanque({ anotanque: newText });
-        setAnoCacamba({ anocacamba: newText });
-        setAnoCarroceria({ anocarroceria: newText });
-        setAnoComboio({ anocomboio: newText });
-    }
-
     function handleValidacao(){
         if (condicao.length < 1) {       
             errors.condicao = Alert.alert('Opps!', 'Informe a Condição.')
         }  
         else if (fabricante.length < 1  ) {
             errors.fabricante = Alert.alert('Oops!', 'Informe o Fabricante.')
-            if (fabricante.length > 50 ) {
-                errors.fabricante = Alert.alert('Oops!', 'Limite de caracteres excedido em Fabricante.')
-            }
         }  
         else if (modelo.length < 1  ) {
             errors.modelo = Alert.alert('Oops!', 'Informe o Modelo.')
-            if (modelo.length > 50 ) {
-                errors.modelo = Alert.alert('Oops!', 'Limite de caracteres excedido em Modelo.')
-            }
         } 
-        else if (ano.length < 4) {
-            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')    
+        else if (ano.length < 4) {  
+            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')  
         } 
         else if (tipo.length < 1) {     
             errors.tipo = Alert.alert('Opps!', 'Informe o Tipo.')
@@ -219,44 +143,25 @@ export default function FormCaminhao ({ navigation, route }) {
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
         }  
         else {
-            navegacao.navigate('SegundoFormCaminhao', 
-            {fabricantebau: fabricantebau,
-            anobau: anobau,
-            dimensoesbau: dimensoesbau,
-            fabricantetanque: fabricantetanque,
-            anotanque: anotanque,
-            capacidadetanque: capacidadetanque,
-            fabricantecarroceria: fabricantecarroceria,
-            anocarroceria: anocarroceria,
-            capacidadecarroceria: capacidadecarroceria,
-            fabricantecacamba: fabricantecacamba,
-            anocacamba: anocacamba,
-            capacidadecacamba: capacidadecacamba,
-            cacamba: cacamba,
-            fabricantecomboio: fabricantecomboio,
-            anocomboio: anocomboio,
-            modelocomboio: modelocomboio,
-            capacidadecomboio: capacidadecomboio,
-            modeloplataforma: modeloplataforma,
-            capacidadepoliguidaste: capacidadepoliguidaste,
-            poliguidaste: poliguidaste,
-            larguraplataforma: larguraplataforma,
-            alturaplataforma: alturaplataforma,
-            capacidadesilo: capacidadesilo, 
-            condicao: condicao, 
-            fabricante: fabricante, 
-            ano: ano, 
-            modelo: modelo, 
-            tipo: tipo, 
-            tracao: tracao, 
-            consumo: consumo, 
-            hodometro: hodometro, 
-            horimetro: horimetro, 
-            capacidade: capacidade,
-            seguro: seguro, 
-            categoria: categoria,
-            subcategoria: subcategoria
-        })
+            navegacao.navigate('SegundoFormCaminhao', {
+                condicao: condicao, 
+                fabricante: fabricante, 
+                modelo: modelo, 
+                ano: ano, 
+                tipo: tipo, 
+                tracao: tracao, 
+                caracteristica: caracteristica, 
+                peso: peso,
+                consumo: consumo, 
+                hodometro: hodometro, 
+                horimetro: horimetro, 
+                capacidade: capacidade,
+                potencia: potencia,
+                seguro: seguro, 
+                infoAdicionais: infoAdicionais,
+                categoria: categoria,
+                subcategoria: subcategoria
+            })
         }
     }
 
@@ -379,84 +284,31 @@ export default function FormCaminhao ({ navigation, route }) {
                     />
                 </View>
 
-                {titulo == "Caminhão Munck" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Toneladas"
-                                    placeholderTextColor='#fff'
-                                    value={capacidade}
-                                    onChangeText={(text) => setCapacidade(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
+                <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
+                <View style={styles.areaInput}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Toneladas"
+                        placeholderTextColor='#fff'
+                        value={capacidade}
+                        onChangeText={(text) => setCapacidade(text)}
+                        keyboardType={'numeric'}
+                        maxLength={50}
+                    />
+                </View>
 
-                {titulo == "Caminhão Plataforma" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>CAPACIDADE OPERACIONAL (TON)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Toneladas"
-                                    placeholderTextColor='#fff'
-                                    value={capacidade}
-                                    onChangeText={(text) => setCapacidade(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Tapa Buraco" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInput}>CAPACIDADE DO SILO TÉRMICO (KG)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Quilos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadesilo}
-                                    onChangeText={(text) => setCapacidadeSilo(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE DO TANQUE DE EMULSÃO (KG)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Quilos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadetanque}
-                                    onChangeText={(text) => setCapacidadeTanque(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                        </View>  
-                    </View>
-                    ) :
-                    (
-                        null
-                    )
-                }
+                <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
+                <View style={styles.areaInput}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Potência"
+                        placeholderTextColor='#fff'
+                        value={potencia}
+                        onChangeText={(text) => setPotencia(text)}
+                        keyboardType={'numeric'}
+                        maxLength={50}
+                    />
+                </View>
 
                 <Text style={styles.tituloInput}>POSSUI SEGURO?</Text>
                 <View style={styles.picker}>
@@ -470,498 +322,20 @@ export default function FormCaminhao ({ navigation, route }) {
                     </Picker>
                 </View>
 
-                {titulo == "Caminhão Baú" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>BAÚ:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantebau}
-                                    onChangeText={(text) => setFabricanteBau(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anobau}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>DIMENSÕES - AxLxP (METROS)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Altura x Largura x Profundidade"
-                                    placeholderTextColor='#fff'
-                                    value={dimensoesbau}
-                                    onChangeText={(text) => setDimensoesBau(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Betoneira" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>TANQUE:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantetanque}
-                                    onChangeText={(text) => setFabricanteTanque(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anotanque}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (M3)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros Cúbicos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadetanque}
-                                    onChangeText={(text) => setCapacidadeTanque(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Carroceria" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>CARROCERIA:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantecarroceria}
-                                    onChangeText={(text) => setFabricanteCacamba(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anocarroceria}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Toneladas"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadecarroceria}
-                                    onChangeText={(text) => setCapacidadeCarroceria(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Caçamba" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>CAÇAMBA:</Text>
-
-                            <Text style={styles.tituloInput}>CARACTERÍSTICAS</Text>
-                            <View style={styles.picker}>
-                                <Picker
-                                selectedValue={cacamba}
-                                onValueChange={(itemValue, itemIndex) => SelectPadraoCacamba(itemValue,itemIndex)}
-                                style= {{color: '#fff'}}
-                                dropdownIconColor={'white'}
-                                >
-                                    {CacambaItem}
-                                </Picker>
-                            </View>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantecacamba}
-                                    onChangeText={(text) => setFabricanteCacamba(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anocacamba}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (M3)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros Cúbicos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadecacamba}
-                                    onChangeText={(text) => setCapacidadeCacamba(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Comboio" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>TANQUE:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantecomboio}
-                                    onChangeText={(text) => setFabricanteComboio(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anocomboio}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>MODELO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={modelocomboio}
-                                    onChangeText={(text) => setModeloComboio(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (L)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Litros"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadecomboio}
-                                    onChangeText={(text) => setCapacidadeComboio(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Espargidor" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>TANQUE:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantetanque}
-                                    onChangeText={(text) => setFabricanteTanque(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anotanque}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (M3)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros Cúbicos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadetanque}
-                                    onChangeText={(text) => setCapacidadeTanque(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Fora de Estrada" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>CAÇAMBA:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantecacamba}
-                                    onChangeText={(text) => setFabricanteCacamba(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anocacamba}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (M3)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros Cúbicos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadecacamba}
-                                    onChangeText={(text) => setCapacidadeCacamba(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Pipa" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>TANQUE:</Text>
-
-                            <Text style={styles.tituloInput}>FABRICANTE</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={fabricantetanque}
-                                    onChangeText={(text) => setFabricanteTanque(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ANO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={anotanque}
-                                    onChangeText={(text) => onChangedAnoOpcional(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={4}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE (L)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Litros"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadetanque}
-                                    onChangeText={(text) => setCapacidadeTanque(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Plataforma" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>PLATAFORMA:</Text>
-
-                            <Text style={styles.tituloInput}>LARGURA (M)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros"
-                                    placeholderTextColor='#fff'
-                                    value={larguraplataforma}
-                                    onChangeText={(text) => setLarguraPlataforma(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>ALTURA (M)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Metros"
-                                    placeholderTextColor='#fff'
-                                    value={alturaplataforma}
-                                    onChangeText={(text) => setAlturaPlataforma(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <Text style={styles.tituloInput}>MODELO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder=""
-                                    value={modeloplataforma}
-                                    onChangeText={(text) => setModeloPlataforma(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
-
-                {titulo == "Caminhão Poliguindaste" ?
-                    (
-                        <View>
-                            <Text style={styles.tituloInfo}>POLIGUINDASTE:</Text>
-
-                            <Text style={styles.tituloInput}>CARACTERÍSTICAS</Text>
-                            <View style={styles.picker}>
-                                <Picker
-                                selectedValue={poliguidaste}
-                                onValueChange={(itemValue, itemIndex) => SelectPadraoPoliguidaste(itemValue,itemIndex)}
-                                style= {{color: '#fff'}}
-                                dropdownIconColor={'white'}
-                                >
-                                    {PoliguidasteItem}
-                                </Picker>
-                            </View>
-
-                            <Text style={styles.tituloInput}>CAPACIDADE DE CARGA (KG)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Quilos"
-                                    placeholderTextColor='#fff'
-                                    value={capacidadepoliguidaste}
-                                    onChangeText={(text) => setCapacidadePoliguidaste(text)}
-                                    keyboardType={'default'}
-                                    maxLength={50}
-                                />
-                            </View>
-                        </View>   
-                    ) :
-                    (
-                        null
-                    )
-                }
+                <Text style={styles.tituloInput}>INFORMAÇÕES ADICIONAIS</Text>
+                <View style={styles.txtArea}>
+                    <TextInput
+                        style={styles.input}
+                        multiline = {true}
+                        numberOfLines = {1}
+                        placeholder=""
+                        value={infoAdicionais}
+                        onChangeText={(text) => setInfoAdicionais(text)}
+                        keyboardType={'default'}
+                        maxLength={200}
+                    />
+                </View>
+                <Text style={styles.atencao}>Atenção: Informações de contato só poderão ser passadas durante a negociação.</Text>
 
                 <TouchableOpacity style={styles.btnProximo} onPress={handleValidacao}>
                     <Text style={styles.txtBtn}>PRÓXIMO</Text>
@@ -1023,6 +397,15 @@ areaInput: {
     borderWidth: 2,
     borderColor: '#fff'
 },
+txtArea: {
+    width: '100%',
+    height: 140,
+    backgroundColor: 'transparent',
+    marginTop: 10,
+    paddingHorizontal: 5,
+    borderWidth: 2,
+    borderColor: '#fff'
+},
 input: {
     width: '100%',
     fontSize: 20,
@@ -1038,5 +421,11 @@ tituloInfo: {
     color: '#fff',
     marginTop: 60,
     fontWeight: 'bold'
+},
+atencao: {
+    fontSize: 18,
+    color: '#222',
+    marginTop: 5,
+    textAlign: 'justify'
 }
 })
