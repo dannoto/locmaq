@@ -16,11 +16,14 @@ function AuthProvider({ children }) {
         .then(async (value) => {
             let uid = value.user.uid;
             await firebase.database().ref('users').child(uid).set({
+                status:0,
+                plano:0,
                 nome: nome,
                 email: email,
                 cpf: cpf,
                 tipo: tipo,
-                // avatar: avatar
+                verificado: 0,
+                limite: 0
             })
             .then(() => {
                 let data = {
@@ -29,7 +32,9 @@ function AuthProvider({ children }) {
                     cpf: value.user.cpf,
                     email: value.user.email,
                     tipo: value.user.tipo,
-                    // avatar: avatar
+                    limite: value.user.limite,
+                    plano: value.user.plano,
+                    verificado: value.user.verificado
                 };
                 setUser(data);
                 storageUser(data);
@@ -50,47 +55,52 @@ function AuthProvider({ children }) {
         })
     }
 
-    // //Cadastrar Usuário PJ
-    // async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
-    //     await firebase.auth().createUserWithEmailAndPassword(email, password)
-    //     .then(async (value) => {
-    //         let uid = value.user.uid;
-    //         await firebase.database().ref('users').child(uid).set({
-    //             empresa: empresa,
-    //             email: email,
-    //             cnpj: cnpj,
-    //             tipo: tipo,
-    //             // limite:
-    //             // plano:
-    //             // verificado:
-    //         })
-    //         .then(() => {
-    //             let data = {
-    //                 uid: uid,
-    //                 empresa: empresa,
-    //                 cnpj: value.user.cnpj,
-    //                 email: value.user.email,
-    //                 tipo: value.user.tipo
-    //             };
-    //             setUser(data);
-    //             storageUser(data);
-    //         })
-    //     })
-    //     .catch((error) => {
-    //         if(error.code === 'auth/weak-password'){
-    //             Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
-    //             return;
-    //         }
-    //         if(error.code === 'auth/email-already-in-use'){
-    //             Alert.alert('Oops!', 'E-mail já cadastrado.');
-    //             return;
-    //         }
-    //         if(error.code === 'auth/invalid-email'){
-    //             Alert.alert('Oops!', 'E-mail inválido.')
-    //         }
-    //     })
-    // }
+    //Cadastrar Usuário PJ
+    async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(async (value) => {
+            let uid = value.user.uid;
+            await firebase.database().ref('users').child(uid).set({
+                status:0,
+                plano:0,
+                empresa: empresa,
+                email: email,
+                cnpj: cnpj,
+                tipo: tipo,
+                verificado:0,
+                limite: 0
 
+            })
+            .then(() => {
+                let data = {
+                    uid: uid,
+                    empresa: empresa,
+                    cnpj: value.user.cnpj,
+                    email: value.user.email,
+                    tipo: value.user.tipo,
+                    limite: value.user.limite,
+                    plano: value.user.plano,
+                    verificado: value.user.verificado,
+                };
+                setUser(data);
+                storageUser(data);
+            })
+        })
+        .catch((error) => {
+            if(error.code === 'auth/weak-password'){
+                Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
+            if(error.code === 'auth/email-already-in-use'){
+                Alert.alert('Oops!', 'E-mail já cadastrado.');
+                return;
+            }
+            if(error.code === 'auth/invalid-email'){
+                Alert.alert('Oops!', 'E-mail inválido.')
+            }
+        })
+    }
+console.log(user)
     //Logar Usuário PF
     async function logar(email, password){
         await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -102,10 +112,15 @@ function AuthProvider({ children }) {
                     uid: uid,
                     nome: snapshot.val().nome,
                     cpf: snapshot.val().cpf,
-                    email: value.user.email,
-                    tipo: value.user.tipo
-                };
-                setUser(data);
+                    empresa: snapshot.val().empresa,
+                    cnpj: snapshot.val().cnpj,
+                    email: snapshot.val().email,
+                    tipo: snapshot.val().tipo,
+                    limite: snapshot.val().limite,
+                    plano: snapshot.val().plano,
+                    verificado: snapshot.val().verificado,
+                }
+                seUser(data);
                 storageUser(data);
             })
         })
@@ -116,7 +131,6 @@ function AuthProvider({ children }) {
             }
         })
     }
-
     // //Logar Usuário PJ
     // async function logarPJ(email, password){
     //     await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -192,7 +206,7 @@ function AuthProvider({ children }) {
     //         let subcategorias = firebase.database().ref('subcategorias');
     //         let chave = subcategorias.push().key;
     //         await subcategorias.child(chave).set({ 
-    //            nome: 'Motoniveladora',
+    //            nome: 'Trator de Esteira',
     //            categoria: '-MOYhjWTHG77Uf6JCH7W'
     //         });  
     //     }

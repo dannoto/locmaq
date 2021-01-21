@@ -3,7 +3,7 @@ import { Alert, Platform } from 'react-native';
 import { Background, Container, Logo, TextTitulo, AreaInput, TituloInput, Input, IconButton, CustomButton, InputCaracter, CustomButtonText, SignMessageButton, SignMessageButtonText, SignMessage, SignMessageText } from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInputMask } from 'react-native-masked-text';
-import validator from 'cpf-cnpj-validator';
+import { validate } from 'gerador-validador-cpf'
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 
@@ -21,12 +21,10 @@ export default () => {
     const [password, setPassword] = useState('');
     const [show, setShow] = React.useState(false);
     const [visible, setVisible] = React.useState(true);
+    const status = isValid(cpf);
     const isstring = isString(nome);
 
     const inputElementRef = useRef(null);
-
-    const Joi = require('@hapi/joi').extend(validator);
-    const cpfSchema = Joi.document().cpf();
 
     useEffect(() => {
         inputElementRef.current.setNativeProps({
@@ -34,13 +32,23 @@ export default () => {
         });
     }, [visible]);
 
-        // Validade nome
+        // Validação nome
         function isString(nome) {
             var letters = /^[A-Za-z]+$/;
             if (nome.match(letters)) {
                 return true;
             } 
             else {
+                return false;
+            }
+        }
+
+        // Validação CPF
+        function isValid(cpf) {
+
+            if (validate(cpf)) {
+                return true;
+            } else {
                 return false;
             }
         }
@@ -52,7 +60,7 @@ export default () => {
                     errors.nome = Alert.alert('Opps!', 'Informe seu Nome.')
                 }
             }  
-            else if (cpfSchema.validate(cpf) == false) {
+            else if (status == false) {
                 errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
             } 
             else {
