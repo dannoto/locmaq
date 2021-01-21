@@ -10,12 +10,14 @@ export default () => {
     const { user, sair } = useContext(AuthContext);
     const navigation = useNavigation();
 
+    console.log(user)
+
     return (
         <View style={styles.background}>
 
             <View style={styles.header}>
-                {/* {avatar != '' ?
-                    <Image source={{uri: avatar}}/>
+                {/* {user.avatar.url != '' ?
+                    <Image source={{uri: user.avatar}}/>
                     : */}
                     <Ionicons
                         name={'md-person-circle'}
@@ -24,7 +26,6 @@ export default () => {
                     /> 
                 {/* } */}
             
-
                 <Text style={styles.nome}>{ user && user.nome }</Text>
 
             </View>

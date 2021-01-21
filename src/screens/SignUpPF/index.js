@@ -3,7 +3,7 @@ import { Alert, Platform } from 'react-native';
 import { Background, Container, Logo, TextTitulo, AreaInput, TituloInput, Input, IconButton, CustomButton, InputCaracter, CustomButtonText, SignMessageButton, SignMessageButtonText, SignMessage, SignMessageText } from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInputMask } from 'react-native-masked-text';
-import { validate } from 'gerador-validador-cpf'
+import validator from 'cpf-cnpj-validator';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 
@@ -21,10 +21,12 @@ export default () => {
     const [password, setPassword] = useState('');
     const [show, setShow] = React.useState(false);
     const [visible, setVisible] = React.useState(true);
-    const status = isValid(cpf);
     const isstring = isString(nome);
 
     const inputElementRef = useRef(null);
+
+    const Joi = require('@hapi/joi').extend(validator);
+    const cpfSchema = Joi.document().cpf();
 
     useEffect(() => {
         inputElementRef.current.setNativeProps({
@@ -43,16 +45,6 @@ export default () => {
             }
         }
 
-        // Validate cpf
-        function isValid(cpf) {
-
-            if (validate(cpf)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         function handleSignUp() {
             if (nome.length < 5) {
                 if (isstring) {              
@@ -60,7 +52,7 @@ export default () => {
                     errors.nome = Alert.alert('Opps!', 'Informe seu Nome.')
                 }
             }  
-            else if (status == false) {
+            else if (cpfSchema.validate(cpf) == false) {
                 errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
             } 
             else {

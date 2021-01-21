@@ -19,7 +19,8 @@ function AuthProvider({ children }) {
                 nome: nome,
                 email: email,
                 cpf: cpf,
-                tipo: tipo
+                tipo: tipo,
+                // avatar: avatar
             })
             .then(() => {
                 let data = {
@@ -27,19 +28,20 @@ function AuthProvider({ children }) {
                     nome: nome,
                     cpf: value.user.cpf,
                     email: value.user.email,
-                    tipo: value.user.tipo
+                    tipo: value.user.tipo,
+                    // avatar: avatar
                 };
                 setUser(data);
                 storageUser(data);
             })
         })
         .catch((error) => {
-            if(error.code === 'auth/weak-password'){
-                Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
-                return;
-            }
             if(error.code === 'auth/email-already-in-use'){
                 Alert.alert('Oops!', 'E-mail já cadastrado.');
+                return;
+            }
+            if(error.code === 'auth/weak-password'){
+                Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
                 return;
             }
             if(error.code === 'auth/invalid-email'){
@@ -48,46 +50,46 @@ function AuthProvider({ children }) {
         })
     }
 
-    //Cadastrar Usuário PJ
-    async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
-        await firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(async (value) => {
-            let uid = value.user.uid;
-            await firebase.database().ref('users').child(uid).set({
-                empresa: empresa,
-                email: email,
-                cnpj: cnpj,
-                tipo: tipo,
-                // limite:
-                // plano:
-                // verificado:
-            })
-            .then(() => {
-                let data = {
-                    uid: uid,
-                    empresa: empresa,
-                    cnpj: value.user.cnpj,
-                    email: value.user.email,
-                    tipo: value.user.tipo
-                };
-                setUser(data);
-                storageUser(data);
-            })
-        })
-        .catch((error) => {
-            if(error.code === 'auth/weak-password'){
-                Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
-                return;
-            }
-            if(error.code === 'auth/email-already-in-use'){
-                Alert.alert('Oops!', 'E-mail já cadastrado.');
-                return;
-            }
-            if(error.code === 'auth/invalid-email'){
-                Alert.alert('Oops!', 'E-mail inválido.')
-            }
-        })
-    }
+    // //Cadastrar Usuário PJ
+    // async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
+    //     await firebase.auth().createUserWithEmailAndPassword(email, password)
+    //     .then(async (value) => {
+    //         let uid = value.user.uid;
+    //         await firebase.database().ref('users').child(uid).set({
+    //             empresa: empresa,
+    //             email: email,
+    //             cnpj: cnpj,
+    //             tipo: tipo,
+    //             // limite:
+    //             // plano:
+    //             // verificado:
+    //         })
+    //         .then(() => {
+    //             let data = {
+    //                 uid: uid,
+    //                 empresa: empresa,
+    //                 cnpj: value.user.cnpj,
+    //                 email: value.user.email,
+    //                 tipo: value.user.tipo
+    //             };
+    //             setUser(data);
+    //             storageUser(data);
+    //         })
+    //     })
+    //     .catch((error) => {
+    //         if(error.code === 'auth/weak-password'){
+    //             Alert.alert("Oops!", "Sua senha deve ter pelo menos 6 caracteres.");
+    //             return;
+    //         }
+    //         if(error.code === 'auth/email-already-in-use'){
+    //             Alert.alert('Oops!', 'E-mail já cadastrado.');
+    //             return;
+    //         }
+    //         if(error.code === 'auth/invalid-email'){
+    //             Alert.alert('Oops!', 'E-mail inválido.')
+    //         }
+    //     })
+    // }
 
     //Logar Usuário PF
     async function logar(email, password){
@@ -198,42 +200,51 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
-         // Inserindo Equipamentos
-         async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
-            infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
+    // Inserindo Equipamentos
+    async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
+    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
+
+        let equipamentos = await firebase.database().ref('equipamentos');
+        let chave = equipamentos.push().key;
+
+        equipamentos.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            ano: ano,
+            modelo: modelo,
+            tipo: tipo,
+            tracao: tracao,
+            consumo: consumo,
+            hodometro: hodometro,
+            horimetro: horimetro,
+            caracteristica: caracteristica,
+            peso: peso,
+            capacidade: capacidade,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            imagensURL: imagensURL
+        });
+    }
+
+    // // Inserindo Favoritos
+    // async function cadastrarEquipamentos() {
+    //     let favoritos = await firebase.database().ref('users').child('favoritos');
+    //     let chave = favoritos.push().key;
     
-            let equipamentos = await firebase.database().ref('equipamentos');
-            let chave = equipamentos.push().key;
-    
-            equipamentos.child(chave).set({
-                usuario: usuario,
-                condicao: condicao,
-                fabricante: fabricante,
-                ano: ano,
-                modelo: modelo,
-                tipo: tipo,
-                tracao: tracao,
-                consumo: consumo,
-                hodometro: hodometro,
-                horimetro: horimetro,
-                caracteristica: caracteristica,
-                peso: peso,
-                capacidade: capacidade,
-                potencia: potencia,
-                seguro: seguro,
-                infoAdicionais: infoAdicionais,
-                estado: estado,
-                cidade: cidade,
-                preco: preco,
-                precoDiaria: precoDiaria,
-                precoSemanal: precoSemanal,
-                precoMensal: precoMensal,
-                categoria: categoria,
-                subcategoria:subcategoria,
-                imagensURL: imagensURL
-            });
-            return chave;
-        }
+    //     favoritos.child(chave).set({
+    //         equipamento: ,
+    //     });
+    // }
 
     return(
         <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarEquipamentos }}>
