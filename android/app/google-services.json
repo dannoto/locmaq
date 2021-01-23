@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "901181262347",
+    "firebase_url": "https://locmaq-c04b0.firebaseio.com",
+    "project_id": "locmaq-c04b0",
+    "storage_bucket": "locmaq-c04b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901181262347:android:7edd63d0e781f0cfcbd50e",
+        "android_client_info": {
+          "package_name": "com.locmaq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901181262347-m74cm75dktol8urc0sji3bmqc9me6hbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.locmaq",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "901181262347-hq1o7jg95dk0k3sq91harik88dqpk6sd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd5JN2eSZsKcyj-N6wU_GoVVkD7WG_1gc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901181262347-hq1o7jg95dk0k3sq91harik88dqpk6sd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

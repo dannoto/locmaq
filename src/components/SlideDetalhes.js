@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image} from 'react-native';
 import Swiper from 'react-native-swiper'
 
-export default function SlideDetalhes() {
+export default function SlideDetalhes(data) {
 
     return (
         <Swiper
@@ -26,7 +26,15 @@ export default function SlideDetalhes() {
             borderRadius: 10
         }}
         >
+            {/* <View style={styles.slide}>
+                <Image style={styles.img} source={{uri: data.url}}/>
+            </View>   */}
+
             <View style={styles.slide}>
+                <Image style={styles.img} source={{uri:"https://firebasestorage.googleapis.com/v0/b/locmaq-c04b0.appspot.com/o/equipamentos%2FbQdR7kvqgldYJUmL1oijrjznyB63%2F1086889774249.0564bQdR7kvqgldYJUmL1oijrjznyB63%2F0-1086889774249.0564bQdR7kvqgldYJUmL1oijrjznyB63.jpeg?alt=media"}}/>
+            </View>
+
+            {/* <View style={styles.slide}>
                 <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
             </View>
 
@@ -40,15 +48,7 @@ export default function SlideDetalhes() {
 
             <View style={styles.slide}>
                 <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
-
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
-
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
+            </View> */} 
         </Swiper>     
     );
 }

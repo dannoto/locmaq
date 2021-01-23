@@ -39,7 +39,7 @@ export default function FiltroHome({data}){
         <TouchableOpacity style={styles.areaAnuncios} onPress={() => navigation.navigate('Detalhes',{key:data.key})}>
             
             <View style={styles.areaImg}>
-                <ImageBackground style={styles.img} source={{uri: data.imagem}}>
+                <ImageBackground style={styles.img} source={{uri: data.imagem0}}>
                     <View style={styles.condicao}>
                         <Text style={styles.txtCondicao}>{data.condicao}</Text>
                     </View>
@@ -47,9 +47,9 @@ export default function FiltroHome({data}){
             </View>
     
             <View>
-                <Text style={styles.sub}>{filterNome(data.subcategoria)}</Text>
-                <Text style={styles.fabricante}>{filterFabricante(data.fabricante)}</Text>
-                <Text style={styles.modelo}>{filterModelo(modeloAno)}</Text>
+                <Text style={styles.sub}>{filterFabricante(data.fabricante)} </Text>
+                <Text style={styles.fabricante}>{filterNome(data.modelo)}</Text>
+                {/* <Text style={styles.modelo}>{filterModelo(modeloAno)}</Text> */}
 
                 {data.condicao == 'ALUGUEL' ?
                     (

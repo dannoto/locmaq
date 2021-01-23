@@ -14,14 +14,15 @@ export default () => {
     const { cadastrarPF } = useContext(AuthContext);
     const errors = {}
 
-    const [nome, setNome] = useState('');
-    const [cpf, setCpf] = useState('');
+    const [nome, setNome] = useState('oipipio');
+    const [cpf, setCpf] = useState('70128706139');
     const [tipo, setTipo] = useState('Pessoa Física');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('652@gmail.com');
+    const [password, setPassword] = useState('123456');
+    const [avatar, setAvatar] = useState({url : ''});
     const [show, setShow] = React.useState(false);
     const [visible, setVisible] = React.useState(true);
-    const status = isValid(cpf);
+    const statusCPF = isValid(cpf);
     const isstring = isString(nome);
 
     const inputElementRef = useRef(null);
@@ -60,14 +61,14 @@ export default () => {
                     errors.nome = Alert.alert('Opps!', 'Informe seu Nome.')
                 }
             }  
-            else if (status == false) {
+            else if (statusCPF == false) {
                 errors.cpf = Alert.alert('Oops!', 'CPF inválido.')
             } 
             else {
-                cadastrarPF(nome, cpf, tipo, email, password);
+                // cadastrarPF(nome, cpf, tipo, avatar, email, password);
+                navigation.navigate('TelefonePF', {nome: nome, cpf: cpf, tipo: tipo, avatar: avatar, email: email, password: password})
             }
         }
-
 
         return (
             <Background>

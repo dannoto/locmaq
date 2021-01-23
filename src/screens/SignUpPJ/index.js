@@ -18,9 +18,9 @@ export default () => {
     const [tipo, setTipo] = useState('Pessoa Jurídica');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [avatar, setAvatar] = useState({url : ''});
     const [show, setShow] = React.useState(false);
     const [visible, setVisible] = React.useState(true);
-    // const status = isValid(cnpj);
 
     const inputElementRef = useRef(null);
 
@@ -90,10 +90,12 @@ export default () => {
                 errors.cnpj = Alert.alert('Oops!', 'CNPJ inválido.')
             } 
             else {
-                cadastrarPJ(empresa, cnpj, tipo, email, password);
-            }
+                // if(cadastrarPJ(empresa, cnpj, tipo, avatar, email, password)) {
+                    navigation.navigate('TelefonePJ', {empresa: empresa, cnpj: cnpj, tipo: tipo, avatar: avatar, email: email, password: password})
+                // }
+            } 
         }
-
+        
         return (
             <Background>
                 <Container

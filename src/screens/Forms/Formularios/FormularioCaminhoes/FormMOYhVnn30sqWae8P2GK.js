@@ -106,12 +106,20 @@ export default function FormCaminhao ({ navigation, route }) {
         for (var i=0; i < text.length; i++) {
             if(numbers.indexOf(text[i]) > -1 ) {
                 newText = newText + text[i];
-            }
-            else {
-                Alert.alert('Oops!', 'Informe um Ano válido.');
+                return true
+            } else {
+                return false
             }
         }
-        setAno({ ano:newText });
+    }
+
+    function infoPrevent(text){
+        if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
+            return false
+        } else {
+            return true
+        }
+          
     }
 
     function handleValidacao(){
@@ -124,8 +132,23 @@ export default function FormCaminhao ({ navigation, route }) {
         else if (modelo.length < 1  ) {
             errors.modelo = Alert.alert('Oops!', 'Informe o Modelo.')
         } 
-        else if (ano.length < 4) {  
-            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')  
+        else if (ano.length < 4 ) {  
+         
+
+            if (ano.length > 4 ) {
+                errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
+            } else {
+              
+                    var numbers = /^[0-9]+$/;
+                    if (ano.match(numbers)) {
+                        return true;
+                    } 
+                    else {
+                        errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
+                    }
+               
+            }
+          
         } 
         else if (tipo.length < 1) {     
             errors.tipo = Alert.alert('Opps!', 'Informe o Tipo.')
@@ -141,6 +164,9 @@ export default function FormCaminhao ({ navigation, route }) {
         }   
         else if (seguro.length < 1) {           
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
+
+        } else if (infoPrevent(infoAdicionais) == false) {           
+            errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido digitar informações de contato (Telefone ou E-mail).')
         }  
         else {
             navegacao.navigate('SegundoFormCaminhao', {
@@ -215,7 +241,7 @@ export default function FormCaminhao ({ navigation, route }) {
                         style={styles.input}
                         placeholder=""
                         value={ano}
-                        onChangeText={(text) => onChangedAno(text)}
+                        onChangeText={(text) => setAno(text)}
                         keyboardType={'numeric'}
                         maxLength={4}
                     />

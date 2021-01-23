@@ -1,7 +1,7 @@
 // Segunda parte do Formulário Caminhão
 
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, Image, StyleSheet, Alert, Platform, Modal, ImageBackground, ImageComponent} from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, StyleSheet, Alert, Platform, Modal, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
@@ -86,7 +86,42 @@ export default ({route, navigation}) => {
     const [imagens, setImagens] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
-    const [imagensURL, setImagensURL] = useState([]);
+    const [codigoProduto, setCodigoProduto] = useState('')
+
+
+    useEffect (() => {
+        fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
+        .then((r)=>r.json())
+        .then((json)=>{
+    
+            setCidadesData(json.estados);
+    
+        });
+
+    GeradorCodigo() 
+
+    }, []);
+
+
+    function GeradorCodigo() {
+      let  Salt =  Math.random () * Date.now();
+      let Me = user.uid
+      let CodigoFinal = Salt+Me
+
+      setCodigoProduto(CodigoFinal)
+     
+    }
+
+    const base_firebase =  "https://firebasestorage.googleapis.com/v0/b/";
+    const base_app = "locmaq-c04b0.appspot.com/o/";
+    const base_folder = 'equipamentos';
+    const base_user = user.uid;
+    const base_slash = "%2F";
+    const base_codigo = codigoProduto;
+    const base_alt = "?alt=media";
+ 
+ 
+
 
     function handleRegister() {
         if (estado.length < 1) {            
@@ -105,27 +140,113 @@ export default ({route, navigation}) => {
             errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma Foto.')
         } 
         else {
-            salvarImagem(imagens)
+            salvarImagem(imagens); 
+             
 
-            if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-                potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
-            { 
-                Alert.alert('','Cadastrado com Sucesso!');
-                navegacao.navigate('Anuncie');
-            }
+            var urls = [];
+            console.log(imagens.length)
+    if (imagens.length == 1) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = "";
+        var imagem2 = "";
+        var imagem3 = "";
+        var imagem4 = "";
+        var imagem5 = "";
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+        
+    } else if (imagens.length == 2) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+        var imagem2 = "";
+        var imagem3 = "";
+        var imagem4 = "";
+        var imagem5 = "";
+
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+        
+
+    } else if (imagens.length == 3) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+        var imagem3 = "";
+        var imagem4 = "";
+        var imagem5 = "";
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+        
+    } else if (imagens.length == 4) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+        var imagem4 = "";
+        var imagem5 = "";
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+    } else if (imagens.length == 5) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+        var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
+        var imagem5 = "";
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto,  imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+    } else if (imagens.length == 6) {
+        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+        var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
+        var imagem5 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'5-'+base_codigo+'.jpeg'+base_alt; 
+
+        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
+        { 
+            Alert.alert('','Cadastrado com Sucesso!');
+            // navegacao.navigate('Anuncie');
+        }
+    }
+           
+
+
+           
         }  
     }
+ 
+    
 
     async function salvarImagem(imagens) {
-
-        var URLImagens = imagensURL;
-        for (var b =0; b < imagens.length; b++ ) {
+        //    let URLImagens = imagensURL
+        for (var b= 0; b < imagens.length; b++ ) {
 
             let tipoImagem = imagens[b].tipo.replace('image/','');
-            let random = Math.random () * Date.now();
-            let nomeImagem = random + '' + imagens[b].id + '.' + tipoImagem;
-
-            let imagem = firebase.storage().ref().child('equipamentos').child(nomeImagem);
+            let nomeImagem =  b +'-' + codigoProduto + '.' + tipoImagem;
+           
+            let imagem = firebase.storage().ref().child('equipamentos').child(user.uid).child(codigoProduto).child(nomeImagem);
             
             let uri = imagens[b].url.replace('file://', '');
             let mime = imagens[b].tipo;
@@ -136,28 +257,15 @@ export default ({route, navigation}) => {
             })
             .then((blob) => {
                imagem.put(blob, {contentType:mime})
-                .then(() => {
-                    return imagem.getDownloadURL().then((e) => { 
-                        URLImagens.push({url:e});
-                    });
-                })
-                .catch((error) => {
-                    Alert.alert('Erro ao carregar foto.', error.code)
-                })
-            });
+              
+            })
+            .catch((error) => {
+                Alert.alert('Erro ao carregar foto.', error.code)
+            })
         }
-        setImagensURL(URLImagens)
     }
 
-    useEffect (() => {
-        fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
-        .then((r)=>r.json())
-        .then((json)=>{
-    
-            setCidadesData(json.estados);
-    
-        });
-    }, []);
+   
                      
     function pegaCidades(v,k) {
         var todasCidades = [{key: 0, nome: "SELECIONAR"}];
@@ -237,15 +345,18 @@ export default ({route, navigation}) => {
     }
 
     function onSelectedImageCamera(image) {
+        console.log(image)
         let newDataImg = imagens;
 
             newDataImg.push({
                 id: Math.floor (Math.random () * Date.now ()),
                 url: image.path,
-                tipo: image[i].mime,
+                tipo: image.mime,
             });     
             
         setImagens(newDataImg);
+     
+        
     }
 
     function onSelectedImageLibrary(image) {
@@ -268,6 +379,8 @@ export default ({route, navigation}) => {
             });     
         }
         setImagens(newDataImg);
+       
+       
     }
 
     function removerImg (id) {

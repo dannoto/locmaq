@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Platform, ScrollView, KeyboardAvoidingView, View, Text, Modal, TouchableOpacity, FlatList, StyleSheet, TextInput, ActivityIndicator, Image} from 'react-native';
+import { Platform, ScrollView, KeyboardAvoidingView, View, Text, Modal, TouchableOpacity, StyleSheet, Image, Alert, FlatList } from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Swiper from 'react-native-swiper'
 
 import SlideDetalhes from '../../components/SlideDetalhes';
 
 export default ({route}) => {
 
-    const {key} = route.params; 
-    const { user } = useContext(AuthContext); 
+    const { key } = route.params; 
+    const { user, getImagens } = useContext(AuthContext); 
     const navigation = useNavigation();
     const interessado = user.uid;
     const produto= key;
-    
+ 
     const [detalhes, setDetalhes] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [desativado, setDesativado] = useState(true);
@@ -26,14 +27,18 @@ export default ({route}) => {
         setModalVisible(false)
     };
 
-    function favoritar() {
+    
+    function Desfavoritar() {
         setDesativado(!desativado) 
-        setAtivado(!ativado)
     }
 
+    function Favoritar() {
+        setAtivado(!ativado)
+    }
+   
     useEffect(() => {
         async function getDetalhes() {
-            await firebase.database().ref('equipamentos').child(key).once('value')
+             await firebase.database().ref('equipamentos').child(key).once('value')
             .then(function(snapshot) {
                 setProprietario({nome:snapshot.val().usuario.nome, codigo:snapshot.val().usuario.key})
              
@@ -62,45 +67,172 @@ export default ({route}) => {
                     precoMensal: snapshot.val().precoMensal,
                     subcategoria: snapshot.val().subcategoria.nome, 
                     categoria: snapshot.val().categoria.nome,
+                    codigoProduto: snapshot.val().codigoProduto,
+                    imagem0:snapshot.val().imagem0,
+                    imagem1:snapshot.val().imagem1,
+                    imagem2:snapshot.val().imagem2,
+                    imagem3:snapshot.val().imagem3,
+                    imagem4:snapshot.val().imagem4,
+                    imagem5:snapshot.val().imagem5,
                 };
                 setDetalhes(data);
             })
         }
+
+      
+
         getDetalhes();
+     
     }, []);
 
-    console.log(detalhes.categoria)
+   
+console.log(typeof(detalhes.imagem0))
+
+         
+ 
+   
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>       
 
-                <SlideDetalhes/>
-                    <View style={styles.areaFavorito}>
-                        <View style={styles.areaTitulo}>
-                            <Text style={styles.titulo}>{detalhes.subcategoria} - {detalhes.modelo}</Text>
-                        </View>
+            <Text>URL DA IMAGENS</Text>
+            <Text>{detalhes.imagem0}</Text>
+            <Text>{detalhes.imagem1}</Text>
+            <Text>{detalhes.imagem2}</Text>
+            <Text>{detalhes.imagem3}</Text>
+            <Text>{detalhes.imagem4}</Text>
+            <Text>{detalhes.imagem5}</Text>
 
-                        <TouchableOpacity onPress={favoritar}>
-                            {ativado === false ?
-                                (
+                    <Swiper
+                style={styles.wrapper}
+                autoplay={true}
+                autoplayTimeout={4}
+                loop={true}
+                dotStyle={{
+                    backgroundColor: '#000',
+                    borderColor: '#000',
+                    width: 10,
+                    height: 10,
+                    borderRadius: 10
+                }}
+                activeDotColor='#ffa500'
+                activeDotStyle={{
+                    borderColor: '#000',
+                    borderWidth: 1,
+                    width: 10,
+                    height: 10,
+                    borderRadius: 10
+                }} >
+
+                    <View style={styles.slide}>
+                        <Image style={styles.img} source={require('../../assets/caminhao.jpg')}/>
+                    </View> 
+                  
+                     { !detalhes.imagem0?
+
+                        ( 
+                            ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                            <Image style={styles.img} source={{uri:detalhes.imagem0}}/>
+                        </View>  
+                        )
+
+                    }
+
+                    { !detalhes.imagem1 ?
+                        (
+                                   ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                                <Image style={styles.img} source={{uri:detalhes.imagem1}}/>
+                            </View>  
+                        )
+                    }
+                     { !detalhes.imagem2 ?
+                        (
+                                   ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                                <Image style={styles.img} source={{uri:detalhes.imagem2}}/>
+                            </View>  
+                        )
+                    }
+
+                    { !detalhes.imagem3 ?
+                        (
+                                   ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                                <Image style={styles.img} source={{uri:detalhes.imagem3}}/>
+                            </View>  
+                        )
+                    }
+
+                    { !detalhes.imagem4 ?
+                        (
+                                   ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                                <Image style={styles.img} source={{uri:detalhes.imagem4}}/>
+                            </View>  
+                        )
+                    }
+
+                    { !detalhes.imagem5 ?
+                        (
+                                   ''
+                        ):
+                        (
+                            <View style={styles.slide}>
+                                <Image style={styles.img} source={{uri:detalhes.imagem5}}/>
+                            </View>  
+                        )
+                    }
+                 
+                    
+             </Swiper>     
+               
+     
+
+                <View style={styles.areaFavorito}>
+
+                    {/* <Image style={{width: 100, height: 100}} source={{uri: imagem1}}/> */}
+
+                    <View style={styles.areaTitulo}>
+                        <Text style={styles.titulo}>{detalhes.subcategoria} - {detalhes.modelo}</Text>
+                    </View>
+
+                    
+                        {ativado === false ?
+                            (
+                                <TouchableOpacity onPress={Desfavoritar}>
                                     <Ionicons
                                         name={'heart-outline'}
                                         size= {38}
                                         color="#222"
                                     />
-                                ) :
-                                (
+                                </TouchableOpacity>
+                            ) :
+                            (
+                                <TouchableOpacity onPress={Favoritar}>
                                     <Ionicons
                                     name={'heart-sharp'}
                                     size= {38}
                                     color="#ed4956"
                                     />
-                                )
-                            }
-                        </TouchableOpacity>
-                    </View>
+                                </TouchableOpacity>
+                            )
+                        }
+                    
+                </View>
              
                 <Text style={styles.condicao}>{detalhes.condicao}</Text>
 
@@ -551,4 +683,20 @@ const styles = StyleSheet.create ({
         marginTop: 20,
         flexDirection: 'row-reverse'
     },
+    wrapper: {
+        height: 350
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    img: {
+        width: '100%',
+        resizeMode: 'cover'
+    },
+    color:{
+        backgroundColor: '#ffa500'
+    }
 }) 

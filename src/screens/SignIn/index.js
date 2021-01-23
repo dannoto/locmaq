@@ -14,7 +14,8 @@ export default () => {
     const [show, setShow] = useState(false);
     const [visible, setVisible] = useState(true);
 
-    const { logar } = useContext(AuthContext);
+    const { logar, user } = useContext(AuthContext);
+    
 
     const inputElementRef = useRef(null);
 
@@ -25,7 +26,7 @@ export default () => {
     }, [visible]);
 
     function handleLogin() {
-        logar(email, password)
+        logar(email, password);
     }
 
     return (

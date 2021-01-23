@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,10 +7,12 @@ import Geolocation from '@react-native-community/geolocation';
 import firebase from '../../services/firebaseConnection';
 import Recentes from '../../components/Recentes';
 import FiltroHome from '../../components/FiltroHome';
+import { AuthContext } from '../../contexts/auth';
 
 export default () => {
 
     const navigation = useNavigation();
+    const { user } = useContext( AuthContext );
 
     const [produtos, setProdutos] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -67,6 +69,7 @@ export default () => {
                         modelo: childItem.val().modelo,
                         preco: childItem.val().preco,
                         precoDiaria: childItem.val().precoDiaria,
+                        imagem0:childItem.val().imagem0
                         // imagem: childItem.val().imagem
                     };
 
@@ -138,6 +141,7 @@ export default () => {
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
                     precoDiaria: childItem.val().precoDiaria,
+                    imagem0:childItem.val().imagem0
                     // imagem: childItem.val().imagem
                 };
 
@@ -160,6 +164,7 @@ export default () => {
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
                     precoDiaria: childItem.val().precoDiaria,
+                    imagem0:childItem.val().imagem0
                     // imagem: childItem.val().imagem
                 };
 
@@ -181,6 +186,7 @@ export default () => {
                     ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
+                    imagem0:childItem.val().imagem0
                     // imagem: childItem.val().imagem
                 };
 
@@ -273,7 +279,7 @@ export default () => {
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create ({

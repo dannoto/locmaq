@@ -9,25 +9,25 @@ export default () => {
 
     const { user, sair } = useContext(AuthContext);
     const navigation = useNavigation();
-
-    console.log(user)
+    const avatar = user.avatar.url
 
     return (
         <View style={styles.background}>
 
             <View style={styles.header}>
-                {/* {user.avatar.url != '' ?
-                    <Image source={{uri: user.avatar}}/>
-                    : */}
-                    <Ionicons
-                        name={'md-person-circle'}
-                        size={70}
-                        color="#bbb"        
-                    /> 
-                {/* } */}
-            
-                <Text style={styles.nome}>{ user && user.nome }</Text>
-
+                <TouchableOpacity onPress={() => navigation.navigate('MeusDados')}>
+                    {avatar != "" ?
+                        <Image style={styles.img} source={{uri: avatar}}/>
+                        :
+                        <Ionicons
+                            name={'md-person-circle'}
+                            size={70}
+                            color="#bbb"        
+                        /> 
+                    }
+                </TouchableOpacity>
+                
+                <Text style={styles.nome}>{ user.nome || user.empresa }</Text>
             </View>
 
             <ScrollView style={styles.background}>
@@ -73,7 +73,6 @@ export default () => {
                         /> 
                             <Text style={styles.btnTitulo}>HISTÓRICO DE PAGAMENTOS</Text>
                         </TouchableOpacity> 
-    
                     </View>
 
                     <View style={styles.areaBtn}>
@@ -105,13 +104,10 @@ export default () => {
                         /> 
                             <Text style={styles.btnTitulo}>CONHEÇA NOSSOS PLANOS</Text>
                         </TouchableOpacity>
-
                     </View>
 
                     <View style={styles.areaBtn}>
                         <Text style={styles.titulo2}>CENTRAL DE ATENDIMENTO</Text>
-
-                    
 
                         <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Erro')}>
                         <EvilIcons style={styles.icon}
@@ -158,7 +154,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>POLÍTICA DE PRIVACIDADE</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => sair()}>
+                        <TouchableOpacity style={styles.btn} onPress={() => sair()}>
                         <EvilIcons style={styles.icon}
                             name={'external-link'}
                             size={40}
@@ -166,7 +162,6 @@ export default () => {
                         /> 
                             <Text style={styles.btnTitulo}>SAIR</Text>
                         </TouchableOpacity>
-
                     </View>
                     
                 </KeyboardAvoidingView>
@@ -198,7 +193,8 @@ const styles = StyleSheet.create ({
     nome: {
         color: '#222',
         fontSize: 22,
-        paddingLeft: 10
+        paddingLeft: 10,
+        textTransform: 'uppercase'
     },
     areaBtn: {
         flex: 1,
@@ -233,5 +229,12 @@ const styles = StyleSheet.create ({
         width: 40,
         height: 40,
         borderRadius: 20
+    },
+    img: {
+        width: 76,
+        height: 76,
+        borderRadius: 38,
+        borderWidth: 3,
+        borderColor: '#ffa500'
     }
 })

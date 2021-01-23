@@ -6,8 +6,10 @@ import SignIn from '../screens/SignIn';
 import SignUpOption from '../screens/SignUpOption';
 import SignUpPF from '../screens/SignUpPF';
 import SignUpPJ from '../screens/SignUpPJ';
-import Codigo from '../screens/Verificacao/Codigo';
-import Telefone from '../screens/Verificacao/Telefone';
+import TelefonePF from '../screens/Verificacao/TelefonePF';
+import TelefonePJ from '../screens/Verificacao/TelefonePJ';
+import CodigoPF from '../screens/Verificacao/CodigoPF';
+import CodigoPJ from '../screens/Verificacao/CodigoPJ';
 import Termos from '../screens/Termos';
 
 const AuthStack = createStackNavigator();
@@ -22,12 +24,11 @@ function AuthRoutes() {
             <AuthStack.Screen name="SignUpOption" component={SignUpOption} options={{headerShown: false}}/>
             <AuthStack.Screen name="SignUpPF" component={SignUpPF} options={{headerShown: false}}/>
             <AuthStack.Screen name="SignUpPJ" component={SignUpPJ} options={{headerShown: false}}/>
-            <AuthStack.Screen name="Codigo" component={Codigo} options={{headerShown: false}}/>
-            <AuthStack.Screen name="Telefone" component={Telefone} options={{headerShown: false}}/>
-            <AuthStack.Screen name="Termos" component={Termos} options={{
-                headerTintColor: '#222',
-                headerBackTitleVisible: false,
-                headerTitle: 'Termos'
+            <AuthStack.Screen name="TelefonePF" component={TelefonePF} options={{headerTitle: '', headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <AuthStack.Screen name="TelefonePJ" component={TelefonePJ} options={{headerTitle: '', headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <AuthStack.Screen name="CodigoPF" component={CodigoPF} options={{headerTitle: '', headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <AuthStack.Screen name="CodigoPJ" component={CodigoPJ} options={{headerTitle: '', headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <AuthStack.Screen name="Termos" component={Termos} options={{headerTintColor: '#222', headerBackTitleVisible: false, headerTitle: 'Termos'
             }}
             />
         </AuthStack.Navigator>

@@ -13,7 +13,7 @@ export default function Anuncios({data}){
     return(
       <View style={styles.areaAnuncios}>
         <View>
-          <Image style={styles.img} source={{uri: data.imagem}}/>
+          <Image style={styles.img} source={{uri: data.imagem0}}/>
         </View>
         
         <View>

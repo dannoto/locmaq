@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Codigo from '../screens/Verificacao/Codigo';
-import Telefone from '../screens/Verificacao/Telefone';
 import Home from '../screens/Home';
 import Busca from '../screens/Busca';
 import Negociacoes from '../screens/Negociacoes';
@@ -102,8 +100,6 @@ export default function AppRoutes() {
             <Stack.Screen name="MeusDados" component={MeusDados} options={{headerTitle: 'MEUS DADOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="MeusAnuncios" component={MeusAnuncios} options={{headerTitle: 'MEUS ANÚNCIOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="MinhasAssinaturas" component={MinhasAssinaturas} options={{headerTitle: 'MINHAS ASSINATURAS', headerTintColor: '#222'}}/>
-            <Stack.Screen name="Telefone" component={Telefone} options={{headerTitle: 'MINHAS ASSINATURAS', headerTintColor: '#222'}}/>
-            <Stack.Screen name="Codigo" component={Codigo} options={{headerTitle: 'MINHAS ASSINATURAS', headerTintColor: '#222'}}/>
             <Stack.Screen name="HistoricoPagamentos" component={HistoricoPagamentos} options={{headerTitle: 'HISTÓRICO DE PAGAMENTOS', headerTintColor: '#222'}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerTitle: 'NOTIFICAÇÕES', headerTintColor: '#222'}}/>
             <Stack.Screen name="Favoritos" component={Favoritos} options={{headerTitle: 'FAVORITOS', headerTintColor: '#222'}}/>

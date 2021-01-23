@@ -24,6 +24,7 @@ useEffect(() => {
                     subcategoria: childItem.val().subcategoria.nome,
                     ano: childItem.val().ano.ano,
                     modelo: childItem.val().modelo,
+                    imagem0:childItem.val().imagem0
                     // imagem: childItem.val().imagensURL,
                 };
 

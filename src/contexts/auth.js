@@ -11,30 +11,32 @@ function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     //Cadastrar Usuário PF
-    async function cadastrarPF(nome, cpf, tipo, email, password) {
+    async function cadastrarPF( nome, cpf, tipo, avatar, email, password ) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async (value) => {
             let uid = value.user.uid;
             await firebase.database().ref('users').child(uid).set({
-                status:0,
-                plano:0,
+                status: 0,
+                plano: 0,
                 nome: nome,
                 email: email,
                 cpf: cpf,
                 tipo: tipo,
                 verificado: 0,
-                limite: 0
+                limite: 0,
+                avatar: avatar
             })
             .then(() => {
                 let data = {
-                    uid: uid,
-                    nome: nome,
+                    uid: value.user.uid,
+                    nome: value.user.nome,
                     cpf: value.user.cpf,
                     email: value.user.email,
                     tipo: value.user.tipo,
                     limite: value.user.limite,
                     plano: value.user.plano,
-                    verificado: value.user.verificado
+                    verificado: value.user.verificado,
+                    avatar: value.user.avatar
                 };
                 setUser(data);
                 storageUser(data);
@@ -56,31 +58,32 @@ function AuthProvider({ children }) {
     }
 
     //Cadastrar Usuário PJ
-    async function cadastrarPJ(empresa, cnpj, tipo, email, password) {
+    async function cadastrarPJ( empresa, cnpj, tipo, avatar, email, password ) {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async (value) => {
             let uid = value.user.uid;
             await firebase.database().ref('users').child(uid).set({
-                status:0,
-                plano:0,
+                status: 0,
+                plano: 0,
                 empresa: empresa,
                 email: email,
                 cnpj: cnpj,
                 tipo: tipo,
-                verificado:0,
-                limite: 0
-
+                verificado: 0,
+                limite: 0,
+                avatar: avatar
             })
             .then(() => {
                 let data = {
-                    uid: uid,
-                    empresa: empresa,
+                    uid: value.user.uid,
+                    empresa: value.user.empresa,
                     cnpj: value.user.cnpj,
                     email: value.user.email,
                     tipo: value.user.tipo,
                     limite: value.user.limite,
                     plano: value.user.plano,
                     verificado: value.user.verificado,
+                    avatar: value.user.avatar
                 };
                 setUser(data);
                 storageUser(data);
@@ -100,8 +103,8 @@ function AuthProvider({ children }) {
             }
         })
     }
-console.log(user)
-    //Logar Usuário PF
+
+    //Logar Usuário
     async function logar(email, password){
         await firebase.auth().signInWithEmailAndPassword(email, password)
         .then(async (value) => {
@@ -118,9 +121,11 @@ console.log(user)
                     tipo: snapshot.val().tipo,
                     limite: snapshot.val().limite,
                     plano: snapshot.val().plano,
+                    status: snapshot.val().status,
                     verificado: snapshot.val().verificado,
+                    avatar: snapshot.val().avatar
                 }
-                seUser(data);
+                setUser(data);
                 storageUser(data);
             })
         })
@@ -131,31 +136,7 @@ console.log(user)
             }
         })
     }
-    // //Logar Usuário PJ
-    // async function logarPJ(email, password){
-    //     await firebase.auth().signInWithEmailAndPassword(email, password)
-    //     .then(async (value) => {
-    //         let uid = value.user.uid;
-    //         await firebase.database().ref('users').child(uid).once('value')
-    //         .then((snapshot) => {
-    //             let data = {
-    //                 uid: uid,
-    //                 empresa: snapshot.val().empresa,
-    //                 cnpj: snapshot.val().cnpj,
-    //                 email: value.user.email,
-    //                 tipo: value.user.tipo
-    //             };
-    //             setUser(data);
-    //             storageUser(data);
-    //         })
-    //     })
-    //     .catch((error) => {
-    //         if(error.code){
-    //             Alert.alert('Oops!', 'E-mail e/ou Senha inválido(s).');
-    //             return;
-    //         }
-    //     })
-    // }
+   
 
     //Salvar dados Login
     async function storageUser(data) {
@@ -178,7 +159,7 @@ console.log(user)
         loadStorage();
     }, []);
 
-     //Sair
+    //Sair
      async function sair(data) {
         await firebase.auth().signOut();
         await AsyncStorage.clear()
@@ -186,6 +167,24 @@ console.log(user)
             setUser(null);
         })
     }
+
+    // //Pegar imagens dos equipamentos no Storage
+    // async function getImagens (codigoProduto,userId,index) {
+    //     if (index == null) {
+    //         let um = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('0-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         let dois = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('1-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         let tres = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('2-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         let quatro = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('3-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         let cinco = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('4-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         let seis = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('5-'+codigoProduto+'.jpeg').getDownloadURL() 
+
+    //         return [{um:um},{dois:dois},{tres:tres},{quatro:quatro},{cinco:cinco},{seis:seis}] 
+    //     } 
+    //     else {
+    //     let um = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child(index+'-'+codigoProduto+'.jpeg').getDownloadURL() 
+    //         return [{um:um}]
+    //     }
+    // }
 
     // // Inserindo Categorias
     // useEffect (() => {
@@ -216,7 +215,8 @@ console.log(user)
 
     // Inserindo Equipamentos
     async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
-    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL) {
+    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto,imagem0,imagem1,imagem2,imagem3,imagem4,imagem5) {
+
 
         let equipamentos = await firebase.database().ref('equipamentos');
         let chave = equipamentos.push().key;
@@ -246,7 +246,14 @@ console.log(user)
             precoMensal: precoMensal,
             categoria: categoria,
             subcategoria:subcategoria,
-            imagensURL: imagensURL
+            codigoProduto: codigoProduto,
+            imagem0:imagem0,
+            imagem1:imagem1,
+            imagem2:imagem2,
+            imagem3:imagem3,
+            imagem4:imagem4,
+            imagem5:imagem5,
+
         });
     }
 

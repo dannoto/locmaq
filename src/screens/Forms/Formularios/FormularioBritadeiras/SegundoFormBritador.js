@@ -119,14 +119,16 @@ export default ({route, navigation}) => {
             errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma Foto.')
         } 
         else {
-            salvarImagem(imagens)
+            // salvarImagem(imagens)
+            console.log(imagens)
+           
 
-            if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-                potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
-            { 
+            // if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
+            //     potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, imagensURL)) 
+            // { 
                 Alert.alert('','Cadastrado com Sucesso!');
-                navegacao.navigate('Anuncie');
-            }
+            //     navegacao.navigate('Anuncie');
+            // }
         }  
     }
 
@@ -137,7 +139,7 @@ export default ({route, navigation}) => {
 
             let tipoImagem = imagens[b].tipo.replace('image/','');
             let random = Math.random () * Date.now();
-            let nomeImagem = random + '' + imagens[b].id + '.' + tipoImagem;
+            let nomeImagem = random + '' + imagens[b].id + '.' + tipoImagem; imagem3-key
 
             let imagem = firebase.storage().ref().child('equipamentos').child(nomeImagem);
             
@@ -149,19 +151,22 @@ export default ({route, navigation}) => {
             return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
             })
             .then((blob) => {
-               imagem.put(blob, {contentType:mime})
-                .then(() => {
-                    return imagem.getDownloadURL().then((e) => { 
-                        URLImagens.push({url:e});
-                    });
-                })
-                .catch((error) => {
-                    Alert.alert('Erro ao carregar foto.', error.code)
-                })
+                    URLImagens = imagem.put(blob, {contentType:mime})
+                    .then(() => {
+                        return imagem.getDownloadURL().then((e) => { 
+                           return e;
+                        });
+                    })
+                    .catch((error) => {
+                        Alert.alert('Erro ao carregar foto.', error.code)
+                    })
             });
         }
         setImagensURL(URLImagens)
+        console.log(URLImagens)
     }
+    
+    
 
     useEffect (() => {
         fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
@@ -251,15 +256,35 @@ export default ({route, navigation}) => {
     function onSelectedImageLibrary(image) {
         let limit = (6 - imagens.length);
         let newDataImg = imagens;
+      
         if (image.length > 1) {
             for (var i = 0; i < limit; i++) {
+
+            let tipoImagem = image[i].tipo.replace('image/','');
+            let random = Math.random () * Date.now();
+             let nomeImagem = random + i + '.' + tipoImagem;
+
+            let imagem = firebase.storage().ref().child('equipamentos').child(nomeImagem);
+            
+            let uri = image[i].path.replace('file://', '');
+            let mime = image[i].mime;
+
+            RNFetchBlob.fs.readFile(uri, 'base64')
+            .then((data) => {
+            return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
+            })
                 newDataImg.push({
                     id: Math.floor (Math.random () * Date.now ()),
                     url: image[i].path,
                     tipo: image[i].mime, 
+                    storage:  imagem.getDownloadURL().then((e) => {return e }),
+                    
                 });
+                     
+   
             }
                 
+            setImagens(newDataImg);
         } else {
             newDataImg.push({
                 id: Math.floor (Math.random () * Date.now ()),
