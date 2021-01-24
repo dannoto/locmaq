@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image} from 'react-native';
-import Swiper from 'react-native-swiper'
+import firebase from '../services/firebaseConnection';
+import Swiper from 'react-native-swiper';
 
-export default function SlideDetalhes(data) {
+export default function SlideDetalhes({data}) {
 
+    const [imagens, setImagens] = useState([]);
+    const key = data;
+
+    useEffect(() => {
+        async function getImagens() {
+            await firebase.database().ref('equipamentos').child(key).on('value', (snapshot) => {
+                setImagens([]);
+
+                    let fotos = {
+                        key: snapshot.key,
+                        imagem0: snapshot.val().imagem0
+                    };
+                    
+                setImagens(fotos);
+            })
+        }
+        getImagens();
+    }, []);
+
+    const i1 = imagens.imagem0
+    
     return (
         <Swiper
         style={styles.wrapper}
@@ -27,14 +49,11 @@ export default function SlideDetalhes(data) {
         }}
         >
             {/* <View style={styles.slide}>
-                <Image style={styles.img} source={{uri: data.url}}/>
+                <Image style={styles.img} source={{uri: i1}}/>
             </View>   */}
 
-            <View style={styles.slide}>
-                <Image style={styles.img} source={{uri:"https://firebasestorage.googleapis.com/v0/b/locmaq-c04b0.appspot.com/o/equipamentos%2FbQdR7kvqgldYJUmL1oijrjznyB63%2F1086889774249.0564bQdR7kvqgldYJUmL1oijrjznyB63%2F0-1086889774249.0564bQdR7kvqgldYJUmL1oijrjznyB63.jpeg?alt=media"}}/>
-            </View>
 
-            {/* <View style={styles.slide}>
+            <View style={styles.slide}>
                 <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
             </View>
 
@@ -48,7 +67,7 @@ export default function SlideDetalhes(data) {
 
             <View style={styles.slide}>
                 <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View> */} 
+            </View> 
         </Swiper>     
     );
 }

@@ -96,14 +96,8 @@ console.log(typeof(detalhes.imagem0))
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>       
-
-            <Text>URL DA IMAGENS</Text>
-            <Text>{detalhes.imagem0}</Text>
-            <Text>{detalhes.imagem1}</Text>
-            <Text>{detalhes.imagem2}</Text>
-            <Text>{detalhes.imagem3}</Text>
-            <Text>{detalhes.imagem4}</Text>
-            <Text>{detalhes.imagem5}</Text>
+{/* 
+            <Image style={{width: 200, height: 200}} source={{uri: detalhes.imagem0}}/>
 
                     <Swiper
                 style={styles.wrapper}
@@ -199,9 +193,7 @@ console.log(typeof(detalhes.imagem0))
                  
                     
              </Swiper>     
-               
-     
-
+                */}
                 <View style={styles.areaFavorito}>
 
                     {/* <Image style={{width: 100, height: 100}} source={{uri: imagem1}}/> */}

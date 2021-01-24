@@ -168,24 +168,6 @@ function AuthProvider({ children }) {
         })
     }
 
-    // //Pegar imagens dos equipamentos no Storage
-    // async function getImagens (codigoProduto,userId,index) {
-    //     if (index == null) {
-    //         let um = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('0-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         let dois = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('1-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         let tres = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('2-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         let quatro = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('3-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         let cinco = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('4-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         let seis = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child('5-'+codigoProduto+'.jpeg').getDownloadURL() 
-
-    //         return [{um:um},{dois:dois},{tres:tres},{quatro:quatro},{cinco:cinco},{seis:seis}] 
-    //     } 
-    //     else {
-    //     let um = await firebase.storage().ref('equipamentos/'+userId+'/'+codigoProduto+'').child(index+'-'+codigoProduto+'.jpeg').getDownloadURL() 
-    //         return [{um:um}]
-    //     }
-    // }
-
     // // Inserindo Categorias
     // useEffect (() => {
     //     async function dados() {
@@ -215,8 +197,7 @@ function AuthProvider({ children }) {
 
     // Inserindo Equipamentos
     async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
-    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto,imagem0,imagem1,imagem2,imagem3,imagem4,imagem5) {
-
+    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
 
         let equipamentos = await firebase.database().ref('equipamentos');
         let chave = equipamentos.push().key;
@@ -247,13 +228,12 @@ function AuthProvider({ children }) {
             categoria: categoria,
             subcategoria:subcategoria,
             codigoProduto: codigoProduto,
-            imagem0:imagem0,
-            imagem1:imagem1,
-            imagem2:imagem2,
-            imagem3:imagem3,
-            imagem4:imagem4,
-            imagem5:imagem5,
-
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
         });
     }
 

@@ -69,8 +69,7 @@ export default () => {
                         modelo: childItem.val().modelo,
                         preco: childItem.val().preco,
                         precoDiaria: childItem.val().precoDiaria,
-                        imagem0:childItem.val().imagem0
-                        // imagem: childItem.val().imagem
+                        imagem0: childItem.val().imagem0
                     };
 
                     setProdutos(oldArray => [...oldArray, data]);
@@ -141,8 +140,7 @@ export default () => {
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
                     precoDiaria: childItem.val().precoDiaria,
-                    imagem0:childItem.val().imagem0
-                    // imagem: childItem.val().imagem
+                    imagem0: childItem.val().imagem0
                 };
 
                 setCondicao(oldArray => [...oldArray, data]);
@@ -164,8 +162,7 @@ export default () => {
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
                     precoDiaria: childItem.val().precoDiaria,
-                    imagem0:childItem.val().imagem0
-                    // imagem: childItem.val().imagem
+                    imagem0: childItem.val().imagem0
                 };
 
                 setCondicao(oldArray => [...oldArray, data]);
@@ -186,8 +183,7 @@ export default () => {
                     ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
-                    imagem0:childItem.val().imagem0
-                    // imagem: childItem.val().imagem
+                    imagem0: childItem.val().imagem0
                 };
 
                 setCondicao(oldArray => [...oldArray, data]);

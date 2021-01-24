@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+
 import firebase from '../../../services/firebaseConnection';
 
 //Telefone PF
