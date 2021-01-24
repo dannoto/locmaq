@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, StyleSheet, Platform, Alert } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -7,12 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 export default function FormCaminhao ({ navigation, route }) {
 
     const {titulo, subnome, subkey, catkey} = route.params;
-    navigation.setOptions({headerTitle: subnome.toUpperCase()})
-
+    navigation.setOptions({headerTitle: subnome.toUpperCase()});
     const navegacao = useNavigation();
     const categoria = {key:catkey, nome:'Caminhões'};
-    const subcategoria = {key:subkey, nome:subnome}
-    const errors = {}
+    const subcategoria = {key:subkey, nome:subnome};
+    const errors = {};
 
     const [condicao, setCondicao] = useState('');
     const [condicoes, setCondicoes] = useState([
@@ -23,7 +22,7 @@ export default function FormCaminhao ({ navigation, route }) {
     const [fabricante, setFabricante] = useState('cfhcxhxj,');
     const [modelo, setModelo] = useState('ccgiuho');
     const [ano, setAno] = useState('5599');
-    const [tipo, setTipo] = useState('')
+    const [tipo, setTipo] = useState('');
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'TOCO'}, 
@@ -100,26 +99,36 @@ export default function FormCaminhao ({ navigation, route }) {
     }
 
     function onChangedAno(text) {
-        let newText = '';
-        let numbers = '0123456789';
+        // let newText = '';
+        // let numbers = '0123456789';
     
-        for (var i=0; i < text.length; i++) {
-            if(numbers.indexOf(text[i]) > -1 ) {
-                newText = newText + text[i];
-                return true
-            } else {
-                return false
-            }
-        }
+        // for (var i=0; i < text.length; i++) {
+        //     if(numbers.indexOf(text[i]) > -1 ) {
+        //         newText = newText + text[i];
+        //         return true
+        //     }
+        //     else {
+        //         return false
+        //     }
+        // }
+        var numbers = '0123456789';
+
+        if (text.match(numbers)) {
+            return false
+        } 
+        else {
+            return true
+        } 
     }
 
+    //Filtro Informações Adicionais
     function infoPrevent(text){
         if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
             return false
-        } else {
+        } 
+        else {
             return true
-        }
-          
+        }     
     }
 
     function handleValidacao(){
@@ -133,22 +142,11 @@ export default function FormCaminhao ({ navigation, route }) {
             errors.modelo = Alert.alert('Oops!', 'Informe o Modelo.')
         } 
         else if (ano.length < 4 ) {  
-         
+            errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')
 
-            if (ano.length > 4 ) {
+            if (onChangedAno(ano) == false) {
                 errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
-            } else {
-              
-                    var numbers = /^[0-9]+$/;
-                    if (ano.match(numbers)) {
-                        return true;
-                    } 
-                    else {
-                        errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
-                    }
-               
             }
-          
         } 
         else if (tipo.length < 1) {     
             errors.tipo = Alert.alert('Opps!', 'Informe o Tipo.')
@@ -166,7 +164,7 @@ export default function FormCaminhao ({ navigation, route }) {
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
 
         } else if (infoPrevent(infoAdicionais) == false) {           
-            errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido digitar informações de contato (Telefone ou E-mail).')
+            errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido fornecer nenhuma informação de contato (Telefone ou E-mail).')
         }  
         else {
             navegacao.navigate('SegundoFormCaminhao', {
@@ -373,85 +371,85 @@ export default function FormCaminhao ({ navigation, route }) {
 }
 
 const styles = StyleSheet.create ({
-background: {
-    backgroundColor: '#ffa500',
-    flex: 1
-},
-container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20
-},
-titulo: {
-    color: '#fff',
-    fontSize: 20,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    marginBottom: 20,
-    fontWeight: 'bold'
-},
-btnProximo: {
-    width: '100%',
-    height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20,
-},
-txtBtn: {
-    fontSize: 22,
-    color: '#222',
-    fontWeight: 'bold'
-},
-tituloInput: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 20,
-    fontWeight: 'bold'
-},
-areaInput: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'transparent',
-    marginTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderWidth: 2,
-    borderColor: '#fff'
-},
-txtArea: {
-    width: '100%',
-    height: 140,
-    backgroundColor: 'transparent',
-    marginTop: 10,
-    paddingHorizontal: 5,
-    borderWidth: 2,
-    borderColor: '#fff'
-},
-input: {
-    width: '100%',
-    fontSize: 20,
-    color: '#fff'
-}, 
-picker: {
-    borderWidth: 2,
-    borderColor: '#fff',
-    marginTop: 10,
-},
-tituloInfo: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 60,
-    fontWeight: 'bold'
-},
-atencao: {
-    fontSize: 18,
-    color: '#222',
-    marginTop: 5,
-    textAlign: 'justify'
-}
+    background: {
+        backgroundColor: '#ffa500',
+        flex: 1
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20
+    },
+    titulo: {
+        color: '#fff',
+        fontSize: 20,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        marginBottom: 20,
+        fontWeight: 'bold'
+    },
+    btnProximo: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+        marginBottom: 20
+    },
+    txtBtn: {
+        fontSize: 22,
+        color: '#222',
+        fontWeight: 'bold'
+    },
+    tituloInput: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 20,
+        fontWeight: 'bold'
+    },
+    areaInput: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    txtArea: {
+        width: '100%',
+        height: 140,
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingHorizontal: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    input: {
+        width: '100%',
+        fontSize: 20,
+        color: '#fff'
+    }, 
+    picker: {
+        borderWidth: 2,
+        borderColor: '#fff',
+        marginTop: 10
+    },
+    tituloInfo: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 60,
+        fontWeight: 'bold'
+    },
+    atencao: {
+        fontSize: 18,
+        color: '#222',
+        marginTop: 5,
+        textAlign: 'justify'
+    }
 })

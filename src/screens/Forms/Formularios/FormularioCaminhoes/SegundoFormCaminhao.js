@@ -18,14 +18,7 @@ window.Blob = Blob;
 
 const Fetch = RNFetchBlob.polyfill.Fetch
 window.fetch = new Fetch({
-    // enable this option so that the response data conversion handled automatically
     auto : true,
-    // when receiving response data, the module will match its Content-Type header
-    // with strings in this array. If it contains any one of string in this array, 
-    // the response body will be considered as binary data and the data will be stored
-    // in file system instead of in memory.
-    // By default, it only store response data to file system when Content-Type 
-    // contains string `application/octet`.
     binaryContentTypes : [
         'image/',
         'video/',
@@ -37,9 +30,7 @@ window.fetch = new Fetch({
 export default ({route, navigation}) => {
  
     const {condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, subcategoria, categoria} = route.params;
-    
-    navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()})
-
+    navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()});
     const navegacao = useNavigation();
     const { cadastrarEquipamentos, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
@@ -86,31 +77,7 @@ export default ({route, navigation}) => {
     const [imagens, setImagens] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
-    const [codigoProduto, setCodigoProduto] = useState('')
-
-
-    useEffect (() => {
-        fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
-        .then((r)=>r.json())
-        .then((json)=>{
-    
-            setCidadesData(json.estados);
-    
-        });
-
-    GeradorCodigo() 
-
-    }, []);
-
-
-    function GeradorCodigo() {
-      let  Salt =  Math.random () * Date.now();
-      let Me = user.uid
-      let CodigoFinal = Salt+Me
-
-      setCodigoProduto(CodigoFinal)
-     
-    }
+    const [codigoProduto, setCodigoProduto] = useState('');
 
     const base_firebase =  "https://firebasestorage.googleapis.com/v0/b/";
     const base_app = "locmaq-c04b0.appspot.com/o/";
@@ -119,9 +86,24 @@ export default ({route, navigation}) => {
     const base_slash = "%2F";
     const base_codigo = codigoProduto;
     const base_alt = "?alt=media";
- 
- 
 
+    useEffect (() => {
+        fetch('https://gist.githubusercontent.com/letanure/3012978/raw/2e43be5f86eef95b915c1c804ccc86dc9790a50a/estados-cidades.json')
+        .then((r)=>r.json())
+        .then((json)=>{
+            setCidadesData(json.estados);
+        });
+
+        GeradorCodigo() 
+    }, []);
+
+
+    function GeradorCodigo() {
+      let  Salt =  Math.random () * Date.now();
+      let Me = user.uid
+      let CodigoFinal = Salt+Me
+        setCodigoProduto(CodigoFinal)
+    }
 
     function handleRegister() {
         if (estado.length < 1) {            
@@ -141,111 +123,107 @@ export default ({route, navigation}) => {
         } 
         else {
             salvarImagem(imagens); 
-             
-
+            
             var urls = [];
-            console.log(imagens.length)
-    if (imagens.length == 1) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = "";
-        var imagem2 = "";
-        var imagem3 = "";
-        var imagem4 = "";
-        var imagem5 = "";
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-        
-    } else if (imagens.length == 2) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-        var imagem2 = "";
-        var imagem3 = "";
-        var imagem4 = "";
-        var imagem5 = "";
+            
+            if (imagens.length == 1) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = "";
+                var imagem2 = "";
+                var imagem3 = "";
+                var imagem4 = "";
+                var imagem5 = "";
 
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-        
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
+            else if (imagens.length == 2) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+                var imagem2 = "";
+                var imagem3 = "";
+                var imagem4 = "";
+                var imagem5 = "";
 
-    } else if (imagens.length == 3) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-        var imagem3 = "";
-        var imagem4 = "";
-        var imagem5 = "";
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-        
-    } else if (imagens.length == 4) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-        var imagem4 = "";
-        var imagem5 = "";
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-    } else if (imagens.length == 5) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-        var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
-        var imagem5 = "";
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto,  imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-    } else if (imagens.length == 6) {
-        var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-        var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-        var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-        var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-        var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
-        var imagem5 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'5-'+base_codigo+'.jpeg'+base_alt; 
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
+            else if (imagens.length == 3) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+                var imagem3 = "";
+                var imagem4 = "";
+                var imagem5 = "";
 
-        if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, 
-            potencia, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0,imagem1,imagem2,imagem3,imagem4,imagem5)) 
-        { 
-            Alert.alert('','Cadastrado com Sucesso!');
-            // navegacao.navigate('Anuncie');
-        }
-    }
-           
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
+            else if (imagens.length == 4) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+                var imagem4 = "";
+                var imagem5 = "";
 
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
+            else if (imagens.length == 5) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+                var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
+                var imagem5 = "";
+                
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
+            else if (imagens.length == 6) {
+                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
+                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
+                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
+                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
+                var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
+                var imagem5 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'5-'+base_codigo+'.jpeg'+base_alt; 
 
-           
+                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
+                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                { 
+                    Alert.alert('','Cadastrado com Sucesso!');
+                    // navegacao.navigate('Anuncie');
+                }
+            } 
         }  
     }
  
-    
-
     async function salvarImagem(imagens) {
-        //    let URLImagens = imagensURL
         for (var b= 0; b < imagens.length; b++ ) {
 
             let tipoImagem = imagens[b].tipo.replace('image/','');
             let nomeImagem =  b +'-' + codigoProduto + '.' + tipoImagem;
-           
             let imagem = firebase.storage().ref().child('equipamentos').child(user.uid).child(codigoProduto).child(nomeImagem);
             
             let uri = imagens[b].url.replace('file://', '');
@@ -264,9 +242,7 @@ export default ({route, navigation}) => {
             })
         }
     }
-
-   
-                     
+                
     function pegaCidades(v,k) {
         var todasCidades = [{key: 0, nome: "SELECIONAR"}];
      
@@ -286,7 +262,6 @@ export default ({route, navigation}) => {
             setEstado(v);
         }  
     }
-
 
     let estadoItem = estados.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
@@ -322,8 +297,7 @@ export default ({route, navigation}) => {
             includeBase64: true,   
         }).then(image => {
             onSelectedImageCamera(image)
-            setModalVisible(false)
-           
+            setModalVisible(false)  
         });
     }
 
@@ -336,27 +310,20 @@ export default ({route, navigation}) => {
             multiple: true,
             minFiles: 6,
             maxFiles: 6
-
           }).then(image => {
             onSelectedImageLibrary(image)
             setModalVisible(false)
-            
         });
     }
 
     function onSelectedImageCamera(image) {
-        console.log(image)
         let newDataImg = imagens;
-
-            newDataImg.push({
-                id: Math.floor (Math.random () * Date.now ()),
-                url: image.path,
-                tipo: image.mime,
-            });     
-            
+        newDataImg.push({
+            id: Math.floor (Math.random () * Date.now ()),
+            url: image.path,
+            tipo: image.mime,
+        });     
         setImagens(newDataImg);
-     
-        
     }
 
     function onSelectedImageLibrary(image) {
@@ -369,9 +336,9 @@ export default ({route, navigation}) => {
                     url: image[i].path,
                     tipo: image[i].mime, 
                 });
-            }
-                
-        } else {
+            }      
+        } 
+        else {
             newDataImg.push({
                 id: Math.floor (Math.random () * Date.now ()),
                 url: image[0].path,
@@ -379,17 +346,13 @@ export default ({route, navigation}) => {
             });     
         }
         setImagens(newDataImg);
-       
-       
     }
 
     function removerImg (id) {
         imagens.forEach(function (item, index){
-        
             if (id == item.id) { 
                 var count = 0;
-                count =  imagens.splice(imagens[index],1)
-                
+                count =  imagens.splice(imagens[index],1)  
                 setCountImagens(count)   
             }
         });
@@ -397,7 +360,6 @@ export default ({route, navigation}) => {
 
     return (
         <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
-            
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -427,7 +389,6 @@ export default ({route, navigation}) => {
                         {cidadeItem}
                     </Picker>
                 </View>
-
                 
                 {condicao.nome == 'ALUGUEL' ?
                     (
@@ -531,7 +492,6 @@ export default ({route, navigation}) => {
                 <Modal animationType="fade" transparent={true} visible={modalvisible} onRequestClose={() => {}}>
                     <View style={styles.modalWindow}>
                         <View style={styles.modalBody}>
-
                             <TouchableOpacity style={styles.areaBtnModalClose} onPress={CloseModal}>
                                 <AntDesign
                                 style={{marginRight: 20, marginBottom: 5}}
@@ -548,9 +508,7 @@ export default ({route, navigation}) => {
                             <TouchableOpacity style={styles.areaBtnModal} onPress={choosePhotoFromLibrary}>
                                 <Text style={styles.txtBtnModal}>ESCOLHER FOTO</Text>
                             </TouchableOpacity>
-
                         </View>
-
                     </View>
                 </Modal>
 
@@ -592,136 +550,136 @@ function renderItem(item, removerImg) {
 };
 
 const styles = StyleSheet.create ({
-background: {
-    backgroundColor: '#ffa500',
-    flex: 1
-},
-container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20
-},
-titulo: {
-    color: '#fff',
-    fontSize: 20,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    marginBottom: 20,
-    fontWeight: 'bold'
-},
-btnAnunciar: {
-    width: '100%',
-    height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20,
-},
-txtBtn: {
-    fontSize: 22,
-    color: '#222',
-    fontWeight: 'bold'
-},
-tituloInput: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 20,
-    fontWeight: 'bold'
-},
-tituloImagens: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 40,
-    fontWeight: 'bold'
-},
-subImagens: {
-    fontSize: 17,
-    color: '#fff',
-    marginTop: 5
-},
-areaInput: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'transparent',
-    marginTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderWidth: 2,
-    borderColor: '#fff'
-},
-input: {
-    width: '100%',
-    fontSize: 20,
-    color: '#fff'
-}, 
-picker: {
-    borderWidth: 2,
-    borderColor: '#fff',
-    marginTop: 10
-},
-areaBtnPhoto: {
-    width: '100%',
-    height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-},
-txtBtnPhoto: {
-    fontSize: 22,
-    color: '#ffa500',
-    fontWeight: 'bold'
-},
-areaImage: {
-    height: 105,
-    width: 105,
-    borderWidth: 2,
-    borderColor: '#fff',
-    margin: 10 
-},
-itemImage: {
-    height: 101,
-    width: 101,
-    resizeMode: 'cover',
-},
-modalWindow: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-},
-modalBody:{
-    width: 350,
-    height: 250,
-    backgroundColor: '#ffa500',
-    borderRadius: 10,
-},
-tituloModal: {
-    fontSize: 20,
-    color: '#222',
-    marginTop: 20,
-    fontWeight: 'bold'
-},
-areaBtnModal: {
-    width: '80%',
-    marginLeft: '10%',
-    height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-},
-txtBtnModal: {
-    fontSize: 22,
-    color: '#ffa500',
-    fontWeight: 'bold'
-},
-areaBtnModalClose: {
-    marginTop: 20,
-    flexDirection: 'row-reverse'
-},
+    background: {
+        backgroundColor: '#ffa500',
+        flex: 1
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20
+    },
+    titulo: {
+        color: '#fff',
+        fontSize: 20,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        marginBottom: 20,
+        fontWeight: 'bold'
+    },
+    btnAnunciar: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+        marginBottom: 20
+    },
+    txtBtn: {
+        fontSize: 22,
+        color: '#222',
+        fontWeight: 'bold'
+    },
+    tituloInput: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 20,
+        fontWeight: 'bold'
+    },
+    tituloImagens: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 40,
+        fontWeight: 'bold'
+    },
+    subImagens: {
+        fontSize: 17,
+        color: '#fff',
+        marginTop: 5
+    },
+    areaInput: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    input: {
+        width: '100%',
+        fontSize: 20,
+        color: '#fff'
+    }, 
+    picker: {
+        borderWidth: 2,
+        borderColor: '#fff',
+        marginTop: 10
+    },
+    areaBtnPhoto: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20
+    },
+    txtBtnPhoto: {
+        fontSize: 22,
+        color: '#ffa500',
+        fontWeight: 'bold'
+    },
+    areaImage: {
+        height: 105,
+        width: 105,
+        borderWidth: 2,
+        borderColor: '#fff',
+        margin: 10 
+    },
+    itemImage: {
+        height: 101,
+        width: 101,
+        resizeMode: 'cover'
+    },
+    modalWindow: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalBody:{
+        width: 350,
+        height: 250,
+        backgroundColor: '#ffa500',
+        borderRadius: 10
+    },
+    tituloModal: {
+        fontSize: 20,
+        color: '#222',
+        marginTop: 20,
+        fontWeight: 'bold'
+    },
+    areaBtnModal: {
+        width: '80%',
+        marginLeft: '10%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20
+    },
+    txtBtnModal: {
+        fontSize: 22,
+        color: '#ffa500',
+        fontWeight: 'bold'
+    },
+    areaBtnModalClose: {
+        marginTop: 20,
+        flexDirection: 'row-reverse'
+    }
 })
