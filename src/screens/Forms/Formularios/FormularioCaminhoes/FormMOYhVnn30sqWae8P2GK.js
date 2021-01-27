@@ -4,7 +4,7 @@ import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 //Formulário Caminhões
-export default function FormCaminhao ({ navigation, route }) {
+export default function FormCaminhoes({ navigation, route }) {
 
     const {titulo, subnome, subkey, catkey} = route.params;
     navigation.setOptions({headerTitle: subnome.toUpperCase()});
@@ -22,14 +22,15 @@ export default function FormCaminhao ({ navigation, route }) {
     const [fabricante, setFabricante] = useState('cfhcxhxj,');
     const [modelo, setModelo] = useState('ccgiuho');
     const [ano, setAno] = useState('5599');
-    const [tipo, setTipo] = useState('');
+    const [tipo, setTipo] = useState([{key: 2, nome: 'TRUCK'}]);
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'TOCO'}, 
         {key: 2, nome: 'TRUCK'}, 
         {key: 3, nome: 'TRUCK - TRUCADO'}, 
         {key: 4, nome: 'TRAÇADO'}, 
-        {key: 5, nome: 'TRAÇADO - TRUCADO'} ]);
+        {key: 5, nome: 'TRAÇADO - TRUCADO'} 
+    ]);
     const [tracao, setTracao] = useState('');
     const [tracaovalores, setTracaoValores] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
@@ -43,8 +44,6 @@ export default function FormCaminhao ({ navigation, route }) {
         {key: 8, nome: '8x6'},
         {key: 9, nome: '8x8'}
     ]);
-    const [caracteristica, setCaracteristica] = useState('');
-    const [peso, setPeso] = useState('');
     const [consumo, setConsumo] = useState('56462');
     const [hodometro, setHodometro] = useState('5161');
     const [horimetro, setHorimetro] = useState('5465');
@@ -120,19 +119,6 @@ export default function FormCaminhao ({ navigation, route }) {
         } 
         else if (ano.length < 4 ) {  
             errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')
-
-            if (ano.length > 4 ) {
-                errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
-            } 
-            else {
-                var numbers = /^[0-9]+$/;
-                if (ano.match(numbers)) {
-                    return true;
-                } 
-                else {
-                    errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.') 
-                }
-            }
         } 
         else if (tipo.length < 1) {     
             errors.tipo = Alert.alert('Opps!', 'Informe o Tipo.')
@@ -141,30 +127,34 @@ export default function FormCaminhao ({ navigation, route }) {
             errors.tracao = Alert.alert('Opps!', 'Informe a Tração.')
         } 
         else if (consumo.length < 1) {                   
-            errors.consumo = Alert.alert('Opps!', 'Informe o Consumo.')
+            errors.consumo = Alert.alert('Opps!', 'Informe o Consumo Médio.')
         }  
         else if (hodometro.length < 1) {                 
             errors.hodometro = Alert.alert('Opps!', 'Informe o Hodômetro.')
         }   
+        else if (capacidade.length < 1  ) {
+            errors.capacidade = Alert.alert('Oops!', 'Informe a Capacidade.')
+        } 
+        else if (potencia.length < 1) {     
+            errors.potencia = Alert.alert('Opps!', 'Informe a Potência.')
+        } 
         else if (seguro.length < 1) {           
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
-
-        } else if (infoPrevent(infoAdicionais) == false) {           
+        } 
+        else if (infoPrevent(infoAdicionais) == false) {           
             errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido digitar informações de contato (Telefone ou E-mail).')
         }  
         else {
             navegacao.navigate('SegundoFormCaminhao', {
-                condicao: condicao, 
-                fabricante: fabricante, 
+                condicao: condicao,
+                fabricante: fabricante,  
                 modelo: modelo, 
-                ano: ano, 
+                ano: ano,
                 tipo: tipo, 
                 tracao: tracao, 
-                caracteristica: caracteristica, 
-                peso: peso,
                 consumo: consumo, 
-                hodometro: hodometro, 
-                horimetro: horimetro, 
+                hodometro: hodometro,
+                horimetro: horimetro,
                 capacidade: capacidade,
                 potencia: potencia,
                 seguro: seguro, 
@@ -174,7 +164,7 @@ export default function FormCaminhao ({ navigation, route }) {
             })
         }
     }
-
+console.log(ano)
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}
@@ -203,7 +193,7 @@ export default function FormCaminhao ({ navigation, route }) {
                         value={fabricante}
                         onChangeText={(text) => setFabricante(text)}
                         keyboardType={'default'}
-                        maxLength={50}
+                        maxLength={20}
                     />
                 </View>
 
@@ -215,7 +205,7 @@ export default function FormCaminhao ({ navigation, route }) {
                         value={modelo}
                         onChangeText={(text) => setModelo(text)}
                         keyboardType={'default'}
-                        maxLength={50}
+                        maxLength={20}
                     />
                 </View>
 
@@ -303,7 +293,7 @@ export default function FormCaminhao ({ navigation, route }) {
                         value={capacidade}
                         onChangeText={(text) => setCapacidade(text)}
                         keyboardType={'numeric'}
-                        maxLength={50}
+                        maxLength={20}
                     />
                 </View>
 
@@ -316,7 +306,7 @@ export default function FormCaminhao ({ navigation, route }) {
                         value={potencia}
                         onChangeText={(text) => setPotencia(text)}
                         keyboardType={'numeric'}
-                        maxLength={50}
+                        maxLength={20}
                     />
                 </View>
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Anuncios from '../../components/Anuncios';
 import firebase from '../../services/firebaseConnection';
 import {useNavigation} from '@react-navigation/native';
@@ -11,6 +11,7 @@ const navigation = useNavigation();
 
 const [equipamentos, setEquipamentos] = useState([]);
 const [loading, setLoading] = useState(false);
+const [modalvisible, setModalVisible] = useState(false);
 
 useEffect(() => {
     async function getEquipamentos() {
@@ -22,10 +23,17 @@ useEffect(() => {
                     key: childItem.key,
                     condicao: childItem.val().condicao.nome,
                     subcategoria: childItem.val().subcategoria.nome,
-                    ano: childItem.val().ano.ano,
+                    ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
-                    imagem0:childItem.val().imagem0
-                    // imagem: childItem.val().imagensURL,
+                    preco: childItem.val().preco,
+                    precoDiaria: childItem.val().precoDiaria,
+                    codigoProduto: childItem.val().codigoProduto,
+                    imagem0:childItem.val().imagem0,
+                    imagem1:childItem.val().imagem1,
+                    imagem2:childItem.val().imagem2,
+                    imagem3:childItem.val().imagem3,
+                    imagem4:childItem.val().imagem4,
+                    imagem5:childItem.val().imagem5
                 };
 
                 setEquipamentos(oldArray => [...oldArray, data]);
@@ -37,7 +45,7 @@ useEffect(() => {
 }, []);
 
     return (
-        <View style={styles.background}>
+        <View style={styles.background} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
             <View style={styles.header}>
                 <View style={styles.areaBtnAnunciar}>
                     <Text style={styles.tituloAnuncios}>MEUS ANÚNCIOS</Text>
@@ -57,28 +65,21 @@ useEffect(() => {
                 </View>
             </View>
 
-            <ScrollView>
-                <KeyboardAvoidingView style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : ''}
-                enabled> 
-                
-                    
-
-                    <View style={styles.areaEquipamentos}>
-                        {loading ?
-                            (
-                                <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                            ) :
-                            (
-                                <FlatList
-                                    data={equipamentos}
-                                    renderItem={({item}) => (<Anuncios data={item}/>)}
-                                    keyExtractor={item => item.key}
-                                />
-                            )
-                        }
-                    </View>
-                </KeyboardAvoidingView>
+            <ScrollView style={modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : ''}>
+                <SafeAreaView style={styles.areaEquipamentos}>
+                    {loading ?
+                        (
+                            <ActivityIndicator size={"large"} color={"#222"}/>
+                        ) :
+                        (
+                            <FlatList
+                                data={equipamentos}
+                                renderItem={({item}) => (<Anuncios data={item} modalvisible={modalvisible} setModalVisible={setModalVisible}/>)}
+                                keyExtractor={item => item.key}
+                            />
+                        )
+                    }
+                </SafeAreaView>
             </ScrollView>
         </View>
         

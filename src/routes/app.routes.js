@@ -29,7 +29,11 @@ import Detalhes from '../screens/Detalhes';
 import Chat from '../screens/Chat';
 import Chat2 from '../screens/Chat2';
 import Categorias from '../screens/Forms/Categorias';
+import CategoriaServico from '../screens/Forms/CategoriaServico';
 import Subcategorias from '../screens/Forms/Subcategorias';
+import SubcategoriasServicos from '../screens/Forms/SubcategoriasServicos';
+import FormularioServicos from '../screens/Forms/FormularioServicos';
+import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormularioBritadeiras/FormMP96RRAkNan7K7LKHJs'; //Britadores
 import FormMOYhVnn30sqWae8P2GK from '../screens/Forms/Formularios/FormularioCaminhoes/FormMOYhVnn30sqWae8P2GK'; //Caminhões
 import FormMOYhb9TriP8ideQfsOc from '../screens/Forms/Formularios/FormularioEscavadeiras/FormMOYhb9TriP8ideQfsOc'; //Escavadeiras
 import FormMOYheKfAJRaaIkK4iNN from '../screens/Forms/Formularios/FormularioEmpilhadeiras/FormMOYheKfAJRaaIkK4iNN'; //Empilhadeiras
@@ -40,7 +44,9 @@ import FormMOYiJQ9nhcKzGiBotsr from '../screens/Forms/Formularios/FormularioGuid
 import FormMP966g82MJ3W_1v_dUc from '../screens/Forms/Formularios/FormularioPlataformasAerea/FormMP966g82MJ3W_1v_dUc'; //Plataformas Aérea
 import FormMQCn08fEkfPwhfOVxWr from '../screens/Forms/Formularios/FormularioMartelosHidraulico/FormMQCn08fEkfPwhfOVxWr'; //Martelos Hidraúlico
 import FormMP96Or2Unms_Wf1gWlI from '../screens/Forms/Formularios/FormularioManipuladoresTelescopico/FormMP96Or2Unms_Wf1gWlI'; //Manipuladores Telescópico
-import FormMP96RRAkNan7K7LKHJs from '../screens/Forms/Formularios/FormularioBritadeiras/FormMP96RRAkNan7K7LKHJs'; //Britadores
+import FormMS_1nckQCjTj0B2xnyR from '../screens/Forms/Formularios/FormularioUsinasdeConcreto/FormMS_1nckQCjTj0B2xnyR'; //Usina de Concreto
+import FormMS_450BFVjKcUXa_K_8 from '../screens/Forms/Formularios/FormularioPerfuratriz/FormMS_450BFVjKcUXa_K_8'; //Perfuratriz
+import SegundoFormBritador from '../screens/Forms/Formularios/FormularioBritadeiras/SegundoFormBritador'; //Segunda parte do formulário Britadores
 import SegundoFormCaminhao from '../screens/Forms/Formularios/FormularioCaminhoes/SegundoFormCaminhao'; //Segunda parte do formulário Caminhões
 import SegundoFormEscavadeira from '../screens/Forms/Formularios/FormularioEscavadeiras/SegundoFormEscavadeira'; //Segunda parte do formulário Escavadeiras
 import SegundoFormEmpilhadeira from '../screens/Forms/Formularios/FormularioEmpilhadeiras/SegundoFormEmpilhadeira'; //Segunda parte do formulário Empilhadeiras
@@ -51,7 +57,10 @@ import SegundoFormGuindaste from '../screens/Forms/Formularios/FormularioGuidast
 import SegundoFormPlataforma from '../screens/Forms/Formularios/FormularioPlataformasAerea/SegundoFormPlataforma'; //Segunda parte do formulário Plataformas Aérea
 import SegundoFormMartelo from '../screens/Forms/Formularios/FormularioMartelosHidraulico/SegundoFormMartelo'; //Segunda parte do formulário Martelos Hidraúlico
 import SegundoFormManipulador from '../screens/Forms/Formularios/FormularioManipuladoresTelescopico/SegundoFormManipulador'; //Segunda parte do formulário Manipuladores Telescópico
-import SegundoFormBritador from '../screens/Forms/Formularios/FormularioBritadeiras/SegundoFormBritador'; //Segunda parte do formulário Britadores
+import SegundoFormUsinaConcreto from '../screens/Forms/Formularios/FormularioUsinasdeConcreto/SegundoFormUsinaConcreto'; //Segunda parte do formulário Usina de Concreto
+import SegundoFormPerfuratriz from '../screens/Forms/Formularios/FormularioPerfuratriz/SegundoFormPerfuratriz'; //Segunda parte do formulário Perfuratriz
+import EditCaminhao from '../screens/Forms/FormEdicao/EditCaminhao'; //Página de edição dos formulários Caminhões
+import SegundaParte from '../screens/Forms/FormEdicao/SegundaParte'; //Segunda Página de edição dos formulários 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -116,7 +125,10 @@ export default function AppRoutes() {
             <Stack.Screen name="Chat" component={Chat} options={{headerTitle: '', headerTintColor: '#222'}}/>
             <Stack.Screen name="Chat2" component={Chat2} options={{headerTitle: '', headerTintColor: '#222'}}/>
             <Stack.Screen name="Categorias" component={Categorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="CategoriaServico" component={CategoriaServico} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="Subcategorias" component={Subcategorias} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SubcategoriasServicos" component={SubcategoriasServicos} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormularioServicos" component={FormularioServicos} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 
             <Stack.Screen name="FormMOYhVnn30sqWae8P2GK" component={FormMOYhVnn30sqWae8P2GK} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/> 
             <Stack.Screen name="FormMOYhb9TriP8ideQfsOc" component={FormMOYhb9TriP8ideQfsOc} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMOYheKfAJRaaIkK4iNN" component={FormMOYheKfAJRaaIkK4iNN} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
@@ -128,6 +140,8 @@ export default function AppRoutes() {
             <Stack.Screen name="FormMQCn08fEkfPwhfOVxWr" component={FormMQCn08fEkfPwhfOVxWr} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96Or2Unms_Wf1gWlI" component={FormMP96Or2Unms_Wf1gWlI} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="FormMP96RRAkNan7K7LKHJs" component={FormMP96RRAkNan7K7LKHJs} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMS_1nckQCjTj0B2xnyR" component={FormMS_1nckQCjTj0B2xnyR} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="FormMS_450BFVjKcUXa_K_8" component={FormMS_450BFVjKcUXa_K_8} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormCaminhao" component={SegundoFormCaminhao} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormEscavadeira" component={SegundoFormEscavadeira} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormEmpilhadeira" component={SegundoFormEmpilhadeira} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
@@ -139,6 +153,10 @@ export default function AppRoutes() {
             <Stack.Screen name="SegundoFormMartelo" component={SegundoFormMartelo} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormManipulador" component={SegundoFormManipulador} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormBritador" component={SegundoFormBritador} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormUsinaConcreto" component={SegundoFormUsinaConcreto} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundoFormPerfuratriz" component={SegundoFormPerfuratriz} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="EditCaminhao" component={EditCaminhao} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
+            <Stack.Screen name="SegundaParte" component={SegundaParte} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
        </Stack.Navigator>
     )
 }

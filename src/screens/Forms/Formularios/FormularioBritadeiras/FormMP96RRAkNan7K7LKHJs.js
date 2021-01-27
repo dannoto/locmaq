@@ -4,15 +4,14 @@ import {Picker} from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 //Formulário Britadores
-export default function FormBritador ({ navigation, route }) {
+export default function FormBritador({ navigation, route }) {
 
     const {subnome, subkey, catkey} = route.params;
-    navigation.setOptions({headerTitle: subnome.toUpperCase()})
-
+    navigation.setOptions({headerTitle: subnome.toUpperCase()});
     const navegacao = useNavigation();
     const categoria = {key:catkey, nome:'Britadores'};
-    const subcategoria = {key:subkey, nome:subnome}
-    const errors = {}
+    const subcategoria = {key:subkey, nome:subnome};
+    const errors = {};
 
     const [condicao, setCondicao] = useState('');
     const [condicoes, setCondicoes] = useState([
@@ -20,21 +19,16 @@ export default function FormBritador ({ navigation, route }) {
         {key: 1, nome: 'ALUGUEL'}, 
         {key: 2, nome: 'VENDA'}
     ]);
-    const [fabricante, setFabricante] = useState('cfhcxhxj,');
-    const [ano, setAno] = useState('5599');
-    const [modelo, setModelo] = useState('ccgiuho');
-    const [caracteristica, setCaracteristica] = useState('')
+    const [fabricante, setFabricante] = useState('');
+    const [ano, setAno] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [caracteristica, setCaracteristica] = useState('');
     const [opcoescaracteristica, setOpcoesCaracteristica] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'FIXA'}, 
         {key: 2, nome: 'MÓVEL'}]);
     const [capacidade, setCapacidade] = useState('');
-    const [peso, setPeso] = useState('5161');
-    const [tipo, setTipo] = useState('');
-    const [tracao, setTracao] = useState('');
-    const [horimetro, setHorimetro] = useState('');
-    const [hodometro, setHodometro] = useState('');
-    const [consumo, setConsumo] = useState('');
+    const [peso, setPeso] = useState('');
     const [potencia, setPotencia] = useState('');
     const [seguro, setSeguro] = useState('');
     const [segurooption, setSeguroOption] = useState([
@@ -74,19 +68,14 @@ export default function FormBritador ({ navigation, route }) {
         }  
     }
 
-    function onChangedAno(text) {
-        let newText = '';
-        let numbers = '0123456789';
-    
-        for (var i=0; i < text.length; i++) {
-            if(numbers.indexOf(text[i]) > -1 ) {
-                newText = newText + text[i];
-            }
-            else {
-                Alert.alert('Oops!', 'Informe um Ano válido.');
-            }
-        }
-        setAno({ ano:newText });
+    //Filtro Informações Adicionais
+    function infoPrevent(text){
+        if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
+            return false
+        } 
+        else {
+            return true
+        }     
     }
 
     function handleValidacao(){
@@ -95,18 +84,15 @@ export default function FormBritador ({ navigation, route }) {
         }  
         else if (fabricante.length < 1  ) {
             errors.fabricante = Alert.alert('Oops!', 'Informe o Fabricante.')
-            if (fabricante.length > 30 ) {
-                errors.fabricante = Alert.alert('Oops!', 'Limite de caracteres excedido em Fabricante.')
-            }
         }  
         else if (modelo.length < 1  ) {
             errors.modelo = Alert.alert('Oops!', 'Informe o Modelo.')
-            if (modelo.length > 30 ) {
-                errors.modelo = Alert.alert('Oops!', 'Limite de caracteres excedido em Modelo.')
-            }
         } 
         else if (ano.length < 4) {
             errors.ano = Alert.alert('Oops!', 'Informe um Ano válido.')    
+        } 
+        else if (caracteristica.length < 1) {       
+            errors.caracteristica = Alert.alert('Opps!', 'Informe a Característica.')
         } 
         else if (capacidade.length < 1) {     
             errors.capacidade = Alert.alert('Opps!', 'Informe a Capacidade de Produção.')
@@ -114,30 +100,31 @@ export default function FormBritador ({ navigation, route }) {
         else if (peso.length < 1) {                   
             errors.peso = Alert.alert('Opps!', 'Informe o Peso Operacional.')
         }    
+        else if (potencia.length < 1) {     
+            errors.potencia = Alert.alert('Opps!', 'Informe a Potência.')
+        } 
         else if (seguro.length < 1) {           
             errors.seguro = Alert.alert('Opps!', 'Informe se possui Seguro.')
+        }  
+        else if (infoPrevent(infoAdicionais) == false) {           
+            errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido digitar informações de contato (Telefone ou E-mail).')
         }  
         else {
             navegacao.navigate('SegundoFormBritador', 
             { 
-            condicao: condicao,
-            fabricante: fabricante, 
-            ano: ano, 
-            modelo: modelo, 
-            caracteristica: caracteristica, 
-            tipo: tipo, 
-            tracao: tracao, 
-            capacidade: capacidade,
-            peso: peso, 
-            hodometro: hodometro,
-            horimetro: horimetro,
-            consumo: consumo, 
-            potencia: potencia,
-            seguro: seguro, 
-            infoAdicionais: infoAdicionais,
-            categoria: categoria,
-            subcategoria: subcategoria
-        })
+                condicao: condicao,
+                fabricante: fabricante,  
+                modelo: modelo, 
+                ano: ano,
+                caracteristica: caracteristica, 
+                capacidade: capacidade,
+                peso: peso, 
+                potencia: potencia,
+                seguro: seguro, 
+                infoAdicionais: infoAdicionais,
+                categoria: categoria,
+                subcategoria: subcategoria
+            })
         }
     }
 
@@ -169,7 +156,7 @@ export default function FormBritador ({ navigation, route }) {
                         value={fabricante}
                         onChangeText={(text) => setFabricante(text)}
                         keyboardType={'default'}
-                        maxLength={30}
+                        maxLength={20}
                     />
                 </View>
 
@@ -181,7 +168,7 @@ export default function FormBritador ({ navigation, route }) {
                         value={modelo}
                         onChangeText={(text) => setModelo(text)}
                         keyboardType={'default'}
-                        maxLength={30}
+                        maxLength={20}
                     />
                 </View>
 
@@ -191,7 +178,7 @@ export default function FormBritador ({ navigation, route }) {
                         style={styles.input}
                         placeholder=""
                         value={ano}
-                        onChangeText={(text) => onChangedAno(text)}
+                        onChangeText={(text) => setAno(text)}
                         keyboardType={'numeric'}
                         maxLength={4}
                     />
@@ -209,11 +196,11 @@ export default function FormBritador ({ navigation, route }) {
                     </Picker>
                 </View>
 
-                <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
+                <Text style={styles.tituloInput}>CAPACIDADE (TON/H)</Text>
                 <View style={styles.areaInput}>
                     <TextInput
                         style={styles.input}
-                        placeholder="(Toneladas)"
+                        placeholder="(Toneladas/Hora)"
                         placeholderTextColor='#fff'
                         value={capacidade}
                         onChangeText={(text) => setCapacidade(text)}
@@ -230,6 +217,19 @@ export default function FormBritador ({ navigation, route }) {
                         placeholderTextColor='#fff'
                         value={peso}
                         onChangeText={(text) => setPeso(text)}
+                        keyboardType={'numeric'}
+                        maxLength={20}
+                    />
+                </View>
+
+                <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
+                <View style={styles.areaInput}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Potência"
+                        placeholderTextColor='#fff'
+                        value={potencia}
+                        onChangeText={(text) => setPotencia(text)}
                         keyboardType={'numeric'}
                         maxLength={20}
                     />
@@ -272,85 +272,85 @@ export default function FormBritador ({ navigation, route }) {
 }
 
 const styles = StyleSheet.create ({
-background: {
-    backgroundColor: '#ffa500',
-    flex: 1
-},
-container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20
-},
-titulo: {
-    color: '#fff',
-    fontSize: 20,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    marginBottom: 20,
-    fontWeight: 'bold'
-},
-btnProximo: {
-    width: '100%',
-    height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20,
-},
-txtBtn: {
-    fontSize: 22,
-    color: '#222',
-    fontWeight: 'bold'
-},
-tituloInput: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 20,
-    fontWeight: 'bold'
-},
-areaInput: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'transparent',
-    marginTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderWidth: 2,
-    borderColor: '#fff'
-},
-txtArea: {
-    width: '100%',
-    height: 140,
-    backgroundColor: 'transparent',
-    marginTop: 10,
-    paddingHorizontal: 5,
-    borderWidth: 2,
-    borderColor: '#fff'
-},
-input: {
-    width: '100%',
-    fontSize: 20,
-    color: '#fff'
-}, 
-picker: {
-    borderWidth: 2,
-    borderColor: '#fff',
-    marginTop: 10,
-},
-tituloInfo: {
-    fontSize: 20,
-    color: '#fff',
-    marginTop: 60,
-    fontWeight: 'bold'
-},
-atencao: {
-    fontSize: 18,
-    color: '#222',
-    marginTop: 5,
-    textAlign: 'justify'
-}
+    background: {
+        backgroundColor: '#ffa500',
+        flex: 1
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20
+    },
+    titulo: {
+        color: '#fff',
+        fontSize: 20,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        marginBottom: 20,
+        fontWeight: 'bold'
+    },
+    btnProximo: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+        marginBottom: 20
+    },
+    txtBtn: {
+        fontSize: 22,
+        color: '#222',
+        fontWeight: 'bold'
+    },
+    tituloInput: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 20,
+        fontWeight: 'bold'
+    },
+    areaInput: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    txtArea: {
+        width: '100%',
+        height: 140,
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingHorizontal: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    input: {
+        width: '100%',
+        fontSize: 20,
+        color: '#fff'
+    }, 
+    picker: {
+        borderWidth: 2,
+        borderColor: '#fff',
+        marginTop: 10
+    },
+    tituloInfo: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 60,
+        fontWeight: 'bold'
+    },
+    atencao: {
+        fontSize: 18,
+        color: '#222',
+        marginTop: 5,
+        textAlign: 'justify'
+    }
 })

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from '../../../services/firebaseConnection';
-import FormCategories from '../../../components/FormCategories';
 
 export default () => {
     const navigation = useNavigation();
@@ -19,11 +18,12 @@ export default () => {
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
-                        nome: childItem.val().categoria,
+                        nome: childItem.val().categoria
                     };
 
-                    setCategorias(oldArray => [...oldArray, data]);
-
+                    if (data.nome !== "") {
+                        setCategorias(oldArray => [...oldArray, data]);
+                    } 
                 })
                 setLoading(false)
             })
@@ -51,7 +51,7 @@ export default () => {
                                 data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
                                 renderItem={({item}) => (
                                     <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Subcategorias', {catId: item.key})}>
-                                        <FormCategories data={item}/>
+                                        <Text style={styles.txtBtn}>{item.nome}</Text>
                                     </TouchableOpacity>
                                 )}
                                 keyExtractor={item => item.key}
@@ -96,4 +96,11 @@ const styles = StyleSheet.create ({
         borderColor: '#fff',
         paddingHorizontal: 10
     },
+    txtBtn:{
+        fontSize: 20,
+        color: '#fff',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        textAlign: 'center'
+    }
 })

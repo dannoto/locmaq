@@ -5,14 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 export default function FiltroHome({data}){
 
     const navigation = useNavigation();
-    const modeloAno = data.modelo + ' / ' + data.ano
-
-    function filterNome(nome) {
-        if(nome.length < 15) {
-          return nome;
-        }
-        return `${nome.substring(0, 15)}...`;
-    }
+    const modelo = data.modelo;
+    const ano = data.ano;
+    const modeloAno = modelo + ' / ' + ano
 
     function filterModelo(modelo) {
         if(modelo.length < 18) {
@@ -22,10 +17,10 @@ export default function FiltroHome({data}){
     }
 
     function filterFabricante(fabricante) {
-        if(fabricante.length < 16) {
+        if(fabricante.length < 15) {
           return fabricante;
         }
-        return `${fabricante.substring(0, 16)}...`;
+        return `${fabricante.substring(0, 15)}...`;
     }
 
     function filterPreco(preco) {
@@ -47,9 +42,8 @@ export default function FiltroHome({data}){
             </View>
     
             <View>
-                <Text style={styles.sub}>{filterFabricante(data.fabricante)} </Text>
-                <Text style={styles.fabricante}>{filterNome(data.modelo)}</Text>
-                {/* <Text style={styles.modelo}>{filterModelo(modeloAno)}</Text> */}
+                <Text style={styles.fabricante}>{filterFabricante(data.fabricante)}</Text>
+                <Text style={styles.modelo}>{filterModelo(modeloAno)} </Text>
 
                 {data.condicao == 'ALUGUEL' ?
                     (
@@ -79,7 +73,8 @@ const styles = StyleSheet.create ({
         padding: 10
     },
     areaBtn: {
-        width: 110
+        width: 110,
+        marginTop: 30
     },
     txtBtn: {
         backgroundColor: '#ffa500',
@@ -91,18 +86,13 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    sub: {
+    fabricante: {
         color: '#222',
         fontSize: 17,
         marginLeft: 5,
-        textTransform: 'uppercase'
-    },
-    fabricante: {
-        color: '#222',
-        fontSize: 16,
-        marginLeft: 5,
         marginTop: 5,
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
     },
     modelo: {
         color: '#222',
@@ -120,16 +110,15 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold'
     },
     areaImg: {
-        width: 184,
-        height: 152,
-        borderWidth: 2,
+        width: 186,
+        height: 156,
+        borderWidth: 3,
         borderColor: '#ffa500',
-        borderRadius: 10,
         marginRight: 10
     },
     img: {
         width: 180,
-        height: 148,
+        height: 150,
         resizeMode: 'cover'
     },
     condicao: {

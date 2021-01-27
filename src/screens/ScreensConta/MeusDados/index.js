@@ -240,7 +240,7 @@ export default () => {
             <Text style={styles.titulo}>E-MAIL</Text>
             <Text style={styles.dados}>{user.email}</Text>
 
-            <View style={styles. areaCelular}>
+            <View style={styles.areaCelular}>
                 <View>
                     <Text style={styles.titulo}>CELULAR</Text>
                     <Text style={styles.dados}>(62) 99259-3271</Text>

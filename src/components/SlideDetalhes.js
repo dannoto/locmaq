@@ -7,6 +7,12 @@ export default function SlideDetalhes({data}) {
 
     const [imagens, setImagens] = useState([]);
     const key = data;
+    const i1 = imagens.imagem0
+    const i2 = imagens.imagem1
+    const i3 = imagens.imagem2
+    const i4 = imagens.imagem3
+    const i5 = imagens.imagem4
+    const i6 = imagens.imagem5
 
     useEffect(() => {
         async function getImagens() {
@@ -15,7 +21,12 @@ export default function SlideDetalhes({data}) {
 
                     let fotos = {
                         key: snapshot.key,
-                        imagem0: snapshot.val().imagem0
+                        imagem0: snapshot.val().imagem0,
+                        imagem1: snapshot.val().imagem1,
+                        imagem2: snapshot.val().imagem2,
+                        imagem3: snapshot.val().imagem3,
+                        imagem4: snapshot.val().imagem4,
+                        imagem5: snapshot.val().imagem5
                     };
                     
                 setImagens(fotos);
@@ -23,8 +34,6 @@ export default function SlideDetalhes({data}) {
         }
         getImagens();
     }, []);
-
-    const i1 = imagens.imagem0
     
     return (
         <Swiper
@@ -48,26 +57,65 @@ export default function SlideDetalhes({data}) {
             borderRadius: 10
         }}
         >
-            {/* <View style={styles.slide}>
+            
+            <View style={styles.slide}>
                 <Image style={styles.img} source={{uri: i1}}/>
-            </View>   */}
+            </View>  
 
+            {i2 == "" ?
+                (
+                    false
+                ) :
+                (
+                <View style={styles.slide}>
+                    <Image style={styles.img} source={{uri: i2}}/>
+                </View>
+                )  
+            }
 
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
+            {i3 == ""  ?
+                (
+                    false
+                ) :
+                (
+                    <View style={styles.slide}>
+                        <Image style={styles.img} source={{uri: i3}}/>
+                    </View>
+                )  
+            }
 
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
+            {i4 == "" ?
+                (
+                    false
+                ) :
+                (
+                    <View style={styles.slide}>
+                        <Image style={styles.img} source={{uri: i2}}/>
+                    </View>
+                )  
+            }
 
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View>
+            {i5 == ""  ?
+                (
+                    false
+                ) :
+                (
+                    <View style={styles.slide}>
+                        <Image style={styles.img} source={{uri: i2}}/>
+                    </View>
+                )  
+            }
 
-            <View style={styles.slide}>
-                <Image style={styles.img} source={require('../assets/caminhao.jpg')}/>
-            </View> 
+            {i6 == ""  ?
+                (
+                    false
+                ) :
+                (
+                    <View style={styles.slide}>
+                        <Image style={styles.img} source={{uri: i2}}/>
+                    </View>
+                )  
+            }
         </Swiper>     
     );
 }
@@ -84,6 +132,7 @@ const styles = StyleSheet.create ({
     },
     img: {
         width: '100%',
+        height: 350,
         resizeMode: 'cover'
     },
     color:{

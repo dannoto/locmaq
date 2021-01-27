@@ -45,7 +45,8 @@
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^7.1.0",
     "registry.npmjs.org": "^1.0.1",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "swiper": "^6.4.8"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

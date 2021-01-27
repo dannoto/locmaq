@@ -53,11 +53,10 @@ const styles = StyleSheet.create ({
        marginRight: 5
     },
     areaImg: {
-        width: 174,
-        height: 144,
-        borderWidth: 2,
-        borderColor: '#ffa500',
-        borderRadius: 10
+        width: 176,
+        height: 146,
+        borderWidth: 3,
+        borderColor: '#ffa500'
     },
     img: {
         width: 170,

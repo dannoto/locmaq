@@ -11,14 +11,14 @@ export default function CelularPJ({route}){
     const errors = {}
     const [celular, setCelular] = useState('');
     
-    function handleValidacao(){
-        if (celular.length < 15) {       
-            errors.condicao = Alert.alert('Opps!', 'Informe um número de celular válido.')
-        }   
-        else {
-            navigation.navigate('CodigoPJ', {celular: celular, empresa: empresa, cnpj: cnpj, tipo: tipo, avatar: avatar, email: email, password: password})
-        }
-    }
+    // function handleValidacao(){
+    //     if (celular.length < 15) {       
+    //         errors.condicao = Alert.alert('Opps!', 'Informe um número de celular válido.')
+    //     }   
+    //     else {
+    //         navigation.navigate('CodigoPJ', {celular: celular, empresa: empresa, cnpj: cnpj, tipo: tipo, avatar: avatar, email: email, password: password})
+    //     }
+    // }
 
     return(
         <View style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>

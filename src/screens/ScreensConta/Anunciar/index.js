@@ -17,7 +17,7 @@ export default () => {
                         <Text style={styles.txtBtn}>EQUIPAMENTOS</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('CategoriaServico')}>
                         <Text style={styles.txtBtn}>SERVIÇOS</Text>
                     </TouchableOpacity>
                 </View>             

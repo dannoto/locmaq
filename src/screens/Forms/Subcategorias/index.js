@@ -39,11 +39,7 @@ export default ({route}) => {
     }, []);
 
     async function PegaSubcategorias(data) {
-
-        
-
         if (data.categoria == catId) {           
-            // catfiltradas.push({name:data.name,key:data.key});
             let catfiltradas = {
                 key: data.key,
                 nome: data.nome,
@@ -51,12 +47,8 @@ export default ({route}) => {
             };
 
             setSubCategoriasFiltradas(oldArray => [...oldArray, catfiltradas].sort());
-        } else {
-           
+        } else {    
         }
-       
-        console.log(catfiltradas);
-
     }
 
     return (
@@ -76,7 +68,7 @@ export default ({route}) => {
                                 data={subcategoriasfiltradas.sort((a,b) => a.nome.localeCompare(b.nome))}
                                 renderItem={({item}) => (
                                    
-                                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Form' + item.categoria.replace("-",""),{titulo:item.nome, subnome:item.nome,subkey:item.key, catkey:item.categoria})}>
+                                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Form' + item.categoria.replace("-",""),{subnome:item.nome,subkey:item.key, catkey:item.categoria})}>
                                         <Text style={styles.txtBtn}>{item.nome}</Text>
                                     </TouchableOpacity>
                                 )}

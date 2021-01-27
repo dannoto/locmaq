@@ -12,13 +12,14 @@ export default function CelularPF({route}){
     const navigation = useNavigation();
     const errors = {}
     const [celular, setCelular] = useState('');
+    const  codigoGerado = Math.floor(Math.random() * 9999) + 1000;
     
 
    async function pegarNumero() {
         let celularFiltrado = celular.replace('(','').replace(')','').replace('-','').replace(' ','')
 
         if(celular && celular.length > 9){
-            navigation.navigate('CodigoPF', {celular: celular, celularFiltrado:celularFiltrado,  nome: nome, cpf: cpf, tipo: tipo, avatar: avatar, email: email, password: password})
+            navigation.navigate('CodigoPF', {celular: celular, celularFiltrado:celularFiltrado,  nome: nome, cpf: cpf, tipo: tipo, avatar: avatar, email: email, password: password,codigoGerado:codigoGerado})
            
         }
         else  {

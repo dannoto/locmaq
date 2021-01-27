@@ -1,4 +1,4 @@
-// Segunda parte do Formulário Caminhão
+// Segunda parte do Formulário Caminhões
 
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, StyleSheet, Alert, Platform, Modal, ImageBackground } from 'react-native';
@@ -29,10 +29,10 @@ window.fetch = new Fetch({
 
 export default ({route, navigation}) => {
  
-    const {condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, subcategoria, categoria} = route.params;
+    const {condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, subcategoria, categoria} = route.params;
     navigation.setOptions({headerTitle: subcategoria.nome.toUpperCase()});
     const navegacao = useNavigation();
-    const { cadastrarEquipamentos, user } = useContext(AuthContext);   
+    const { cadastrarCaminhao, user } = useContext(AuthContext);   
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
  
@@ -99,9 +99,9 @@ export default ({route, navigation}) => {
 
 
     function GeradorCodigo() {
-      let  Salt =  Math.random () * Date.now();
-      let Me = user.uid
-      let CodigoFinal = Salt+Me
+        let  Salt =  Math.random () * Date.now();
+        let Me = user.uid
+        let CodigoFinal = Salt+Me
         setCodigoProduto(CodigoFinal)
     }
 
@@ -134,11 +134,11 @@ export default ({route, navigation}) => {
                 var imagem4 = "";
                 var imagem5 = "";
 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 2) {
@@ -149,11 +149,11 @@ export default ({route, navigation}) => {
                 var imagem4 = "";
                 var imagem5 = "";
 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 3) {
@@ -164,11 +164,11 @@ export default ({route, navigation}) => {
                 var imagem4 = "";
                 var imagem5 = "";
 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 4) {
@@ -179,11 +179,11 @@ export default ({route, navigation}) => {
                 var imagem4 = "";
                 var imagem5 = "";
 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 5) {
@@ -194,11 +194,11 @@ export default ({route, navigation}) => {
                 var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
                 var imagem5 = "";
                 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 6) {
@@ -209,11 +209,11 @@ export default ({route, navigation}) => {
                 var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
                 var imagem5 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'5-'+base_codigo+'.jpeg'+base_alt; 
 
-                if (cadastrarEquipamentos (condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, 
-                    estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+                    preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
                     Alert.alert('','Cadastrado com Sucesso!');
-                    // navegacao.navigate('Anuncie');
+                    navegacao.navigate('Anuncie');
                 }
             } 
         }  

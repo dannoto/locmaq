@@ -174,7 +174,7 @@ function AuthProvider({ children }) {
     //         let categorias = firebase.database().ref('categorias');
     //         let chave = categorias.push().key;
     //         await categorias.child(chave).set({ 
-    //            categoria: 'Martelos Hidraúlico'
+    //            categoria: 'Serviços'
     //         });  
     //     }
 
@@ -187,35 +187,497 @@ function AuthProvider({ children }) {
     //         let subcategorias = firebase.database().ref('subcategorias');
     //         let chave = subcategorias.push().key;
     //         await subcategorias.child(chave).set({ 
-    //            nome: 'Trator de Esteira',
-    //            categoria: '-MOYhjWTHG77Uf6JCH7W'
+    //            nome: 'Outro',
+    //            servico: '-MS2rbqavp5zN_3QZsSK'
     //         });  
     //     }
 
     //     dados();
     // }, []);
 
-    // Inserindo Equipamentos
-    async function cadastrarEquipamentos(condicao, fabricante, ano, modelo, tipo, tracao, caracteristica, peso, consumo, hodometro, horimetro, capacidade, potencia, seguro, 
-    infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+    // // Inserindo Serviços
+    // useEffect (() => {
+    //     async function dados() {
+    //         let servicos = firebase.database().ref('servicos');
+    //         let chave = servicos.push().key;
+    //         await servicos.child(chave).set({ 
+    //            servico: 'Outro'
+    //         });  
+    //     }
 
-        let equipamentos = await firebase.database().ref('equipamentos');
-        let chave = equipamentos.push().key;
+    //     dados();
+    // }, []);
 
-        equipamentos.child(chave).set({
+    // Inserindo Equipamentos - Britadores
+    async function cadastrarBritador(condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, potencia, seguro, infoAdicionais, estado, cidade, preco,
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let britador = await firebase.database().ref('equipamentos');
+        let chave = britador.push().key;
+
+        britador.child(chave).set({
             usuario: usuario,
             condicao: condicao,
             fabricante: fabricante,
-            ano: ano,
             modelo: modelo,
+            ano: ano,
+            caracteristica: caracteristica,
+            capacidade: capacidade,
+            peso: peso,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Caminhões
+    async function cadastrarCaminhao(condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
+        preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+    
+        let caminhao = await firebase.database().ref('equipamentos');
+        let chave = caminhao.push().key;
+
+        caminhao.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            modelo: modelo,
+            ano: ano,
             tipo: tipo,
             tracao: tracao,
             consumo: consumo,
             hodometro: hodometro,
             horimetro: horimetro,
-            caracteristica: caracteristica,
-            peso: peso,
             capacidade: capacidade,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Compactadores
+    async function cadastrarCompactador(condicao, fabricante, modelo, ano, caracteristica, tipo, motorizacao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
+        cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let compactador = await firebase.database().ref('equipamentos');
+        let chave = compactador.push().key;
+
+        compactador.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            modelo: modelo,
+            ano: ano,
+            caracteristica: caracteristica,
+            tipo: tipo,
+            motorizacao: motorizacao,
+            consumo: consumo,
+            peso: peso,
+            horimetro: horimetro,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Empilhadeiras
+    async function cadastrarEmpilhadeira(condicao, fabricante, modelo, ano, caracteristica, tipo, capacidade, altura, peso, potencia, seguro, infoAdicionais, estado, cidade,
+        preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let empilhadeira = await firebase.database().ref('equipamentos');
+        let chave = empilhadeira.push().key;
+
+        empilhadeira.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            caracteristica: caracteristica, 
+            tipo: tipo, 
+            capacidade: capacidade,
+            altura: altura,
+            peso: peso, 
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Escavadeiras
+    async function cadastrarEscavadeira(condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
+        cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let escavadeira = await firebase.database().ref('equipamentos');
+        let chave = escavadeira.push().key;
+
+        escavadeira.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            caracteristica: caracteristica, 
+            tipo: tipo, 
+            tracao: tracao, 
+            consumo: consumo,
+            peso: peso,
+            horimetro: horimetro,
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Guindastes
+    async function cadastrarGuindaste(condicao, fabricante, modelo, ano, caracteristica, capacidade, lanca, potencia, seguro, infoAdicionais, estado, cidade, preco, 
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let guindaste = await firebase.database().ref('equipamentos');
+        let chave = guindaste.push().key;
+
+        guindaste.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            caracteristica: caracteristica, 
+            capacidade: capacidade, 
+            lanca: lanca,
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Manipuladores Telescópico
+    async function cadastrarManipulador(condicao, fabricante, modelo, ano, consumo, peso, lanca, horimetro, potencia, seguro, infoAdicionais, estado, cidade, preco,
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let manipulador = await firebase.database().ref('equipamentos');
+        let chave = manipulador.push().key;
+
+        manipulador.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            consumo: consumo, 
+            peso: peso, 
+            lanca: lanca,
+            horimetro: horimetro,
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Martelos Hidraúlico
+    async function cadastrarMartelo(condicao, fabricante, modelo, ano, peso, seguro, infoAdicionais, estado, cidade, preco, precoDiaria, precoSemanal, 
+        precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let martelo = await firebase.database().ref('equipamentos');
+        let chave = martelo.push().key;
+
+        martelo.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            peso: peso, 
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Plataformas Aérea
+    async function cadastrarPlataforma(condicao, fabricante, modelo, ano, caracteristica, capacidade, altura, potencia, seguro, infoAdicionais, estado, cidade,  
+        preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let plataforma = await firebase.database().ref('equipamentos');
+        let chave = plataforma.push().key;
+
+        plataforma.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            caracteristica: caracteristica, 
+            capacidade: capacidade,
+            altura: altura,
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Tratores
+    async function cadastrarTrator(condicao, fabricante, modelo, ano, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, cidade, preco, 
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let trator = await firebase.database().ref('equipamentos');
+        let chave = trator.push().key;
+
+        trator.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,  
+            modelo: modelo, 
+            ano: ano,
+            consumo: consumo,
+            peso: peso,
+            horimetro: horimetro,
+            potencia: potencia,
+            seguro: seguro, 
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Usinas de Asfalto
+    async function cadastrarUsina(condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, potencia, seguro, infoAdicionais, estado, cidade, preco,
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let usina = await firebase.database().ref('equipamentos');
+        let chave = usina.push().key;
+
+        usina.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            modelo: modelo,
+            ano: ano,
+            caracteristica: caracteristica,
+            capacidade: capacidade,
+            peso: peso,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Usinas de Concreto
+    async function cadastrarUsinaConcreto(condicao, fabricante, ano, modelo, caracteristica, tipo, capacidade, peso, potencia, seguro, infoAdicionais, estado, cidade, preco,
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let usinaConcreto = await firebase.database().ref('equipamentos');
+        let chave = usinaConcreto.push().key;
+
+        usinaConcreto.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            modelo: modelo,
+            ano: ano,
+            caracteristica: caracteristica,
+            tipo: tipo,
+            capacidade: capacidade,
+            peso: peso,
+            potencia: potencia,
+            seguro: seguro,
+            infoAdicionais: infoAdicionais,
+            estado: estado,
+            cidade: cidade,
+            preco: preco,
+            precoDiaria: precoDiaria,
+            precoSemanal: precoSemanal,
+            precoMensal: precoMensal,
+            categoria: categoria,
+            subcategoria:subcategoria,
+            codigoProduto: codigoProduto,
+            imagem0: imagem0,
+            imagem1: imagem1,
+            imagem2: imagem2,
+            imagem3: imagem3,
+            imagem4: imagem4,
+            imagem5: imagem5
+        });
+    }
+
+    // Inserindo Equipamentos - Perfuratriz
+    async function cadastrarPerfuratriz(condicao, fabricante, modelo, ano, caracteristica, perfuracao, peso, potencia, seguro, infoAdicionais, estado, cidade, preco,
+        precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
+
+        let perfuratriz = await firebase.database().ref('equipamentos');
+        let chave = perfuratriz.push().key;
+
+        perfuratriz.child(chave).set({
+            usuario: usuario,
+            condicao: condicao,
+            fabricante: fabricante,
+            modelo: modelo,
+            ano: ano,
+            caracteristica: caracteristica,
+            perfuracao: perfuracao,
+            peso: peso,
             potencia: potencia,
             seguro: seguro,
             infoAdicionais: infoAdicionais,
@@ -248,7 +710,9 @@ function AuthProvider({ children }) {
     // }
 
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarEquipamentos }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarBritador, cadastrarCaminhao, cadastrarCompactador, cadastrarEmpilhadeira, 
+        cadastrarEscavadeira, cadastrarGuindaste, cadastrarManipulador, cadastrarMartelo, cadastrarPlataforma, cadastrarTrator, cadastrarUsina, cadastrarUsinaConcreto, cadastrarPerfuratriz
+        }}>
         {children}
         </AuthContext.Provider>
     );

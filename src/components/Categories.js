@@ -13,7 +13,12 @@ export default function Categories({data}){
         <Image style={styles.img} source={{uri: data.imagem}}/>
         
         <TouchableOpacity style={styles.btn}  onPress={() => navigation.navigate('BuscaCategoria',{key:data.key}) } >
-          <Text style={styles.btnTitulo}>{data.nome}</Text>
+          {data.nome == "" ? 
+            (<Text style={styles.btnTitulo}>{data.servico}</Text>)
+            :
+            (<Text style={styles.btnTitulo}>{data.nome}</Text>)
+          }
+          
 
           <FontAwesome
             style={{marginRight: 20}}

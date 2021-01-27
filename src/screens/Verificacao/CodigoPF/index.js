@@ -6,54 +6,59 @@ import firebase from '../../../services/firebaseConnection';
 //Codigo PF
 export default function CodigoPF({route}){
 
-    const { celular, celularFiltrado, nome, cpf, tipo, avatar, email, password } = route.params;
+    const { celular, celularFiltrado, nome, cpf, tipo, avatar, email, password,codigoGerado } = route.params;
     const navigation = useNavigation();
-    const [codigo, setCodigo] = useState('');
+    const [codigoDigitado, setCodigoDigitado] = useState('');
     const[confirmacao, setConfirmacao] = useState('')
-    const appVerifier = window.recaptchaVerifier;
-   
+  
+ 
 
    
   
-    // firebase.auth().signInWithPhoneNumber(phoneNumber, applicationVerifier)
-    //     .then(function(confirmationResult) {
-    //       var verificationCode = window.prompt('Please enter the verification ' +
-    //           'code that was sent to your mobile device.');
-    //       return confirmationResult.confirm(verificationCode);
-   
 
     useEffect(() => {
-            
-
-       enviarSMS();
+                 enviarSMS();
       }, [])
 
 
       async function enviarSMS() {
-        try{
-           const envio = await firebase.auth().signInWithPhoneNumber('+55'+celularFiltrado,appVerifier)
-           .then(confirmResult =>  console.log(confirmResult))
-           .catch(error => console.log(error));
-        //    setConfirmacao(envio);
 
-   
-         }catch(e){
-          alert(JSON.stringify(e));
-        }
+
+        https://api.smsdev.com.br/v1/send?key=SUA_CHAVE_KEY&type=9&number=11988887777&msg=Teste de envio
+        var base_url = 'https://api.smsdev.com.br/v1/send?key=';
+        var key = 'YIELEWP0GXMXJBE4LCZC22O9UN4DBH04GWC4XOWTAL9JLN1HC4C2O6ZT5IYQEP4WTY1G0BYVY8WNQPR7SGG0NZXMEAUBD1P3KB0LYZDAD8QEVR0YZEQ1P2I79WSDCNZI';
+        var numero = "&type=9&number="+celularFiltrado;
+        var mensagem = "&msg=LoqMaq - Codigo de Verificação ";
+        
+        var URL = base_url+key+numero+mensagem+codigoGerado;
+       
+
+        fetch(URL)
+        .then((r)=>r.json())
+        .then((json)=>{
+                  console.log(json)
+
+                  if (json.situacao == "OK") {
+                    console.log('ENVIADO COM SUCESSO')
+                        return true;
+                  } else {
+                    console.log('ERRO INESPERADO')
+                        return false;
+                  }
+        });
        }
 
 
-       async function confirmaCodigo() {
-        try{
-        const code = codigo;
-        const response = await confirmacao.confirm(code);
-        if(response){
-        //   navigation.navigate('Home');
-            console.log('CONFIRMADO')
+     function confirmaCodigo() {
+        console.log(codigoDigitado)
+        console.log(codigoGerado)
+        if (codigoGerado == codigoDigitado ) {
+            console.log('CADSTRADO COM SUCESSO')
+
+        } else {
+            console.log('CODIGO INVALIDO')
         }
-        } catch(e){
-          alert(JSON.stringify(e));
-        }
+        
       }
       
     return(
@@ -67,8 +72,8 @@ export default function CodigoPF({route}){
                 style={{ fontSize: 20, color: "#222" }}
                 placeholder="Informe o código OTP"
                 placeholderTextColor="#d2d2d2"
-                value={codigo}
-                onChangeText={(text) => setCodigo(text)}
+                value={codigoDigitado}
+                onChangeText={(text) => setCodigoDigitado(text)}
                 keyboardType={'numeric'}
                 maxLength={6}
                 autoFocus
@@ -82,7 +87,7 @@ export default function CodigoPF({route}){
             </View>
 
             <View style={styles.areaBtn}>
-                <TouchableOpacity style={styles.btn} onPress={{confirmaCodigo}} >
+                <TouchableOpacity style={styles.btn} onPress={confirmaCodigo} >
                     <Text style={styles.txtBtn}>AVANÇAR</Text>
                 </TouchableOpacity>
             </View>

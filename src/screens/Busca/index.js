@@ -6,7 +6,7 @@ import Categories from '../../components/Categories';
 
 export default () => {
 
-    const [categorias, setCategorias] = useState([]);
+    const [categoriasBusca, setCategoriasBusca] = useState([]);
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [loadingCat, setLoadingCat] = useState(true);
@@ -15,27 +15,27 @@ export default () => {
 
     // Buscando Categorias
     useEffect(() => {
-        async function getCategories() {
+        async function getCategorias() {
             await firebase.database().ref('categorias').on('value', (snapshot) => {
-                setCategorias([]);
+                setCategoriasBusca([]);
 
                 snapshot.forEach((childItem) => {
                     let data = {
                         key: childItem.key,
                         nome: childItem.val().categoria,
+                        servico: childItem.val().servico,
                         imagem: childItem.val().imagem
                     };
 
-                    setCategorias(oldArray => [...oldArray, data]);
+                    setCategoriasBusca(oldArray => [...oldArray, data]);
                 })
 
                 setLoadingCat(false)
             })
         }
 
-        getCategories();
+        getCategorias();
     }, []);
-
 
     return (
         <View style={styles.background}>
@@ -98,7 +98,7 @@ export default () => {
                             ) :
                             (
                                 <FlatList
-                                    data={categorias.sort((a,b) => a.nome.localeCompare(b.nome))}
+                                    data={categoriasBusca.sort((a,b) => a.nome.localeCompare(b.nome))}
                                     renderItem={({item}) => (<Categories data={item}/>)}
                                     keyExtractor={item => item.key}
                                 />

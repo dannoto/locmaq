@@ -220,7 +220,7 @@ export default () => {
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
                 enabled> 
 
-                    <View style={styles.areaRecentes}>
+                    <SafeAreaView style={styles.areaRecentes}>
                         <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
                         
                         {loading ?
@@ -228,17 +228,19 @@ export default () => {
                                 <ActivityIndicator size={"large"} color={"#222"}/>
                             ) :
                             (
-                                <FlatList
-                                    horizontal
-                                    showsHorizontalScrollIndicator={false}
-                                    showsVerticalScrollIndicator={false}
-                                    data={produtos}
-                                    renderItem={({item}) => (<Recentes data={item}/>)}
-                                    keyExtractor={item => item.key}
-                                />
+                                <SafeAreaView>
+                                    <FlatList
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        showsVerticalScrollIndicator={false}
+                                        data={produtos}
+                                        renderItem={({item}) => (<Recentes data={item}/>)}
+                                        keyExtractor={item => item.key}
+                                    />
+                                </SafeAreaView>
                             )
                         } 
-                    </View>
+                    </SafeAreaView>
 
                     <View style={styles.areaFiltros}>
                         <TouchableOpacity>
@@ -254,23 +256,25 @@ export default () => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.produtos}>
+                    <SafeAreaView style={styles.produtos}>
                         
                         {loading ?
                             (
                                 <ActivityIndicator size={"large"} color={"#222"}/>
                             ) :
                             (
-                                <FlatList
-                                    showsHorizontalScrollIndicator={false}
-                                    showsVerticalScrollIndicator={false}
-                                    data={condicao}
-                                    renderItem={({item}) => (<FiltroHome data={item}/>)}
-                                    keyExtractor={item => item.key}
-                                />
+                                <SafeAreaView>
+                                    <FlatList
+                                        showsHorizontalScrollIndicator={false}
+                                        showsVerticalScrollIndicator={false}
+                                        data={condicao}
+                                        renderItem={({item}) => (<FiltroHome data={item}/>)}
+                                        keyExtractor={item => item.key}
+                                    />
+                                </SafeAreaView>
                             )
                         }
-                    </View>
+                    </SafeAreaView>
                     
                 </KeyboardAvoidingView>
             </ScrollView>
@@ -298,17 +302,17 @@ const styles = StyleSheet.create ({
         paddingHorizontal: 20,
         marginTop: 20,
         marginBottom: 5,
-        marginHorizontal: 15,
+        marginHorizontal: 15
     },
     location: {
         marginTop: 3,
         fontSize: 18,
-        color: '#222',
+        color: '#222'
     },
     areaBtn: {
         height: 55,
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     btn: {
         flex: 1, 
