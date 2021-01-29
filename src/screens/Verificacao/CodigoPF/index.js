@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'r
 import { useNavigation } from '@react-navigation/native';
 import firebase from '../../../services/firebaseConnection';
 
+
 //Codigo PF
 export default function CodigoPF({route}){
 
@@ -10,18 +11,43 @@ export default function CodigoPF({route}){
     const navigation = useNavigation();
     const [codigoDigitado, setCodigoDigitado] = useState('');
     const[confirmacao, setConfirmacao] = useState('')
+    const [ minutes, setMinutes ] = useState(0);
+    const [seconds, setSeconds ] =  useState(59);
   
- 
-
-   
-  
-
     useEffect(() => {
-                 enviarSMS();
-      }, [])
+       
+        
+        enviarSMS();
+       
+    }, [])
 
 
-      async function enviarSMS() {
+
+
+    function timer() {
+        let myInterval = setInterval(() => {
+            if (seconds > 0) {
+               
+                console.log(seconds - 1)
+            } else {
+                clearInterval(myInterval)
+            }
+            // if (seconds === 0) {
+            //     if (minutes === 0) {
+            //         clearInterval(myInterval)
+            //     } 
+            //     else {
+            //         setSeconds(59);
+            //     }
+            // } 
+        }, 1000)
+
+        return ()=> {
+            clearInterval(myInterval);
+        };
+    }
+
+    async function enviarSMS() {
 
 
         https://api.smsdev.com.br/v1/send?key=SUA_CHAVE_KEY&type=9&number=11988887777&msg=Teste de envio
@@ -33,39 +59,43 @@ export default function CodigoPF({route}){
         var URL = base_url+key+numero+mensagem+codigoGerado;
        
 
-        fetch(URL)
-        .then((r)=>r.json())
-        .then((json)=>{
-                  console.log(json)
+        // fetch(URL)
+        // .then((r)=>r.json())
+        // .then((json)=>{
+        //           console.log(json)
 
-                  if (json.situacao == "OK") {
-                    console.log('ENVIADO COM SUCESSO')
-                        return true;
-                  } else {
-                    console.log('ERRO INESPERADO')
-                        return false;
-                  }
-        });
+        //           if (json.situacao == "OK") {
+        //             console.log('ENVIADO COM SUCESSO')
+        //                 return true;
+        //           } else {
+        //             console.log('ERRO INESPERADO')
+        //                 return false;
+        //           }
+        // });
        }
 
 
      function confirmaCodigo() {
+
         console.log(codigoDigitado)
         console.log(codigoGerado)
         if (codigoGerado == codigoDigitado ) {
             console.log('CADSTRADO COM SUCESSO')
+            
+            timer() 
 
         } else {
             console.log('CODIGO INVALIDO')
         }
         
       }
+
       
     return(
         <View style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
             <Text style={styles.titulo}>INSIRA O CÓDIGO DE VERIFICAÇÃO</Text>
 
-            <Text style={styles.txtInfo}>Digite o código de 6 dígitos enviado para seu celular +55 {celular}.</Text>
+            <Text style={styles.txtInfo}>Digite o código de 4 dígitos enviado para seu celular +55 {celular}.</Text>
 
             <View style={styles.areaInput}>
                 <TextInput
@@ -75,15 +105,27 @@ export default function CodigoPF({route}){
                 value={codigoDigitado}
                 onChangeText={(text) => setCodigoDigitado(text)}
                 keyboardType={'numeric'}
-                maxLength={6}
+                maxLength={4}
                 autoFocus
                 /> 
             </View>
 
             <View>
                 <TouchableOpacity>
-                    <Text style={styles.txtBtn}>Não recebi o código</Text>
+                    <Text style={styles.txtBtnSemCodigo}>Não recebi o código</Text>
+                    
                 </TouchableOpacity>
+
+                <View>
+                    {seconds == 0 ? 
+                        (
+                            null
+                        ) :
+                        (
+                            <Text style={styles.txtBtnSemCodigo}>Contagem {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+                        )
+                    }
+                </View>
             </View>
 
             <View style={styles.areaBtn}>
@@ -134,8 +176,8 @@ const styles = StyleSheet.create ({
         flexDirection: 'row-reverse',
         alignItems: 'flex-end',
     },
-    txtBtn: {
-        fontSize: 16, 
+    txtBtnSemCodigo: {
+        fontSize: 18, 
         color: "#fff",
         marginTop: 10
     },

@@ -102,6 +102,12 @@ export default function FormCaminhoes({ navigation, route }) {
         if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
             return false
         } 
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.+)/gi)) {
+            return false
+        }
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+)/gi)) {
+            return false
+        }
         else {
             return true
         }     
@@ -164,7 +170,7 @@ export default function FormCaminhoes({ navigation, route }) {
             })
         }
     }
-console.log(ano)
+
     return (
         <ScrollView style={styles.background}>
             <KeyboardAvoidingView style={styles.container}

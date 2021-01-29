@@ -60,7 +60,6 @@ import SegundoFormManipulador from '../screens/Forms/Formularios/FormularioManip
 import SegundoFormUsinaConcreto from '../screens/Forms/Formularios/FormularioUsinasdeConcreto/SegundoFormUsinaConcreto'; //Segunda parte do formulário Usina de Concreto
 import SegundoFormPerfuratriz from '../screens/Forms/Formularios/FormularioPerfuratriz/SegundoFormPerfuratriz'; //Segunda parte do formulário Perfuratriz
 import EditCaminhao from '../screens/Forms/FormEdicao/EditCaminhao'; //Página de edição dos formulários Caminhões
-import SegundaParte from '../screens/Forms/FormEdicao/SegundaParte'; //Segunda Página de edição dos formulários 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -156,7 +155,6 @@ export default function AppRoutes() {
             <Stack.Screen name="SegundoFormUsinaConcreto" component={SegundoFormUsinaConcreto} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="SegundoFormPerfuratriz" component={SegundoFormPerfuratriz} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
             <Stack.Screen name="EditCaminhao" component={EditCaminhao} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
-            <Stack.Screen name="SegundaParte" component={SegundaParte} options={{headerTitle: "", headerTintColor: '#fff', headerStyle: { backgroundColor: '#ffa500'}}}/>
        </Stack.Navigator>
     )
 }

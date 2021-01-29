@@ -110,7 +110,7 @@ export default ({route, navigation}) => {
         if (estado.length < 1) {            
             errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
         }  
-        else if (cidade.key == 0) {          
+        else if (cidade.length < 1) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
         else if (condicao.nome == 'VENDA' && preco.length < 1) {  

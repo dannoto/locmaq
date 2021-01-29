@@ -21,7 +21,6 @@ export default function FormCaminhoes({route, navigation}) {
         {key: 1, nome: 'ALUGUEL'}, 
         {key: 2, nome: 'VENDA'}
     ]);
-    const fabricanteCadastrado = detalhes.fabricante;
     const [fabricante, setFabricante] = useState();
     const [modelo, setModelo] = useState(detalhes.modelo);
     const [ano, setAno] = useState(detalhes.ano);
@@ -47,12 +46,6 @@ export default function FormCaminhoes({route, navigation}) {
         {key: 8, nome: '8x6'},
         {key: 9, nome: '8x8'}
     ]);
-    const [caracteristica, setCaracteristica] = useState('');
-    const [opcoescaracteristica, setOpcoesCaracteristica] = useState([
-        {key: 0, nome: 'SELECIONAR'}, 
-        {key: 1, nome: 'FIXA'}, 
-        {key: 2, nome: 'MÓVEL'}]);
-    const [peso, setPeso] = useState(detalhes.peso);
     const [consumo, setConsumo] = useState(detalhes.consumo);
     const [hodometro, setHodometro] = useState(detalhes.hodometro);
     const [horimetro, setHorimetro] = useState(detalhes.horimetro);
@@ -117,9 +110,14 @@ export default function FormCaminhoes({route, navigation}) {
     const [modalPotencia, setModalPotencia] = useState(false);
     const [modalSeguro, setModalSeguro] = useState(false);
     const [modalinfoAdicionais, setModalinfoAdicionais] = useState(false);
+    const [modalEstado, setModalEstado] = useState(false);
+    const [modalCidade, setModalCidade] = useState(false);
+    const [modalPreco, setModalPreco] = useState(false);
+    const [modalPrecoDiaria, setModalPrecoDiaria] = useState(false);
+    const [modalPrecoSemanal, setModalPrecoSemanal] = useState(false);
+    const [modalPrecoMensal, setModalPrecoMensal] = useState(false);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
-
    
     useEffect(() => {
         async function getDetalhes() {
@@ -134,8 +132,6 @@ export default function FormCaminhoes({route, navigation}) {
                     modelo: snapshot.val().modelo,
                     tipo: snapshot.val().tipo.nome,
                     tracao: snapshot.val().tracao.nome,
-                    caracteristica: snapshot.val().caracteristica.nome,
-                    peso: snapshot.val().peso,
                     consumo: snapshot.val().consumo, 
                     hodometro: snapshot.val().hodometro, 
                     horimetro: snapshot.val().horimetro,
@@ -157,7 +153,7 @@ export default function FormCaminhoes({route, navigation}) {
                     imagem2:snapshot.val().imagem2,
                     imagem3:snapshot.val().imagem3,
                     imagem4:snapshot.val().imagem4,
-                    imagem5:snapshot.val().imagem5,
+                    imagem5:snapshot.val().imagem5
                 };
                 setDetalhes(data);
             })
@@ -172,6 +168,8 @@ export default function FormCaminhoes({route, navigation}) {
         getDetalhes()
     }, []);
 
+
+//Funções Update no Firebase
     async function updateCondicao() {
         await firebase.database().ref('equipamentos').child(key).update({
             condicao: condicao
@@ -280,6 +278,54 @@ export default function FormCaminhoes({route, navigation}) {
         }
     }
 
+    async function updateEstado() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            estado: estado
+        })
+        setModalEstado(false)
+        setEstado()
+    }
+
+    async function updateCidade() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            cidade: cidade
+        })
+        setModalCidade(false)
+        setCidade()
+    }
+
+    async function updatePreco() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            preco: preco
+        })
+        setModalPreco(false)
+        setPreco()
+    }
+
+    async function updatePrecoDiaria() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            precoDiaria: precoDiaria
+        })
+        setModalPrecoDiaria(false)
+        setPrecoDiaria()
+    }
+
+    async function updatePrecoSemanal() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            precoSemanal: precoSemanal
+        })
+        setModalPrecoSemanal(false)
+        setPrecoSemanal()
+    }
+
+    async function updatePrecoMensal() {
+        await firebase.database().ref('equipamentos').child(key).update({
+            precoMensal: precoMensal
+        })
+        setModalPrecoMensal(false)
+        setPrecoMensal()
+    }
+
     function pegaCidades(v,k) {
         var todasCidades = [{key: 0, nome: "SELECIONAR"}];
      
@@ -364,29 +410,29 @@ export default function FormCaminhoes({route, navigation}) {
         }     
     }
 
-    // async function salvarImagem(imagens) {
-    //     for (var b= 0; b < imagens.length; b++ ) {
+    async function salvarImagem(imagens) {
+        for (var b= 0; b < imagens.length; b++ ) {
 
-    //         let tipoImagem = imagens[b].tipo.replace('image/','');
-    //         let nomeImagem =  b +'-' + codigoProduto + '.' + tipoImagem;
-    //         let imagem = firebase.storage().ref().child('equipamentos').child(user.uid).child(codigoProduto).child(nomeImagem);
+            let tipoImagem = imagens[b].tipo.replace('image/','');
+            let nomeImagem =  b +'-' + codigoProduto + '.' + tipoImagem;
+            let imagem = firebase.storage().ref().child('equipamentos').child(user.uid).child(codigoProduto).child(nomeImagem);
             
-    //         let uri = imagens[b].url.replace('file://', '');
-    //         let mime = imagens[b].tipo;
+            let uri = imagens[b].url.replace('file://', '');
+            let mime = imagens[b].tipo;
 
-    //         RNFetchBlob.fs.readFile(uri, 'base64')
-    //         .then((data) => {
-    //         return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
-    //         })
-    //         .then((blob) => {
-    //            imagem.put(blob, {contentType:mime})
+            RNFetchBlob.fs.readFile(uri, 'base64')
+            .then((data) => {
+            return RNFetchBlob.polyfill.Blob.build(data, {type: mime + ';BASE64'});
+            })
+            .then((blob) => {
+               imagem.put(blob, {contentType:mime})
               
-    //         })
-    //         .catch((error) => {
-    //             Alert.alert('Erro ao carregar foto.', error.code)
-    //         })
-    //     }
-    // }
+            })
+            .catch((error) => {
+                Alert.alert('Erro ao carregar foto.', error.code)
+            })
+        }
+    }
 
     function onClickAddImage() {
         if (imagens.length == 6) {
@@ -472,7 +518,9 @@ export default function FormCaminhoes({route, navigation}) {
 
 
     return (
-        <ScrollView style={[styles.background, modalvisible || modalCondicao || modalFabricante || modalModelo || modalAno || modalTracao || modalTipo || modalConsumo || modalHodometro || modalHorimetro || modalCapacidade || modalPotencia || modalSeguro || modalinfoAdicionais ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
+        <ScrollView style={[styles.background, modalvisible || modalCondicao || modalFabricante || modalModelo || modalAno || modalTracao || modalTipo || modalConsumo || modalHodometro || modalHorimetro || 
+            modalCapacidade || modalPotencia || modalSeguro || modalinfoAdicionais || modalEstado || modalCidade || modalPreco || modalPrecoDiaria || modalPrecoSemanal || modalPrecoMensal
+         ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -974,75 +1022,55 @@ export default function FormCaminhoes({route, navigation}) {
                     </Modal>
                 </View>
                 
-                {detalhes.potencia !== "" ?
-                    (
-                        <View style={styles.areaEdicao}>
-                            <View>
-                                <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
-                                <Text style={styles.dados}>{detalhes.potencia}</Text>
-                            </View>
 
-                            <TouchableOpacity onPress={() => setModalPotencia(true)}>
-                                <MaterialIcons
-                                    style={styles.icon}
-                                    name='edit'
-                                    size= {28}
-                                    color='#fff'
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    ) : 
-                    (
-                        <View style={styles.areaEdicao}>
-                            <View>
-                                <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
-                                <Text style={styles.dados}>-</Text>
-                            </View>
-
-                            <TouchableOpacity onPress={() => setModalPotencia(true)}>
-                                <MaterialIcons
-                                    style={styles.icon}
-                                    name='edit'
-                                    size= {28}
-                                    color='#fff'
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    )
-                }
-
-                <Modal animationType="fade" transparent={true} visible={modalPotencia} onRequestClose={() => {}}>
-                    <View style={styles.modalWindow}>
-                        <View style={styles.modalBody}>
-                            <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalPotencia(false)}>
-                                <AntDesign
-                                style={{marginBottom: 5}}
-                                name='closecircleo'
-                                size= {34}
-                                color="#fff"
-                                />
-                            </TouchableOpacity>
-
-                            <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Potência"
-                                    placeholderTextColor='#fff'
-                                    value={potencia}
-                                    onChangeText={(text) => setPotencia(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={50}
-                                />
-                            </View>
-
-                            <TouchableOpacity style={styles.areaBtnModal} onPress={updatePotencia}>
-                                <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                            </TouchableOpacity>
-                        </View>
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
+                        <Text style={styles.dados}>{detalhes.potencia}</Text>
                     </View>
-                </Modal>
 
+                    <TouchableOpacity onPress={() => setModalPotencia(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalPotencia} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalPotencia(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>POTÊNCIA (CV)</Text>
+                                <View style={styles.areaInput}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Potência"
+                                        placeholderTextColor='#fff'
+                                        value={potencia}
+                                        onChangeText={(text) => setPotencia(text)}
+                                        keyboardType={'numeric'}
+                                        maxLength={50}
+                                    />
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updatePotencia}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+        
                 <View style={styles.areaEdicao}>
                     <View>
                         <Text style={styles.tituloInput}>POSSUI SEGURO?</Text>
@@ -1090,10 +1118,9 @@ export default function FormCaminhoes({route, navigation}) {
                     </Modal>
                 </View>
 
-
                 {detalhes.infoAdicionais !== "" ?
                     (
-                        <View style={styles.areaEdicaoInfo}>
+                        <View style={styles.areaEdicao}>
                             <View>
                                 <Text style={styles.tituloInput}>INFORMAÇÕES ADICIONAIS</Text>
                                 <Text style={styles.dados}>{detalhes.infoAdicionais}</Text>
@@ -1110,7 +1137,7 @@ export default function FormCaminhoes({route, navigation}) {
                         </View>
                     ) : 
                     (
-                        <View style={styles.areaEdicaoInfo}>
+                        <View style={styles.areaEdicao}>
                             <View>
                                 <Text style={styles.tituloInput}>INFORMAÇÕES ADICIONAIS</Text>
                                 <Text style={styles.dados}>-</Text>
@@ -1162,124 +1189,397 @@ export default function FormCaminhoes({route, navigation}) {
                     </View>
                 </Modal>
 
-                {/* <Text style={styles.tituloInput}>ESTADO</Text>
-                <View style={styles.picker}>
-                    <Picker
-                    selectedValue={estado}
-                    onValueChange={(itemValue, itemIndex) => pegaCidades(itemValue)}
-                    style= {{color: '#fff'}}
-                    dropdownIconColor={'white'}
-                    >
-                        {estadoItem}
-                    </Picker>
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>ESTADO</Text>
+                        <Text style={styles.dados}>{detalhes.estado}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => {setModalEstado(true)}}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalEstado} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalEstado(false)}}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>ESTADO</Text>
+                                <View style={styles.picker}>
+                                    <Picker
+                                    selectedValue={estado}
+                                    onValueChange={(itemValue, itemIndex) => pegaCidades(itemValue)}
+                                    style= {{color: '#fff'}}
+                                    dropdownIconColor={'white'}
+                                    >
+                                        {estadoItem}
+                                    </Picker>
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateEstado}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
 
-                <Text style={styles.tituloInput}>CIDADE</Text>
-                <View style={styles.picker}>
-                    <Picker
-                    selectedValue={cidade}
-                    onValueChange={(itemValue, itemIndex) => SelectPadraoCidades(itemValue)}
-                    style= {{color: '#fff'}}
-                    dropdownIconColor={'white'}
-                    >
-                        {cidadeItem}
-                    </Picker>
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>CIDADE</Text>
+                        <Text style={styles.dados}>{detalhes.cidade}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => {setModalCidade(true)}}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalCidade} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalCidade(false)}}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>CIDADE</Text>
+                                <View style={styles.picker}>
+                                    <Picker
+                                    selectedValue={cidade}
+                                    onValueChange={(itemValue, itemIndex) => SelectPadraoCidades(itemValue)}
+                                    style= {{color: '#fff'}}
+                                    dropdownIconColor={'white'}
+                                    >
+                                        {cidadeItem}
+                                    </Picker>
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateCidade}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
-                
-                {condicao.nome == 'ALUGUEL' ?
+
+                {detalhes.condicao == 'ALUGUEL' ?
                     (
                         <View>
-                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoDiaria}
-                                    onChangeText={(text) => setPrecoDiaria(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
+                            {detalhes.precoDiaria == "" ?
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                                            <Text style={styles.dados}>-</Text>
+                                        </View>
+        
+                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : 
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                                            <Text style={styles.dados}>{detalhes.precoDiaria}</Text>
+                                        </View>
+        
+                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            }
+                           
+                           {detalhes.precoSemanal == "" ?
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
+                                            <Text style={styles.dados}>-</Text>
+                                        </View>
+        
+                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : 
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
+                                            <Text style={styles.dados}>{detalhes.precoSemanal}</Text>
+                                        </View>
 
-                            <View>
-                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoSemanal}
-                                    onChangeText={(text) => setPrecoSemanal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
+                                        <TouchableOpacity onPress={() => setModalPrecoSemanal(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            }
 
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoMensal}
-                                    onChangeText={(text) => setPrecoMensal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
+                            {detalhes.precoMensal == "" ?
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
+                                            <Text style={styles.dados}>-</Text>
+                                        </View>
+        
+                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : 
+                                (
+                                    <View style={styles.areaEdicao}>
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
+                                            <Text style={styles.dados}>{detalhes.precoMensal}</Text>
+                                        </View>
+        
+                                        <TouchableOpacity onPress={() => setModalPrecoMensal(true)}>
+                                            <MaterialIcons
+                                                style={styles.icon}
+                                                name='edit'
+                                                size= {28}
+                                                color='#fff'
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            }
+                            
+                            <Modal animationType="fade" transparent={true} visible={modalPrecoDiaria} onRequestClose={() => {}}>
+                                <View style={styles.modalWindow}>
+                                    <View style={styles.modalBody}>
+                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoDiaria(false)}}>
+                                            <AntDesign
+                                            style={{marginBottom: 5}}
+                                            name='closecircleo'
+                                            size= {34}
+                                            color="#fff"
+                                            />
+                                        </TouchableOpacity>
+
+                                        <View>
+                                        <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                                        <View style={styles.areaInput}>
+                                            <TextInputMask
+                                                style={styles.input}
+                                                placeholder="R$"
+                                                placeholderTextColor='#fff'
+                                                value={precoDiaria}
+                                                onChangeText={(text) => setPrecoDiaria(text)}
+                                                keyboardType={'numeric'}
+                                                type={'money'}
+                                                options = {{
+                                                    precision :  2,
+                                                    separator :  ',' ,
+                                                    delimiter :  '.' ,
+                                                    unidade :  'R$ ' ,
+                                                    sufixoUnidade :  ' ' 
+                                                }} 
+                                            />
+                                        </View> 
+                                        </View>
+
+                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoDiaria}>
+                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </Modal> 
+
+                            <Modal animationType="fade" transparent={true} visible={modalPrecoSemanal} onRequestClose={() => {}}>
+                                <View style={styles.modalWindow}>
+                                    <View style={styles.modalBody}>
+                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoSemanal(false)}}>
+                                            <AntDesign
+                                            style={{marginBottom: 5}}
+                                            name='closecircleo'
+                                            size= {34}
+                                            color="#fff"
+                                            />
+                                        </TouchableOpacity>
+
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
+                                            <View style={styles.areaInput}>
+                                                <TextInputMask
+                                                    style={styles.input}
+                                                    placeholder="R$"
+                                                    placeholderTextColor='#fff'
+                                                    value={precoSemanal}
+                                                    onChangeText={(text) => setPrecoSemanal(text)}
+                                                    keyboardType={'numeric'}
+                                                    type={'money'}
+                                                    options = {{
+                                                        precision :  2,
+                                                        separator :  ',' ,
+                                                        delimiter :  '.' ,
+                                                        unidade :  'R$ ' ,
+                                                        sufixoUnidade :  ' ' 
+                                                    }} 
+                                                />
+                                            </View> 
+                                        </View>
+
+                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoSemanal}>
+                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </Modal> 
+
+                            <Modal animationType="fade" transparent={true} visible={modalPrecoMensal} onRequestClose={() => {}}>
+                                <View style={styles.modalWindow}>
+                                    <View style={styles.modalBody}>
+                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoMensal(false)}}>
+                                            <AntDesign
+                                            style={{marginBottom: 5}}
+                                            name='closecircleo'
+                                            size= {34}
+                                            color="#fff"
+                                            />
+                                        </TouchableOpacity>
+
+                                        <View>
+                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
+                                            <View style={styles.areaInput}>
+                                                <TextInputMask
+                                                    style={styles.input}
+                                                    placeholder="R$"
+                                                    placeholderTextColor='#fff'
+                                                    value={precoMensal}
+                                                    onChangeText={(text) => setPrecoMensal(text)}
+                                                    keyboardType={'numeric'}
+                                                    type={'money'}
+                                                    options = {{
+                                                        precision :  2,
+                                                        separator :  ',' ,
+                                                        delimiter :  '.' ,
+                                                        unidade :  'R$ ' ,
+                                                        sufixoUnidade :  ' ' 
+                                                    }} 
+                                                />
+                                            </View> 
+                                        </View>
+
+                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoMensal}>
+                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </Modal> 
                         </View>
                     ) :
                     (
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={preco}
-                                    onChangeText={(text) => setPreco(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ',
-                                        sufixoUnidade :  ' ' 
-                                    }} 
+                        <View style={styles.areaEdicao}>
+                            <View>
+                                <Text style={styles.tituloInput}>PREÇO</Text>
+                                <Text style={styles.dados}>{detalhes.preco}</Text>
+                            </View>
+        
+                            <TouchableOpacity onPress={() => {setModalEstado(true)}}>
+                                <MaterialIcons
+                                    style={styles.icon}
+                                    name='edit'
+                                    size= {28}
+                                    color='#fff'
                                 />
-                            </View> 
+                            </TouchableOpacity>
+        
+                            <Modal animationType="fade" transparent={true} visible={modalPreco} onRequestClose={() => {}}>
+                                <View style={styles.modalWindow}>
+                                    <View style={styles.modalBody}>
+                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPreco(false)}}>
+                                            <AntDesign
+                                            style={{marginBottom: 5}}
+                                            name='closecircleo'
+                                            size= {34}
+                                            color="#fff"
+                                            />
+                                        </TouchableOpacity>
+        
+                                        <Text style={styles.tituloInput}>PREÇO</Text>
+                                        <View style={styles.areaInput}>
+                                            <TextInputMask
+                                                style={styles.input}
+                                                placeholder="R$"
+                                                placeholderTextColor='#fff'
+                                                value={preco}
+                                                onChangeText={(text) => setPreco(text)}
+                                                keyboardType={'numeric'}
+                                                type={'money'}
+                                                options = {{
+                                                    precision :  2,
+                                                    separator :  ',' ,
+                                                    delimiter :  '.' ,
+                                                    unidade :  'R$ ',
+                                                    sufixoUnidade :  ' ' 
+                                                }} 
+                                            />
+                                        </View>
+        
+                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePreco}>
+                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </Modal>
                         </View>
                     )
-                } */}
+                }
 
-                <Text style={styles.tituloImagens}>ADICIONAR FOTOS</Text>
+                <Text style={styles.tituloImagens}>EDITAR FOTOS</Text>
                 <Text style={styles.subImagens}>Máximo de 6 Fotos.</Text>
                 <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
@@ -1424,7 +1724,7 @@ const styles = StyleSheet.create ({
     dados: {
         fontSize: 20,
         color: '#222',
-        marginTop: 5,
+        marginTop: 10,
         marginBottom: 5,
         textTransform: 'uppercase'
     },
@@ -1433,14 +1733,9 @@ const styles = StyleSheet.create ({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 20,
+        marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#fff'
-    },
-    areaEdicaoInfo: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 20
     },
     areaImage: {
         height: 105,

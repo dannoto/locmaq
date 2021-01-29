@@ -195,19 +195,6 @@ function AuthProvider({ children }) {
     //     dados();
     // }, []);
 
-    // // Inserindo Serviços
-    // useEffect (() => {
-    //     async function dados() {
-    //         let servicos = firebase.database().ref('servicos');
-    //         let chave = servicos.push().key;
-    //         await servicos.child(chave).set({ 
-    //            servico: 'Outro'
-    //         });  
-    //     }
-
-    //     dados();
-    // }, []);
-
     // Inserindo Equipamentos - Britadores
     async function cadastrarBritador(condicao, fabricante, ano, modelo, caracteristica, capacidade, peso, potencia, seguro, infoAdicionais, estado, cidade, preco,
         precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5) {
@@ -699,6 +686,26 @@ function AuthProvider({ children }) {
         });
     }
 
+    // Inserindo Serviços
+    async function cadastrarServicos(titulo, estado, cidade, descricao, usuario, subcategoria, categoria, codigoServico, imagem0, imagem1) {
+
+        let servicos = await firebase.database().ref('servicos');
+        let chave = servicos.push().key;
+
+        servicos.child(chave).set({
+            usuario: usuario,
+            titulo: titulo,
+            estado: estado,
+            cidade: cidade,
+            descricao: descricao,
+            subcategoria:subcategoria,
+            categoria: categoria,
+            codigoServico: codigoServico,
+            imagem0: imagem0,
+            imagem1: imagem1
+        });
+    }
+
     // // Inserindo Favoritos
     // async function cadastrarEquipamentos() {
     //     let favoritos = await firebase.database().ref('users').child('favoritos');
@@ -711,7 +718,8 @@ function AuthProvider({ children }) {
 
     return(
         <AuthContext.Provider value={{ signed: !!user, user, loading, cadastrarPF, cadastrarPJ, logar, sair, cadastrarBritador, cadastrarCaminhao, cadastrarCompactador, cadastrarEmpilhadeira, 
-        cadastrarEscavadeira, cadastrarGuindaste, cadastrarManipulador, cadastrarMartelo, cadastrarPlataforma, cadastrarTrator, cadastrarUsina, cadastrarUsinaConcreto, cadastrarPerfuratriz
+        cadastrarEscavadeira, cadastrarGuindaste, cadastrarManipulador, cadastrarMartelo, cadastrarPlataforma, cadastrarTrator, cadastrarUsina, cadastrarUsinaConcreto, cadastrarPerfuratriz,
+        cadastrarServicos
         }}>
         {children}
         </AuthContext.Provider>

@@ -1,48 +1,81 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
-import Anuncios from '../../components/Anuncios';
+import Anuncios from '../../components/Anuncios'
 import firebase from '../../services/firebaseConnection';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused, useFocusEffect} from '@react-navigation/native';
 
 export default () => {
 
 const user = firebase.auth().currentUser;
 const navigation = useNavigation();
+const isFocused = useIsFocused();
 
 const [equipamentos, setEquipamentos] = useState([]);
 const [loading, setLoading] = useState(false);
-const [modalvisible, setModalVisible] = useState(false);
 
-useEffect(() => {
-    async function getEquipamentos() {
-        await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
-            setEquipamentos([]);
+useFocusEffect(useCallback(() => {
+    getEquipamentos()
+}, []));
 
-            snapshot.forEach((childItem) => {
-                let data = {
-                    key: childItem.key,
-                    condicao: childItem.val().condicao.nome,
-                    subcategoria: childItem.val().subcategoria.nome,
-                    ano: childItem.val().ano,
-                    modelo: childItem.val().modelo,
-                    preco: childItem.val().preco,
-                    precoDiaria: childItem.val().precoDiaria,
-                    codigoProduto: childItem.val().codigoProduto,
-                    imagem0:childItem.val().imagem0,
-                    imagem1:childItem.val().imagem1,
-                    imagem2:childItem.val().imagem2,
-                    imagem3:childItem.val().imagem3,
-                    imagem4:childItem.val().imagem4,
-                    imagem5:childItem.val().imagem5
-                };
+async function getEquipamentos() {
+    await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
+        setEquipamentos([]);
 
-                setEquipamentos(oldArray => [...oldArray, data]);
-            })
-            setLoading(false)
+        snapshot.forEach((childItem) => {
+            let data = {
+                key: childItem.key,
+                condicao: childItem.val().condicao.nome,
+                subcategoria: childItem.val().subcategoria.nome,
+                ano: childItem.val().ano,
+                modelo: childItem.val().modelo,
+                preco: childItem.val().preco,
+                precoDiaria: childItem.val().precoDiaria,
+                codigoProduto: childItem.val().codigoProduto,
+                imagem0:childItem.val().imagem0,
+                imagem1:childItem.val().imagem1,
+                imagem2:childItem.val().imagem2,
+                imagem3:childItem.val().imagem3,
+                imagem4:childItem.val().imagem4,
+                imagem5:childItem.val().imagem5
+            };
+
+            setEquipamentos(oldArray => [...oldArray, data]);
         })
-    }
-    getEquipamentos();
-}, []);
+        setLoading(false)
+    })
+}    
+
+// useEffect(() => {
+//     if (isFocused) { getEquipamentos()}
+
+//     async function getEquipamentos() {
+//         await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
+//             setEquipamentos([]);
+
+//             snapshot.forEach((childItem) => {
+//                 let data = {
+//                     key: childItem.key,
+//                     condicao: childItem.val().condicao.nome,
+//                     subcategoria: childItem.val().subcategoria.nome,
+//                     ano: childItem.val().ano,
+//                     modelo: childItem.val().modelo,
+//                     preco: childItem.val().preco,
+//                     precoDiaria: childItem.val().precoDiaria,
+//                     codigoProduto: childItem.val().codigoProduto,
+//                     imagem0:childItem.val().imagem0,
+//                     imagem1:childItem.val().imagem1,
+//                     imagem2:childItem.val().imagem2,
+//                     imagem3:childItem.val().imagem3,
+//                     imagem4:childItem.val().imagem4,
+//                     imagem5:childItem.val().imagem5
+//                 };
+
+//                 setEquipamentos(oldArray => [...oldArray, data]);
+//             })
+//             setLoading(false)
+//         })
+//     }    
+// }, [isFocused]);
 
     return (
         <View style={styles.background} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
@@ -65,7 +98,7 @@ useEffect(() => {
                 </View>
             </View>
 
-            <ScrollView style={modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : ''}>
+            <ScrollView>
                 <SafeAreaView style={styles.areaEquipamentos}>
                     {loading ?
                         (
@@ -74,7 +107,7 @@ useEffect(() => {
                         (
                             <FlatList
                                 data={equipamentos}
-                                renderItem={({item}) => (<Anuncios data={item} modalvisible={modalvisible} setModalVisible={setModalVisible}/>)}
+                                renderItem={({item}) => (<Anuncios data={item}/>)}
                                 keyExtractor={item => item.key}
                             />
                         )
@@ -137,8 +170,5 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold',
         marginTop: 30,
         marginBottom: 15
-    },
-    areaEquipamentos: {
-
     }
 })

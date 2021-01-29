@@ -59,6 +59,12 @@ export default function FormTratores({ navigation, route }) {
         if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
             return false
         } 
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.+)/gi)) {
+            return false
+        }
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+)/gi)) {
+            return false
+        }
         else {
             return true
         }     

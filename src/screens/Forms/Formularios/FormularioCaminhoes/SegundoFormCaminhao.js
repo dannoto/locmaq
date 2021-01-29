@@ -1,8 +1,8 @@
 // Segunda parte do Formulário Caminhões
 
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, StyleSheet, Alert, Platform, Modal, ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, StyleSheet, Alert, Platform, Modal, ImageBackground, ActivityIndicator } from 'react-native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { TextInputMask } from 'react-native-masked-text';
 import { AuthContext } from '../../../../contexts/auth';
@@ -78,6 +78,7 @@ export default ({route, navigation}) => {
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
     const [codigoProduto, setCodigoProduto] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const base_firebase =  "https://firebasestorage.googleapis.com/v0/b/";
     const base_app = "locmaq-c04b0.appspot.com/o/";
@@ -109,7 +110,7 @@ export default ({route, navigation}) => {
         if (estado.length < 1) {            
             errors.estado = Alert.alert('Opps!', 'Informe o Estado.')
         }  
-        else if (cidade.key == 0) {          
+        else if (cidade.length < 1) {          
             errors.cidade = Alert.alert('Opps!', 'Informe a Cidade.')    
         }  
         else if (condicao.nome == 'VENDA' && preco.length < 1) {  
@@ -125,6 +126,7 @@ export default ({route, navigation}) => {
             salvarImagem(imagens); 
             
             var urls = [];
+            setLoading(false)
             
             if (imagens.length == 1) {
                 var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
@@ -137,8 +139,8 @@ export default ({route, navigation}) => {
                 if (cadastrarCaminhao (condicao, fabricante, ano, modelo, tipo, tracao, consumo, hodometro, horimetro, capacidade, potencia, seguro, infoAdicionais, estado, cidade, 
                     preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
                 { 
+                    navegacao.navigate('MeusAnuncios');
                     Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
                 }
             } 
             else if (imagens.length == 2) {
