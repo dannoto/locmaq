@@ -10,9 +10,6 @@ export default function SlideDetalhes({data}) {
     const i1 = imagens.imagem0
     const i2 = imagens.imagem1
     const i3 = imagens.imagem2
-    const i4 = imagens.imagem3
-    const i5 = imagens.imagem4
-    const i6 = imagens.imagem5
 
     useEffect(() => {
         async function getImagens() {
@@ -24,9 +21,6 @@ export default function SlideDetalhes({data}) {
                         imagem0: snapshot.val().imagem0,
                         imagem1: snapshot.val().imagem1,
                         imagem2: snapshot.val().imagem2,
-                        imagem3: snapshot.val().imagem3,
-                        imagem4: snapshot.val().imagem4,
-                        imagem5: snapshot.val().imagem5
                     };
                     
                 setImagens(fotos);
@@ -80,39 +74,6 @@ export default function SlideDetalhes({data}) {
                 (
                     <View style={styles.slide}>
                         <Image style={styles.img} source={{uri: i3}}/>
-                    </View>
-                )  
-            }
-
-            {i4 == "" ?
-                (
-                    false
-                ) :
-                (
-                    <View style={styles.slide}>
-                        <Image style={styles.img} source={{uri: i2}}/>
-                    </View>
-                )  
-            }
-
-            {i5 == ""  ?
-                (
-                    false
-                ) :
-                (
-                    <View style={styles.slide}>
-                        <Image style={styles.img} source={{uri: i2}}/>
-                    </View>
-                )  
-            }
-
-            {i6 == ""  ?
-                (
-                    false
-                ) :
-                (
-                    <View style={styles.slide}>
-                        <Image style={styles.img} source={{uri: i2}}/>
                     </View>
                 )  
             }

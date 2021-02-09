@@ -46,6 +46,7 @@ export default () => {
                         autoCorrect={false}
                         autoCapitalize="none"
                         underlineColorAndroid= "transparent"
+                        keyboardType={'email-address'}
                     />
                 </AreaInput>
 
@@ -80,7 +81,7 @@ export default () => {
                     <CustomButtonText>ENTRAR</CustomButtonText>
                 </CustomButton> 
 
-                <ForgetButton>
+                <ForgetButton onPress={() => navigation.navigate('RecuperarSenha')}>
                     <ForgetButtonText>ESQUECI MINHA SENHA</ForgetButtonText>
                 </ForgetButton>
 

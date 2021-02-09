@@ -27,71 +27,12 @@ export default function Anuncios({data}){
     if(data.imagem2 !== "") {
       await firebase.storage().ref().child('equipamentos').child(user.uid).child(data.codigoProduto).child(foto3).delete();
     }
-    if(data.imagem3 !== "") {
-      await firebase.storage().ref().child('equipamentos').child(user.uid).child(data.codigoProduto).child(foto4).delete();
-    }
-    if(data.imagem4 !== "") {
-      await firebase.storage().ref().child('equipamentos').child(user.uid).child(data.codigoProduto).child(foto5).delete();
-    }
-    if(data.imagem5 !== "") {
-      await firebase.storage().ref().child('equipamentos').child(user.uid).child(data.codigoProduto).child(foto6).delete();
-    }
 
     Alert.alert("", "EXCLUÍDO COM SUCESSO!")
   }
 
   function Edit() {
-    if(data.categoria = "Britadores") {
-      // navigation.navigate ('EditBritador', {key: data.key, subnome: data.subcategoria})
-      alert('Britadores')
-    }
-    if(data.categoria = "Caminhões") {
-      navigation.navigate ('EditCaminhao', {key: data.key, subnome: data.subcategoria})
-    }
-    if(data.categoria = "Compactadores") {
-      // navigation.navigate ('EditCompactador', {key: data.key, subnome: data.subcategoria})
-      alert('Compactadores')
-    }
-    if(data.categoria = "Empilhadeiras") {
-      // navigation.navigate ('EditEmpilhadeira', {key: data.key, subnome: data.subcategoria})
-      alert('Empilhadeiras')
-    }
-    if(data.categoria = "Escavadeiras") {
-      // navigation.navigate ('EditEscavadeira', {key: data.key, subnome: data.subcategoria})
-      alert('Escavadeiras')
-    }
-    if(data.categoria = "Guindastes") {
-      // navigation.navigate ('EditGuindaste', {key: data.key, subnome: data.subcategoria})
-      alert('Guindastes')
-    }
-    if(data.categoria = "Maninpuladores Telescópico") {
-      // navigation.navigate ('EditManinpuladorTelescopico', {key: data.key, subnome: data.subcategoria})
-      alert('Maninpuladores Telescópico')
-    }
-    if(data.categoria = "Martelos Hidraúlico") {
-      // navigation.navigate ('EditMarteloHidraulico', {key: data.key, subnome: data.subcategoria})
-      alert('Martelos Hidraúlico')
-    }
-    if(data.categoria = "Perfuratriz") {
-      // navigation.navigate ('EditPerfuratriz', {key: data.key, subnome: data.subcategoria})
-      alert('Perfuratriz')
-    }
-    if(data.categoria = "Plataformas Aérea") {
-      // navigation.navigate ('EditPlataformaAerea', {key: data.key, subnome: data.subcategoria})
-      alert('Plataformas Aérea')
-    }
-    if(data.categoria = "Tratores") {
-      // navigation.navigate ('EditTratores', {key: data.key, subnome: data.subcategoria})
-      alert('Tratores')
-    }
-    if(data.categoria = "Usinas de Asfalto") {
-      // navigation.navigate ('EditUsinadeAsfalto', {key: data.key, subnome: data.subcategoria})
-      alert('Usinas de Asfalto')
-    }
-    if(data.categoria = "Usinas de Concreto") {
-      // navigation.navigate ('EditUsinadeConcreto', {key: data.key, subnome: data.subcategoria})
-      alert('Usinas de Concreto')
-    }
+    navigation.navigate ('EditForm', {key: data.key, subnome: data.subcategoria, catnome: data.categoria})
   }
 
   function filterNome(nome) {
@@ -99,6 +40,13 @@ export default function Anuncios({data}){
       return nome;
     }
     return `${nome.substring(0, 18)}...`;
+  }
+
+  function filterModelo(modelo) {
+    if(modelo.length < 15) {
+      return modelo;
+    }
+    return `${modelo.substring(0, 15)}...`;
   }
 
   function filterPreco(preco) {
@@ -122,27 +70,28 @@ export default function Anuncios({data}){
   return(
     <View style={styles.areaAnuncios}>
 
-      <View>
-        <Image style={styles.img} source={{uri: data.imagem0}}/>
+      <View style={styles.containerImg}>
+        <View style={styles.areaImg}>
+          <Image style={styles.img} source={{uri: data.imagem0}}/>
+        </View>
       </View>
 
-      <View>
+      <View style={styles.areaInfo}>
         <Text style={styles.subcategoria}>{filterNome(data.subcategoria)}</Text>
-        <Text style={styles.modelo}>{modelo}</Text>
+        <Text style={styles.modelo}>{filterModelo(modelo)}</Text>
+        <Text style={styles.condicao}>{data.condicao}</Text>
 
         {data.condicao == 'ALUGUEL' ?
           (
-              <Text style={styles.preco}>{filterPreco('Diária ' + data.precoDiaria)}</Text>
+              <Text style={styles.preco}>{filterPreco(data.precoHora + ' / Hora')}</Text>
           ) :
           (
               <Text style={styles.preco}>{filterPreco(data.preco)}</Text>
           )
         }
 
-        <Text style={styles.condicao}>{data.condicao}</Text>
-
         <View style={styles.areaBtn}>
-          <TouchableOpacity style={[styles.btn, {marginRight: 10}]} onPress={Edit}>
+          <TouchableOpacity style={styles.btn} onPress={Edit}>
             <Text style={styles.txtBtn}>EDITAR</Text>
           </TouchableOpacity>
 
@@ -162,21 +111,29 @@ const styles = StyleSheet.create ({
     flexDirection: 'row',
     borderBottomWidth: 2,
     borderColor: '#ddd',
-    padding: 20
+    padding: 10
+  },
+  containerImg: {
+    width: '50%'
+  },
+  areaInfo: {
+    width: '50%'
   },
   areaBtn: {
+    width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   btn: {
-    width: '34%',
+    width: '48%',
     backgroundColor: '#ffa500',
-    marginTop: 8,
+    marginTop: 14,
     borderRadius: 5,
     padding: 6,
   },
   txtBtn: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center'
   },
@@ -189,14 +146,14 @@ const styles = StyleSheet.create ({
   },
   modelo: {
     color: '#222',
-    fontSize: 17,
+    fontSize: 16,
     marginLeft: 5,
     marginTop: 5,
     textTransform: 'uppercase'
   },
   condicao: {
     color: '#ffa500',
-    fontSize: 17,
+    fontSize: 16,
     marginLeft: 5,
     marginTop: 5,
     textTransform: 'uppercase',
@@ -204,16 +161,20 @@ const styles = StyleSheet.create ({
   },
   preco: {
     color: '#222',
-    fontSize: 17,
+    fontSize: 16,
     marginLeft: 5,
     marginTop: 5,
     textTransform: 'uppercase'
   },
-  img: {
-    width: 180,
+  areaImg: {
+    width: '95%',
     height: 150,
     borderWidth: 3,
-    borderColor: '#ffa500',
-    marginRight: 10
+    borderColor: '#ffa500'
+  },
+  img: {
+    width: '100%',
+    height: 144,
+    resizeMode: 'cover'
   }
 })

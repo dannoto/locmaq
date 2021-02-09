@@ -135,7 +135,7 @@ export default function FormBritador({ navigation, route }) {
     }
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -185,7 +185,7 @@ export default function FormBritador({ navigation, route }) {
                         placeholder=""
                         value={ano}
                         onChangeText={(text) => setAno(text)}
-                        keyboardType={'numeric'}
+                        keyboardType={'number-pad'}
                         maxLength={4}
                     />
                 </View>
@@ -258,7 +258,8 @@ export default function FormBritador({ navigation, route }) {
                     <TextInput
                         style={styles.input}
                         multiline = {true}
-                        numberOfLines = {1}
+                        numberOfLines = {7}
+                        textAlignVertical = 'top'
                         placeholder=""
                         value={infoAdicionais}
                         onChangeText={(text) => setInfoAdicionais(text)}
@@ -289,7 +290,7 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
         marginBottom: 20,
@@ -305,12 +306,12 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtBtn: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#222',
         fontWeight: 'bold'
     },
     tituloInput: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 20,
         fontWeight: 'bold'
@@ -339,7 +340,7 @@ const styles = StyleSheet.create ({
     },
     input: {
         width: '100%',
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff'
     }, 
     picker: {
@@ -348,13 +349,13 @@ const styles = StyleSheet.create ({
         marginTop: 10
     },
     tituloInfo: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 60,
         fontWeight: 'bold'
     },
     atencao: {
-        fontSize: 18,
+        fontSize: 14,
         color: '#222',
         marginTop: 5,
         textAlign: 'justify'

@@ -171,7 +171,7 @@ export default function FormEscavadeiras({ navigation, route }) {
     }
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -221,7 +221,7 @@ export default function FormEscavadeiras({ navigation, route }) {
                         placeholder=""
                         value={ano}
                         onChangeText={(text) => setAno(text)}
-                        keyboardType={'numeric'}
+                        keyboardType={'number-pad'}
                         maxLength={4}
                     />
                 </View>
@@ -331,7 +331,8 @@ export default function FormEscavadeiras({ navigation, route }) {
                     <TextInput
                         style={styles.input}
                         multiline = {true}
-                        numberOfLines = {1}
+                        numberOfLines = {7}
+                        textAlignVertical = 'top'
                         placeholder=""
                         value={infoAdicionais}
                         onChangeText={(text) => setInfoAdicionais(text)}

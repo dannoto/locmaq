@@ -71,9 +71,7 @@ export default ({route, navigation}) => {
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [preco, setPreco] = useState('');
-    const [precoDiaria, setPrecoDiaria] = useState('');
-    const [precoSemanal, setPrecoSemanal] = useState('');
-    const [precoMensal, setPrecoMensal] = useState('');
+    const [precoHora, setPrecoHora] = useState('');
     const [imagens, setImagens] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
@@ -115,8 +113,8 @@ export default ({route, navigation}) => {
         else if (condicao.nome == 'VENDA' && preco.length < 1) {  
             errors.preco = Alert.alert('Opps!', 'Informe o Preço.')   
         }  
-        else if (condicao.nome == 'ALUGUEL' && precoDiaria.length < 1) {  
-            errors.precoDiaria = Alert.alert('Opps!', 'Informe o Preço da Diária.')   
+        else if (condicao.nome == 'ALUGUEL' && precoHora.length < 1) {  
+            errors.precoHora = Alert.alert('Opps!', 'Informe o Preço por Hora.')   
         }
         else if (imagens.length < 1) {       
             errors.imagens = Alert.alert('Opps!', 'Carregue pelo menos uma Foto.')
@@ -129,91 +127,29 @@ export default ({route, navigation}) => {
             if (imagens.length == 1) {
                 var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
                 var imagem1 = "";
-                var imagem2 = "";
-                var imagem3 = "";
-                var imagem4 = "";
-                var imagem5 = "";
 
                 if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                    cidade, preco, precoHora, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1)) 
                 { 
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
+                    Alert.alert("","CADASTRADO COM SUCESSO!", [
+                        {
+                          text: "OK", onPress: () => navegacao.navigate('Anuncie')
+                        }
+                    ])  
                 }
             } 
             else if (imagens.length == 2) {
                 var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
                 var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-                var imagem2 = "";
-                var imagem3 = "";
-                var imagem4 = "";
-                var imagem5 = "";
 
                 if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
+                    cidade, preco, precoHora, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1)) 
                 {
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
-                }
-            } 
-            else if (imagens.length == 3) {
-                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-                var imagem3 = "";
-                var imagem4 = "";
-                var imagem5 = "";
-
-                if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
-                {
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
-                }
-            } 
-            else if (imagens.length == 4) {
-                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-                var imagem4 = "";
-                var imagem5 = "";
-
-                if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
-                { 
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
-                }
-            } 
-            else if (imagens.length == 5) {
-                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-                var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
-                var imagem5 = "";
-                
-                if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
-                {
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
-                }
-            } 
-            else if (imagens.length == 6) {
-                var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
-                var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
-                var imagem2 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'2-'+base_codigo+'.jpeg'+base_alt;
-                var imagem3 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'3-'+base_codigo+'.jpeg'+base_alt;
-                var imagem4 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'4-'+base_codigo+'.jpeg'+base_alt; 
-                var imagem5 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'5-'+base_codigo+'.jpeg'+base_alt; 
-
-                if (cadastrarEscavadeira (condicao, fabricante, modelo, ano, caracteristica, tipo, tracao, consumo, peso, horimetro, potencia, seguro, infoAdicionais, estado, 
-                    cidade, preco, precoDiaria, precoSemanal, precoMensal, usuario, subcategoria, categoria, codigoProduto, imagem0, imagem1, imagem2, imagem3, imagem4, imagem5)) 
-                {
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
+                    Alert.alert("","CADASTRADO COM SUCESSO!", [
+                        {
+                          text: "OK", onPress: () => navegacao.navigate('Anuncie')
+                        }
+                    ])  
                 }
             } 
         }  
@@ -278,8 +214,8 @@ export default ({route, navigation}) => {
     }
 
     function onClickAddImage() {
-        if (imagens.length == 6) {
-            Alert.alert('Opps!', 'Máximo de 6 Fotos!')
+        if (imagens.length == 2) {
+            Alert.alert('Opps!', 'Máximo de 2 Fotos!')
         } else {
             setModalVisible(true);
         }  
@@ -308,8 +244,8 @@ export default ({route, navigation}) => {
             compressImageQuality: 0.7,
             includeBase64: true,
             multiple: true,
-            minFiles: 6,
-            maxFiles: 6
+            minFiles: 2,
+            maxFiles: 2
           }).then(image => {
             onSelectedImageLibrary(image)
             setModalVisible(false)
@@ -327,7 +263,7 @@ export default ({route, navigation}) => {
     }
 
     function onSelectedImageLibrary(image) {
-        let limit = (6 - imagens.length);
+        let limit = (2 - imagens.length);
         let newDataImg = imagens;
         if (image.length > 1) {
             for (var i = 0; i < limit; i++) {
@@ -359,7 +295,7 @@ export default ({route, navigation}) => {
     }
 
     return (
-        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
+        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -393,14 +329,14 @@ export default ({route, navigation}) => {
                 {condicao.nome == 'ALUGUEL' ?
                     (
                         <View>
-                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                            <Text style={styles.tituloInput}>PREÇO POR HORA</Text>
                             <View style={styles.areaInput}>
                                 <TextInputMask
                                     style={styles.input}
                                     placeholder="R$"
                                     placeholderTextColor='#fff'
-                                    value={precoDiaria}
-                                    onChangeText={(text) => setPrecoDiaria(text)}
+                                    value={precoHora}
+                                    onChangeText={(text) => setPrecoHora(text)}
                                     keyboardType={'numeric'}
                                     type={'money'}
                                     options = {{
@@ -412,50 +348,6 @@ export default ({route, navigation}) => {
                                     }} 
                                 />
                             </View> 
-
-                            <View>
-                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoSemanal}
-                                    onChangeText={(text) => setPrecoSemanal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
-
-                        <View>
-                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                            <View style={styles.areaInput}>
-                                <TextInputMask
-                                    style={styles.input}
-                                    placeholder="R$"
-                                    placeholderTextColor='#fff'
-                                    value={precoMensal}
-                                    onChangeText={(text) => setPrecoMensal(text)}
-                                    keyboardType={'numeric'}
-                                    type={'money'}
-                                    options = {{
-                                        precision :  2,
-                                        separator :  ',' ,
-                                        delimiter :  '.' ,
-                                        unidade :  'R$ ' ,
-                                        sufixoUnidade :  ' ' 
-                                    }} 
-                                />
-                            </View> 
-                        </View>
                         </View>
                     ) :
                     (
@@ -484,7 +376,7 @@ export default ({route, navigation}) => {
                 }
 
                 <Text style={styles.tituloImagens}>ADICIONAR FOTOS</Text>
-                <Text style={styles.subImagens}>Máximo de 6 Fotos.</Text>
+                <Text style={styles.subImagens}>Máximo de 2 Fotos.</Text>
                 <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
                 </TouchableOpacity>
@@ -516,7 +408,7 @@ export default ({route, navigation}) => {
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     data={imagens}
-                    numColumns={3}
+                    numColumns={2}
                     renderItem={({item}) => renderItem (item, removerImg)}
                     keyExtractor={(item, index) => index.toString()}
                 />
@@ -532,19 +424,21 @@ export default ({route, navigation}) => {
 
 function renderItem(item, removerImg) {
     return (
-        <View style={styles.areaImage}>
-            <TouchableOpacity onPress={() => removerImg(item.id)}>
-                <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
-                    <View style={{flexDirection: 'row-reverse'}}>
-                        <FontAwesome
-                            style={{marginRight: 3}}
-                            name='close'
-                            size= {30}
-                            color="red"
-                        />
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+        <View style={{width: '48%', marginBottom: 10, marginHorizontal: '1%'}}>
+            <View style={styles.areaImage}>
+                <TouchableOpacity onPress={() => removerImg(item.id)}>
+                    <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
+                        <View style={{flexDirection: 'row-reverse'}}>
+                            <FontAwesome
+                                style={{marginRight: 3}}
+                                name='close'
+                                size= {30}
+                                color="red"
+                            />
+                        </View>
+                    </ImageBackground>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
@@ -561,7 +455,7 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
         marginBottom: 20,
@@ -577,29 +471,30 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtBtn: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#222',
         fontWeight: 'bold'
     },
     tituloInput: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 20,
         fontWeight: 'bold'
     },
     tituloImagens: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 40,
         fontWeight: 'bold'
     },
     subImagens: {
-        fontSize: 17,
+        fontSize: 18,
         color: '#fff',
         marginTop: 5
     },
     areaInput: {
         flexDirection: 'row',
+        flex: 1,
         width: '100%',
         height: 60,
         alignItems: 'center',
@@ -613,7 +508,7 @@ const styles = StyleSheet.create ({
     },
     input: {
         width: '100%',
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff'
     }, 
     picker: {
@@ -631,20 +526,19 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtBtnPhoto: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },
     areaImage: {
-        height: 105,
-        width: 105,
-        borderWidth: 2,
+        height: 132,
+        width: '100%',
         borderColor: '#fff',
-        margin: 10 
+        borderWidth: 2,   
     },
     itemImage: {
-        height: 101,
-        width: 101,
+        height: 128,
+        width: '100%',
         resizeMode: 'cover'
     },
     modalWindow: {
@@ -659,7 +553,7 @@ const styles = StyleSheet.create ({
         borderRadius: 10
     },
     tituloModal: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#222',
         marginTop: 20,
         fontWeight: 'bold'
@@ -674,7 +568,7 @@ const styles = StyleSheet.create ({
         marginTop: 20
     },
     txtBtnModal: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },

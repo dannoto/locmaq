@@ -25,17 +25,18 @@ window.fetch = new Fetch({
 }).build()
 
 //Formulário Serviços
-export default function FormBritador({ navigation, route }) {
+export default function FormServicos({ navigation, route }) {
 
     const {subnome, subkey, catkey} = route.params;
     navigation.setOptions({headerTitle: subnome.toUpperCase()});
     const { cadastrarServicos, user } = useContext(AuthContext); 
     const navegacao = useNavigation();
-    const categoria = {key:catkey, nome:'Serviços'};
+    const categoria = {key:catkey, nome:'SERVIÇOS'};
     const subcategoria = {key:subkey, nome:subnome};
     const usuario = {key:user.uid, nome:user.nome};
     const errors = {};
 
+    const [condicao, setCondicao] = useState('Serviços');
     const [titulo, setTitulo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [estado, setEstado] = useState('');
@@ -79,7 +80,7 @@ export default function FormBritador({ navigation, route }) {
 
     const base_firebase =  "https://firebasestorage.googleapis.com/v0/b/";
     const base_app = "locmaq-c04b0.appspot.com/o/";
-    const base_folder = 'equipamentos';
+    const base_folder = 'servicos';
     const base_user = user.uid;
     const base_slash = "%2F";
     const base_codigo = codigoServico;
@@ -257,7 +258,6 @@ export default function FormBritador({ navigation, route }) {
             return true
         }     
     }
-    console.log()
 
     function handleRegister(){
         if (subcategoria.nome == "Outros") {  
@@ -289,25 +289,31 @@ export default function FormBritador({ navigation, route }) {
                 var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
                 var imagem1 = "";
 
-                if (cadastrarServicos (titulo, estado, cidade, descricao, usuario, subcategoria, categoria, codigoServico, imagem0, imagem1)) { 
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
+                if (cadastrarServicos (condicao, titulo, estado, cidade, descricao, usuario, subcategoria, categoria, codigoServico, imagem0, imagem1)) { 
+                    Alert.alert("","CADASTRADO COM SUCESSO!", [
+                        {
+                          text: "OK", onPress: () => navegacao.navigate('Anuncie')
+                        }
+                    ])  
                 }
             } 
             else if (imagens.length == 2) {
                 var imagem0 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'0-'+base_codigo+'.jpeg'+base_alt;
                 var imagem1 = base_firebase+base_app+base_folder+base_slash+base_user+base_slash+base_codigo+base_slash+'1-'+base_codigo+'.jpeg'+base_alt;
 
-                if (cadastrarServicos (titulo, estado, cidade, descricao, usuario, subcategoria, categoria, codigoServico, imagem0, imagem1)) { 
-                    Alert.alert('','Cadastrado com Sucesso!');
-                    navegacao.navigate('Anuncie');
+                if (cadastrarServicos (condicao, titulo, estado, cidade, descricao, usuario, subcategoria, categoria, codigoServico, imagem0, imagem1)) { 
+                    Alert.alert("","CADASTRADO COM SUCESSO!", [
+                        {
+                          text: "OK", onPress: () => navegacao.navigate('Anuncie')
+                        }
+                    ])  
                 }
             } 
         }  
     }
 
     return (
-        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']}>
+        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#ffa500', opacity: 0.2} : '']} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -364,7 +370,8 @@ export default function FormBritador({ navigation, route }) {
                     <TextInput
                         style={styles.input}
                         multiline = {true}
-                        numberOfLines = {1}
+                        numberOfLines = {7}
+                        textAlignVertical = 'top'
                         placeholder=""
                         value={descricao}
                         onChangeText={(text) => setDescricao(text)}
@@ -407,7 +414,7 @@ export default function FormBritador({ navigation, route }) {
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     data={imagens}
-                    numColumns={3}
+                    numColumns={2}
                     renderItem={({item}) => renderItem (item, removerImg)}
                     keyExtractor={(item, index) => index.toString()}
                 />
@@ -423,19 +430,21 @@ export default function FormBritador({ navigation, route }) {
 
 function renderItem(item, removerImg) {
     return (
-        <View style={styles.areaImage}>
-            <TouchableOpacity onPress={() => removerImg(item.id)}>
-                <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
-                    <View style={{flexDirection: 'row-reverse'}}>
-                        <FontAwesome
-                            style={{marginRight: 3}}
-                            name='close'
-                            size= {30}
-                            color="red"
-                        />
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+        <View style={{width: '48%', marginBottom: 10, marginHorizontal: '1%'}}>
+            <View style={styles.areaImage}>
+                <TouchableOpacity onPress={() => removerImg(item.id)}>
+                    <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
+                        <View style={{flexDirection: 'row-reverse'}}>
+                            <FontAwesome
+                                style={{marginRight: 3}}
+                                name='close'
+                                size= {30}
+                                color="red"
+                            />
+                        </View>
+                    </ImageBackground>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
@@ -527,15 +536,14 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold'
     },
     areaImage: {
-        height: 105,
-        width: 105,
-        borderWidth: 2,
+        height: 132,
+        width: '100%',
         borderColor: '#fff',
-        margin: 10 
+        borderWidth: 2,   
     },
     itemImage: {
-        height: 101,
-        width: 101,
+        height: 128,
+        width: '100%',
         resizeMode: 'cover'
     },
     modalWindow: {

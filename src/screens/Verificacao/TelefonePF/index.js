@@ -18,15 +18,13 @@ export default function CelularPF({route}){
    async function pegarNumero() {
         let celularFiltrado = celular.replace('(','').replace(')','').replace('-','').replace(' ','')
 
-        if(celular && celular.length > 9){
-            navigation.navigate('CodigoPF', {celular: celular, celularFiltrado:celularFiltrado,  nome: nome, cpf: cpf, tipo: tipo, avatar: avatar, email: email, password: password,codigoGerado:codigoGerado})
-           
+        if(celular && celular.length > 15){
+            navigation.navigate('CodigoPF', {celular: celular, celularFiltrado: celularFiltrado,  nome: nome, cpf: cpf, tipo: tipo, avatar: avatar, email: email, password: password, codigoGerado: codigoGerado})   
         }
         else  {
         errors.condicao = Alert.alert('Opps!', 'Informe um número de celular válido.')
         }
     }
-
 
     return(
         <View style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
@@ -42,7 +40,7 @@ export default function CelularPF({route}){
                 value={celular}
                 onChangeText={(text) => setCelular(text)}
                 type={'cel-phone'}
-                keyboardType={'numeric'}
+                keyboardType={'number-pad'}
                 options={{
                     maskType: 'BRL',
                     withDDD: true,
@@ -53,7 +51,7 @@ export default function CelularPF({route}){
                 /> 
             </View>
 
-            <Text style={styles.txtInfo}>Ao continuar, você receberá um SMS com o código de verificação.</Text>
+            <Text style={styles.txtInfo}>Você receberá um SMS com o código de verificação.</Text>
 
             <View style={styles.areaBtn}>
                 <TouchableOpacity style={styles.btn} onPress={pegarNumero}>

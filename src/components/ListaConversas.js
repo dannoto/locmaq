@@ -18,10 +18,10 @@ export default function ListaConversas({data}){
   }
 
   function filterMensagem(mensagem) {
-    if(mensagem.length < 29) {
+    if(mensagem.length < 34) {
       return mensagem;
     }
-    return `${mensagem.substring(0, 29)}...`;
+    return `${mensagem.substring(0, 34)}...`;
   }
 
     return(
@@ -36,9 +36,15 @@ export default function ListaConversas({data}){
               <View style={styles.areaTxt}>
                 <Text style={styles.titulo}>{filterTitulo('FABRICANTE - MODELO - ANO')}</Text>
                 <Text style={styles.nome}>{filterNome('MONNIK JESUS DA SILVA')}</Text>
-                <Text style={styles.nome}>{data.produto}</Text>
-                <Text style={styles.nome}>{data.proprietario}</Text>
-                <Text style={styles.nome}>{data.interessado}</Text>
+
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text style={styles.mensagem}>{filterMensagem('Olá, Tudo bem?')}</Text>
+
+                  <View style={styles.areaQtdMensagem}>
+                    <Text style={styles.qtdMensagem}>3</Text>
+                  </View>
+                </View>
+                
                 <Text style={styles.data}>12/01/2021 às 18:34</Text>
               </View>
           </View>
@@ -82,6 +88,20 @@ const styles = StyleSheet.create ({
     fontSize: 17,
     marginLeft: 5,
     marginTop: 5
+  },
+  areaQtdMensagem: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#ffa500',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10
+  },
+  qtdMensagem: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: 'bold'
   },
   data: {
     color: '#222',

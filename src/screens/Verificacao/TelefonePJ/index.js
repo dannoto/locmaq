@@ -34,7 +34,7 @@ export default function CelularPJ({route}){
                 value={celular}
                 onChangeText={(text) => setCelular(text)}
                 type={'cel-phone'}
-                keyboardType={'numeric'}
+                keyboardType={'number-pad'}
                 options={{
                     maskType: 'BRL',
                     withDDD: true,

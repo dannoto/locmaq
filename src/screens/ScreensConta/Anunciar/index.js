@@ -6,7 +6,7 @@ export default () => {
     const navigation = useNavigation();
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled> 
@@ -17,7 +17,7 @@ export default () => {
                         <Text style={styles.txtBtn}>EQUIPAMENTOS</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('CategoriaServico')}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('SubcategoriasServicos', {catId: '-MS2rbqavp5zN_3QZsSK'})}>
                         <Text style={styles.txtBtn}>SERVIÇOS</Text>
                     </TouchableOpacity>
                 </View>             
@@ -41,7 +41,7 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
         marginBottom: 20,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create ({
         borderColor: '#fff'
     },
     txtBtn:{
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
     }

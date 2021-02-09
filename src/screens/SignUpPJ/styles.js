@@ -13,16 +13,17 @@ export const Container = styled.KeyboardAvoidingView`
 `;
 
 export const Logo = styled.Image`
-    width: 60%;
-    margin-left: 20%;
+    width: 50%;
+    margin-left: 25%;
     padding: 10px;
     margin-top: 40px;
+    margin-bottom: 10px;
 `;
 
 export const TextTitulo = styled.Text`
     font-size: 18px;
     color: #fff;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
 `;
 

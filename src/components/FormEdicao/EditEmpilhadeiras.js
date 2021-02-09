@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput, ImageBackground, StyleSheet, Platform, Alert, Modal, FlatList } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import firebase from '../../../services/firebaseConnection';
+import firebase from '../../services/firebaseConnection';
 import ImagePicker from 'react-native-image-crop-picker';
 import { TextInputMask } from 'react-native-masked-text';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function FormCaminhoes({route, navigation}) {
+export default function FormEditEmpilhadeiras({data}) {
 
-    const {key, subnome} = route.params;
-    navigation.setOptions({headerTitle: subnome.toUpperCase()});
     const errors = {};
 
     const [detalhes, setDetalhes] = useState([]);
@@ -21,43 +19,46 @@ export default function FormCaminhoes({route, navigation}) {
         {key: 1, nome: 'ALUGUEL'}, 
         {key: 2, nome: 'VENDA'}
     ]);
-    const [fabricante, setFabricante] = useState();
-    const [modelo, setModelo] = useState(detalhes.modelo);
-    const [ano, setAno] = useState(detalhes.ano);
+    const [fabricante, setFabricante] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [ano, setAno] = useState('');
+    const [caracteristica, setCaracteristica] = useState('');
+    const [opcoescaracteristica, setOpcoesCaracteristica] = useState([
+        {key: 0, nome: 'SELECIONAR'}, 
+        {key: 1, nome: 'ASA DELTA'}, 
+        {key: 2, nome: 'DUPLEX'},
+        {key: 3, nome: 'DUPLEX DESLOCADO'},
+        {key: 4, nome: 'LATERAL'},
+        {key: 5, nome: 'OPERADOR A BORDO'}, 
+        {key: 6, nome: 'OPERADOR A PÉ'},
+        {key: 7, nome: 'PALETADEIRA'},
+        {key: 8, nome: 'PANTOGRÁFICA'},
+        {key: 9, nome: 'QUADRIPLEX'}, 
+        {key: 10, nome: 'OPCIONAL - PLE'},
+        {key: 11, nome: 'SPREADER'},
+        {key: 12, nome: 'TRILATERAL'},
+        {key: 13, nome: 'TRIPLEX'}, 
+        {key: 14, nome: 'TRIPLEX CONTAINER'},
+        {key: 15, nome: 'TRIPLEX DESLOCADOR'}
+    ]);
     const [tipo, setTipo] = useState('');
     const [tipos, setTipos] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
-        {key: 1, nome: 'TOCO'}, 
-        {key: 2, nome: 'TRUCK'}, 
-        {key: 3, nome: 'TRUCK - TRUCADO'}, 
-        {key: 4, nome: 'TRAÇADO'}, 
-        {key: 5, nome: 'TRAÇADO - TRUCADO'} 
+        {key: 1, nome: 'ELÉTRICO'}, 
+        {key: 2, nome: 'MANUAL'},
+        {key: 3, nome: 'COMBUSTÃO'}
     ]);
-    const [tracao, setTracao] = useState('');
-    const [tracaovalores, setTracaoValores] = useState([
-        {key: 0, nome: 'SELECIONAR'}, 
-        {key: 1, nome: '4x2'}, 
-        {key: 2, nome: '4x4'}, 
-        {key: 3, nome: '6x2'}, 
-        {key: 4, nome: '6x4'}, 
-        {key: 5, nome: '6x6'},
-        {key: 6, nome: '8x2'},
-        {key: 7, nome: '8x4'},
-        {key: 8, nome: '8x6'},
-        {key: 9, nome: '8x8'}
-    ]);
-    const [consumo, setConsumo] = useState(detalhes.consumo);
-    const [hodometro, setHodometro] = useState(detalhes.hodometro);
-    const [horimetro, setHorimetro] = useState(detalhes.horimetro);
-    const [capacidade, setCapacidade] = useState(detalhes.capacidade);
-    const [potencia, setPotencia] = useState(detalhes.potencia);
+    const [altura, setAltura] = useState('');
+    const [capacidade, setCapacidade] = useState('');
+    const [peso, setPeso] = useState('');
+    const [potencia, setPotencia] = useState('');
     const [seguro, setSeguro] = useState('');
     const [segurooption, setSeguroOption] = useState([
         {key: 0, nome: 'SELECIONAR'}, 
         {key: 1, nome: 'SIM'}, 
         {key: 2, nome: 'NÃO'}
     ]);
-    const [infoAdicionais, setInfoAdicionais] = useState(detalhes.infoAdicionais);
+    const [infoAdicionais, setInfoAdicionais] = useState('');
     const [estado, setEstado] = useState('');
     const [estados, setEstados] = useState([  
         {key: 0, nome: 'SELECIONAR'},
@@ -93,35 +94,30 @@ export default function FormCaminhoes({route, navigation}) {
     const [cidadesdata, setCidadesData] = useState([]);
     const [cidades, setCidades] = useState([]);
     const [preco, setPreco] = useState('');
-    const [precoDiaria, setPrecoDiaria] = useState('');
-    const [precoSemanal, setPrecoSemanal] = useState('');
-    const [precoMensal, setPrecoMensal] = useState('');
+    const [precoHora, setPrecoHora] = useState('');
     const [imagens, setImagens] = useState([]);
     const [modalCondicao, setModalCondicao] = useState(false);
     const [modalFabricante, setModalFabricante] = useState(false);
     const [modalModelo, setModalModelo] = useState(false);
     const [modalAno, setModalAno] = useState(false);
-    const [modalTracao, setModalTracao] = useState(false);
+    const [modalCaracteristica, setModalCaracteristica] = useState(false);
     const [modalTipo, setModalTipo] = useState(false);
-    const [modalConsumo, setModalConsumo] = useState(false);
-    const [modalHodometro, setModalHodometro] = useState(false);
-    const [modalHorimetro, setModalHorimetro] = useState(false);
     const [modalCapacidade, setModalCapacidade] = useState(false);
+    const [modalAltura, setModalAltura] = useState(false);
+    const [modalPeso, setModalPeso] = useState(false);
     const [modalPotencia, setModalPotencia] = useState(false);
     const [modalSeguro, setModalSeguro] = useState(false);
     const [modalinfoAdicionais, setModalinfoAdicionais] = useState(false);
     const [modalEstado, setModalEstado] = useState(false);
     const [modalCidade, setModalCidade] = useState(false);
     const [modalPreco, setModalPreco] = useState(false);
-    const [modalPrecoDiaria, setModalPrecoDiaria] = useState(false);
-    const [modalPrecoSemanal, setModalPrecoSemanal] = useState(false);
-    const [modalPrecoMensal, setModalPrecoMensal] = useState(false);
+    const [modalPrecoHora, setModalPrecoHora] = useState(false);
     const [modalvisible, setModalVisible] = useState(false);
     const [countimagens, setCountImagens] = useState([]);
    
     useEffect(() => {
         async function getDetalhes() {
-             await firebase.database().ref('equipamentos').child(key).on('value', (snapshot) => {
+             await firebase.database().ref('equipamentos').child(data).on('value', (snapshot) => {
                 setDetalhes([]);
              
                 let data = {
@@ -130,21 +126,18 @@ export default function FormCaminhoes({route, navigation}) {
                     fabricante: snapshot.val().fabricante,
                     ano: snapshot.val().ano,
                     modelo: snapshot.val().modelo,
+                    caracteristica: snapshot.val().caracteristica.nome,
                     tipo: snapshot.val().tipo.nome,
-                    tracao: snapshot.val().tracao.nome,
-                    consumo: snapshot.val().consumo, 
-                    hodometro: snapshot.val().hodometro, 
-                    horimetro: snapshot.val().horimetro,
-                    capacidade: snapshot.val().capacidade, 
+                    capacidade: snapshot.val().capacidade,
+                    altura: snapshot.val().altura, 
+                    peso: snapshot.val().peso, 
                     potencia: snapshot.val().potencia, 
                     seguro: snapshot.val().seguro.nome, 
                     infoAdicionais: snapshot.val().infoAdicionais, 
                     estado: snapshot.val().estado.key, 
                     cidade: snapshot.val().cidade.nome,
                     preco: snapshot.val().preco, 
-                    precoDiaria: snapshot.val().precoDiaria,
-                    precoSemanal: snapshot.val().precoSemanal,
-                    precoMensal: snapshot.val().precoMensal,
+                    precoHora: snapshot.val().precoHora,
                     subcategoria: snapshot.val().subcategoria.nome, 
                     categoria: snapshot.val().categoria.nome,
                     codigoProduto: snapshot.val().codigoProduto,
@@ -171,7 +164,7 @@ export default function FormCaminhoes({route, navigation}) {
 
 //Funções Update no Firebase
     async function updateCondicao() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             condicao: condicao
         })
         setModalCondicao(false)
@@ -179,7 +172,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateFabricante() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             fabricante: fabricante
         })
         setModalFabricante(false)
@@ -187,7 +180,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateModelo() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             modelo: modelo
         })
         setModalModelo(false)
@@ -195,63 +188,55 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateAno() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             ano: ano
         })
         setModalAno(false)
         setAno()
     }
 
-    async function updateTracao() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            tracao: tracao
+    async function updateCaracteristica() {
+        await firebase.database().ref('equipamentos').child(data).update({
+            caracteristica: caracteristica
         })
-        setModalTracao(false)
-        setTracao()
+        setModalCaracteristica(false)
+        setCaracteristica()
     }
 
     async function updateTipo() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             tipo: tipo
         })
         setModalTipo(false)
         setTipo()
     }
 
-    async function updateConsumo() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            consumo: consumo
-        })
-        setModalConsumo(false)
-        setConsumo()
-    }
-
-    async function updateHodometro() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            hodometro: hodometro
-        })
-        setModalHodometro(false)
-        setHodometro()
-    }
-
-    async function updateHorimetro() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            horimetro: horimetro
-        })
-        setModalHorimetro(false)
-        setHorimetro()
-    }
-
     async function updateCapacidade() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             capacidade: capacidade
         })
         setModalCapacidade(false)
         setCapacidade()
     }
 
+    async function updateAltura() {
+        await firebase.database().ref('equipamentos').child(data).update({
+            altura: altura
+        })
+        setModalAltura(false)
+        setAltura()
+    }
+
+    async function updatePeso() {
+        await firebase.database().ref('equipamentos').child(data).update({
+           peso: peso
+        })
+        setModalPeso(false)
+        setPeso()
+    }
+
     async function updatePotencia() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             potencia: potencia
         })
         setModalPotencia(false)
@@ -259,7 +244,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateSeguro() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             seguro: seguro
         })
         setModalSeguro(false)
@@ -270,7 +255,7 @@ export default function FormCaminhoes({route, navigation}) {
         if (infoPrevent(infoAdicionais) == false) {           
             errors.infoAdicionais = Alert.alert('Opps!', 'Não é permitido digitar informações de contato (Telefone ou E-mail).')
         } else {
-            await firebase.database().ref('equipamentos').child(key).update({
+            await firebase.database().ref('equipamentos').child(data).update({
                 infoAdicionais: infoAdicionais
             })
             setModalinfoAdicionais(false)
@@ -279,7 +264,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateEstado() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             estado: estado
         })
         setModalEstado(false)
@@ -287,7 +272,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updateCidade() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             cidade: cidade
         })
         setModalCidade(false)
@@ -295,35 +280,19 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     async function updatePreco() {
-        await firebase.database().ref('equipamentos').child(key).update({
+        await firebase.database().ref('equipamentos').child(data).update({
             preco: preco
         })
         setModalPreco(false)
         setPreco()
     }
 
-    async function updatePrecoDiaria() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            precoDiaria: precoDiaria
+    async function updatePrecoHora() {
+        await firebase.database().ref('equipamentos').child(data).update({
+            precoHora: precoHora
         })
-        setModalPrecoDiaria(false)
-        setPrecoDiaria()
-    }
-
-    async function updatePrecoSemanal() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            precoSemanal: precoSemanal
-        })
-        setModalPrecoSemanal(false)
-        setPrecoSemanal()
-    }
-
-    async function updatePrecoMensal() {
-        await firebase.database().ref('equipamentos').child(key).update({
-            precoMensal: precoMensal
-        })
-        setModalPrecoMensal(false)
-        setPrecoMensal()
+        setModalPrecoHora(false)
+        setPrecoHora()
     }
 
     function pegaCidades(v,k) {
@@ -350,11 +319,11 @@ export default function FormCaminhoes({route, navigation}) {
         return <Picker.Item key={k} value={v} label={v.nome}/>
     })
 
-    let tiposItem = tipos.map( (v, k) => {
+    let caracteristicaItem = opcoescaracteristica.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
     })
 
-    let tracaoValoresItem = tracaovalores.map( (v, k) => {
+    let tiposItem = tipos.map( (v, k) => {
         return <Picker.Item key={k} value={v} label={v.nome}/>
     })
 
@@ -372,25 +341,25 @@ export default function FormCaminhoes({route, navigation}) {
 
     function SelectPadraoCondicao(v,i) {
         if (v.key !== 0) {
-           setCondicao(v);
+            setCondicao(v);
         }  
     }
     
-    function SelectPadraoTipo(v,i) {
+    function SelectPadraoCaracteristica(v,i) {
         if (v.key !== 0) {
-           setTipo(v);
+            setCaracteristica(v);
         }  
     }
 
-    function SelectPadraoTracao(v,i) {
+    function SelectPadraoTipo(v,i) {
         if (v.key !== 0) {
-           setTracao(v);
+            setTipo(v);
         }  
     }
 
     function SelectPadraoSeguro(v,i) {
         if (v.key !== 0) {
-           setSeguro(v);
+            setSeguro(v);
         }  
     }
 
@@ -405,6 +374,12 @@ export default function FormCaminhoes({route, navigation}) {
         if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
             return false
         } 
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.+)/gi)) {
+            return false
+        }
+        else if (text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+)/gi)) {
+            return false
+        }
         else {
             return true
         }     
@@ -435,8 +410,8 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     function onClickAddImage() {
-        if (imagens.length == 6) {
-            Alert.alert('Opps!', 'Máximo de 6 Fotos!')
+        if (imagens.length == 3) {
+            Alert.alert('Opps!', 'Máximo de 3 Fotos!')
         } else {
             setModalVisible(true);
         }  
@@ -465,8 +440,8 @@ export default function FormCaminhoes({route, navigation}) {
             compressImageQuality: 0.7,
             includeBase64: true,
             multiple: true,
-            minFiles: 6,
-            maxFiles: 6
+            minFiles: 3,
+            maxFiles: 3
           }).then(image => {
             onSelectedImageLibrary(image)
             setModalVisible(false)
@@ -484,7 +459,7 @@ export default function FormCaminhoes({route, navigation}) {
     }
 
     function onSelectedImageLibrary(image) {
-        let limit = (6 - imagens.length);
+        let limit = (3 - imagens.length);
         let newDataImg = imagens;
         if (image.length > 1) {
             for (var i = 0; i < limit; i++) {
@@ -516,10 +491,9 @@ export default function FormCaminhoes({route, navigation}) {
         });
     }
 
-
     return (
-        <ScrollView style={[styles.background, modalvisible || modalCondicao || modalFabricante || modalModelo || modalAno || modalTracao || modalTipo || modalConsumo || modalHodometro || modalHorimetro || 
-            modalCapacidade || modalPotencia || modalSeguro || modalinfoAdicionais || modalEstado || modalCidade || modalPreco || modalPrecoDiaria || modalPrecoSemanal || modalPrecoMensal
+        <ScrollView style={[styles.background, modalvisible || modalCondicao || modalFabricante || modalModelo || modalAno || modalCaracteristica ||  modalTipo || modalCapacidade || modalAltura ||
+            modalPeso || modalPotencia || modalSeguro || modalinfoAdicionais || modalEstado || modalCidade || modalPreco || modalPrecoHora
          ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
@@ -702,7 +676,7 @@ export default function FormCaminhoes({route, navigation}) {
                                         placeholder=""
                                         value={ano}
                                         onChangeText={(text) => setAno(text)}
-                                        keyboardType={'numeric'}
+                                        keyboardType={'number-pad'}
                                         maxLength={4}
                                     />
                                 </View>
@@ -715,6 +689,53 @@ export default function FormCaminhoes({route, navigation}) {
                     </Modal>
                 </View>
 
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>CARACTERÍSTICA</Text>
+                        <Text style={styles.dados}>{detalhes.caracteristica}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => setModalCaracteristica(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalCaracteristica} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalCaracteristica(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>CARACTERÍSTICA</Text>
+                                <View style={styles.picker}>
+                                    <Picker
+                                    selectedValue={caracteristica}
+                                    onValueChange={(itemValue, itemIndex) => SelectPadraoCaracteristica(itemValue,itemIndex)}
+                                    style= {{color: '#fff'}}
+                                    dropdownIconColor={'white'}
+                                    >
+                                        {caracteristicaItem}
+                                    </Picker>
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateCaracteristica}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+                
                 <View style={styles.areaEdicao}>
                     <View>
                         <Text style={styles.tituloInput}>TIPO</Text>
@@ -761,222 +782,10 @@ export default function FormCaminhoes({route, navigation}) {
                         </View>
                     </Modal>
                 </View>
-                        
-                <View style={styles.areaEdicao}>
-                    <View>
-                        <Text style={styles.tituloInput}>TRAÇÃO</Text>
-                        <Text style={styles.dados}>{detalhes.tracao}</Text>
-                    </View>
-
-                    <TouchableOpacity onPress={() => setModalTracao(true)}>
-                        <MaterialIcons
-                            style={styles.icon}
-                            name='edit'
-                            size= {28}
-                            color='#fff'
-                        />
-                    </TouchableOpacity>
-
-                    <Modal animationType="fade" transparent={true} visible={modalTracao} onRequestClose={() => {}}>
-                        <View style={styles.modalWindow}>
-                            <View style={styles.modalBody}>
-                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalTracao(false)}>
-                                    <AntDesign
-                                    style={{marginBottom: 5}}
-                                    name='closecircleo'
-                                    size= {34}
-                                    color="#fff"
-                                    />
-                                </TouchableOpacity>
-
-                                <Text style={styles.tituloInput}>TRAÇÃO</Text>
-                                <View style={styles.picker}>
-                                    <Picker
-                                    selectedValue={tracao}
-                                    onValueChange={(itemValue, itemIndex) => SelectPadraoTracao(itemValue,itemIndex)}
-                                    style= {{color: '#fff'}}
-                                    dropdownIconColor={'white'}
-                                    >
-                                        {tracaoValoresItem}
-                                    </Picker>
-                                </View>
-
-                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateTracao}>
-                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
 
                 <View style={styles.areaEdicao}>
                     <View>
-                        <Text style={styles.tituloInput}>CONSUMO MÉDIO (KM/L)</Text>
-                        <Text style={styles.dados}>{detalhes.consumo}</Text>
-                    </View>
-
-                    <TouchableOpacity onPress={() => setModalConsumo(true)}>
-                        <MaterialIcons
-                            style={styles.icon}
-                            name='edit'
-                            size= {28}
-                            color='#fff'
-                        />
-                    </TouchableOpacity>
-
-                    <Modal animationType="fade" transparent={true} visible={modalConsumo} onRequestClose={() => {}}>
-                        <View style={styles.modalWindow}>
-                            <View style={styles.modalBody}>
-                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalConsumo(false)}>
-                                    <AntDesign
-                                    style={{marginBottom: 5}}
-                                    name='closecircleo'
-                                    size= {34}
-                                    color="#fff"
-                                    />
-                                </TouchableOpacity>
-
-                                <Text style={styles.tituloInput}>CONSUMO MÉDIO (KM/L)</Text>
-                                <View style={styles.areaInput}>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="(Quilometros/Litro)"
-                                        placeholderTextColor='#fff'
-                                        value={consumo}
-                                        onChangeText={(text) => setConsumo(text)}
-                                        keyboardType={'numeric'}
-                                        maxLength={20}
-                                    />
-                                </View>
-
-                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateConsumo}>
-                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-
-                <View style={styles.areaEdicao}>
-                    <View>
-                        <Text style={styles.tituloInput}>HODÔMETRO (KM)</Text>
-                        <Text style={styles.dados}>{detalhes.hodometro}</Text>
-                    </View>
-
-                    <TouchableOpacity onPress={() => setModalHodometro(true)}>
-                        <MaterialIcons
-                            style={styles.icon}
-                            name='edit'
-                            size= {28}
-                            color='#fff'
-                        />
-                    </TouchableOpacity>
-
-                    <Modal animationType="fade" transparent={true} visible={modalHodometro} onRequestClose={() => {}}>
-                        <View style={styles.modalWindow}>
-                            <View style={styles.modalBody}>
-                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalHodometro(false)}>
-                                    <AntDesign
-                                    style={{marginBottom: 5}}
-                                    name='closecircleo'
-                                    size= {34}
-                                    color="#fff"
-                                    />
-                                </TouchableOpacity>
-
-                                <Text style={styles.tituloInput}>HODÔMETRO (KM)</Text>
-                                <View style={styles.areaInput}>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="(Quilometros)"
-                                        placeholderTextColor='#fff'
-                                        value={hodometro}
-                                        onChangeText={(text) => setHodometro(text)}
-                                        keyboardType={'numeric'}
-                                        maxLength={20}
-                                    />
-                                </View>
-
-                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateHodometro}>
-                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-
-                {detalhes.horimetro !== "" ?
-                    (
-                        <View style={styles.areaEdicao}>
-                            <View>
-                                <Text style={styles.tituloInput}>HORÍMETRO (HOR)</Text>
-                                <Text style={styles.dados}>{detalhes.horimetro}</Text>
-                            </View>
-
-                            <TouchableOpacity onPress={() => setModalHorimetro(true)}>
-                                <MaterialIcons
-                                    style={styles.icon}
-                                    name='edit'
-                                    size= {28}
-                                    color='#fff'
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    ) : 
-                    (
-                        <View style={styles.areaEdicao}>
-                            <View>
-                                <Text style={styles.tituloInput}>HORÍMETRO (HOR)</Text>
-                                <Text style={styles.dados}>-</Text>
-                            </View>
-
-                            <TouchableOpacity onPress={() => setModalHorimetro(true)}>
-                                <MaterialIcons
-                                    style={styles.icon}
-                                    name='edit'
-                                    size= {28}
-                                    color='#fff'
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    )
-                }
-
-                <Modal animationType="fade" transparent={true} visible={modalHorimetro} onRequestClose={() => {}}>
-                    <View style={styles.modalWindow}>
-                        <View style={styles.modalBody}>
-                            <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalHorimetro(false)}>
-                                <AntDesign
-                                style={{marginBottom: 5}}
-                                name='closecircleo'
-                                size= {34}
-                                color="#fff"
-                                />
-                            </TouchableOpacity>
-
-                            <Text style={styles.tituloInput}>HORÍMETRO (HOR)</Text>
-                            <View style={styles.areaInput}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="(Horímetro)"
-                                    placeholderTextColor='#fff'
-                                    value={horimetro}
-                                    onChangeText={(text) => setHorimetro(text)}
-                                    keyboardType={'numeric'}
-                                    maxLength={20}
-                                />
-                            </View>
-
-                            <TouchableOpacity style={styles.areaBtnModal} onPress={updateHorimetro}>
-                                <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-
-                <View style={styles.areaEdicao}>
-                    <View>
-                        <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
+                        <Text style={styles.tituloInput}>CAPACIDADE MÁXIMA DE CARGA (KG)</Text>
                         <Text style={styles.dados}>{detalhes.capacidade}</Text>
                     </View>
 
@@ -1001,16 +810,16 @@ export default function FormCaminhoes({route, navigation}) {
                                     />
                                 </TouchableOpacity>
 
-                                <Text style={styles.tituloInput}>CAPACIDADE (TON)</Text>
+                                <Text style={styles.tituloInput}>CAPACIDADE MÁXIMA DE CARGA (KG)</Text>
                                 <View style={styles.areaInput}>
                                     <TextInput
                                         style={styles.input}
-                                        placeholder="Toneladas"
+                                        placeholder="(Quilos)"
                                         placeholderTextColor='#fff'
                                         value={capacidade}
                                         onChangeText={(text) => setCapacidade(text)}
                                         keyboardType={'numeric'}
-                                        maxLength={50}
+                                        maxLength={20}
                                     />
                                 </View>
 
@@ -1021,7 +830,102 @@ export default function FormCaminhoes({route, navigation}) {
                         </View>
                     </Modal>
                 </View>
-                
+
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>ALTURA MÁXIMA DA ELEVAÇÃO (M)</Text>
+                        <Text style={styles.dados}>{detalhes.altura}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => setModalAltura(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalAltura} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalAltura(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>ALTURA MÁXIMA DA ELEVAÇÃO (M)</Text>
+                                <View style={styles.areaInput}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="(Metros)"
+                                        placeholderTextColor='#fff'
+                                        value={altura}
+                                        onChangeText={(text) => setAltura(text)}
+                                        keyboardType={'numeric'}
+                                        maxLength={20}
+                                    />
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updateAltura}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+
+                <View style={styles.areaEdicao}>
+                    <View>
+                        <Text style={styles.tituloInput}>PESO OPERACIONAL (TON)</Text>
+                        <Text style={styles.dados}>{detalhes.peso}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => setModalPeso(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#fff'
+                        />
+                    </TouchableOpacity>
+
+                    <Modal animationType="fade" transparent={true} visible={modalPeso} onRequestClose={() => {}}>
+                        <View style={styles.modalWindow}>
+                            <View style={styles.modalBody}>
+                                <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => setModalPeso(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+
+                                <Text style={styles.tituloInput}>PESO OPERACIONAL (TON)</Text>
+                                <View style={styles.areaInput}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="(Toneladas)"
+                                        placeholderTextColor='#fff'
+                                        value={peso}
+                                        onChangeText={(text) => setPeso(text)}
+                                        keyboardType={'numeric'}
+                                        maxLength={20}
+                                    />
+                                </View>
+
+                                <TouchableOpacity style={styles.areaBtnModal} onPress={updatePeso}>
+                                    <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
 
                 <View style={styles.areaEdicao}>
                     <View>
@@ -1172,7 +1076,8 @@ export default function FormCaminhoes({route, navigation}) {
                                 <TextInput
                                     style={styles.input}
                                     multiline = {true}
-                                    numberOfLines = {1}
+                                    numberOfLines = {7}
+                                    textAlignVertical = 'top'
                                     placeholder=""
                                     value={infoAdicionais}
                                     onChangeText={(text) => setInfoAdicionais(text)}
@@ -1286,15 +1191,15 @@ export default function FormCaminhoes({route, navigation}) {
                 {detalhes.condicao == 'ALUGUEL' ?
                     (
                         <View>
-                            {detalhes.precoDiaria == "" ?
+                            {detalhes.precoHora == "" ?
                                 (
                                     <View style={styles.areaEdicao}>
                                         <View>
-                                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                                            <Text style={styles.tituloInput}>PREÇO POR HORA</Text>
                                             <Text style={styles.dados}>-</Text>
                                         </View>
         
-                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
+                                        <TouchableOpacity onPress={() => setModalPrecoHora(true)}>
                                             <MaterialIcons
                                                 style={styles.icon}
                                                 name='edit'
@@ -1307,85 +1212,11 @@ export default function FormCaminhoes({route, navigation}) {
                                 (
                                     <View style={styles.areaEdicao}>
                                         <View>
-                                            <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
-                                            <Text style={styles.dados}>{detalhes.precoDiaria}</Text>
+                                            <Text style={styles.tituloInput}>PREÇO POR HORA</Text>
+                                            <Text style={styles.dados}>{detalhes.precoHora}</Text>
                                         </View>
         
-                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
-                                            <MaterialIcons
-                                                style={styles.icon}
-                                                name='edit'
-                                                size= {28}
-                                                color='#fff'
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                )
-                            }
-                           
-                           {detalhes.precoSemanal == "" ?
-                                (
-                                    <View style={styles.areaEdicao}>
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                                            <Text style={styles.dados}>-</Text>
-                                        </View>
-        
-                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
-                                            <MaterialIcons
-                                                style={styles.icon}
-                                                name='edit'
-                                                size= {28}
-                                                color='#fff'
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                ) : 
-                                (
-                                    <View style={styles.areaEdicao}>
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                                            <Text style={styles.dados}>{detalhes.precoSemanal}</Text>
-                                        </View>
-
-                                        <TouchableOpacity onPress={() => setModalPrecoSemanal(true)}>
-                                            <MaterialIcons
-                                                style={styles.icon}
-                                                name='edit'
-                                                size= {28}
-                                                color='#fff'
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                )
-                            }
-
-                            {detalhes.precoMensal == "" ?
-                                (
-                                    <View style={styles.areaEdicao}>
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                                            <Text style={styles.dados}>-</Text>
-                                        </View>
-        
-                                        <TouchableOpacity onPress={() => setModalPrecoDiaria(true)}>
-                                            <MaterialIcons
-                                                style={styles.icon}
-                                                name='edit'
-                                                size= {28}
-                                                color='#fff'
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                ) : 
-                                (
-                                    <View style={styles.areaEdicao}>
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                                            <Text style={styles.dados}>{detalhes.precoMensal}</Text>
-                                        </View>
-        
-                                        <TouchableOpacity onPress={() => setModalPrecoMensal(true)}>
+                                        <TouchableOpacity onPress={() => setModalPrecoHora(true)}>
                                             <MaterialIcons
                                                 style={styles.icon}
                                                 name='edit'
@@ -1397,10 +1228,10 @@ export default function FormCaminhoes({route, navigation}) {
                                 )
                             }
                             
-                            <Modal animationType="fade" transparent={true} visible={modalPrecoDiaria} onRequestClose={() => {}}>
+                            <Modal animationType="fade" transparent={true} visible={modalPrecoHora} onRequestClose={() => {}}>
                                 <View style={styles.modalWindow}>
                                     <View style={styles.modalBody}>
-                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoDiaria(false)}}>
+                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoHora(false)}}>
                                             <AntDesign
                                             style={{marginBottom: 5}}
                                             name='closecircleo'
@@ -1410,14 +1241,14 @@ export default function FormCaminhoes({route, navigation}) {
                                         </TouchableOpacity>
 
                                         <View>
-                                        <Text style={styles.tituloInput}>PREÇO DIÁRIA</Text>
+                                        <Text style={styles.tituloInput}>PREÇO POR HORA</Text>
                                         <View style={styles.areaInput}>
                                             <TextInputMask
                                                 style={styles.input}
                                                 placeholder="R$"
                                                 placeholderTextColor='#fff'
-                                                value={precoDiaria}
-                                                onChangeText={(text) => setPrecoDiaria(text)}
+                                                value={precoHora}
+                                                onChangeText={(text) => setPrecoHora(text)}
                                                 keyboardType={'numeric'}
                                                 type={'money'}
                                                 options = {{
@@ -1431,89 +1262,7 @@ export default function FormCaminhoes({route, navigation}) {
                                         </View> 
                                         </View>
 
-                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoDiaria}>
-                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </Modal> 
-
-                            <Modal animationType="fade" transparent={true} visible={modalPrecoSemanal} onRequestClose={() => {}}>
-                                <View style={styles.modalWindow}>
-                                    <View style={styles.modalBody}>
-                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoSemanal(false)}}>
-                                            <AntDesign
-                                            style={{marginBottom: 5}}
-                                            name='closecircleo'
-                                            size= {34}
-                                            color="#fff"
-                                            />
-                                        </TouchableOpacity>
-
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO SEMANAL</Text>
-                                            <View style={styles.areaInput}>
-                                                <TextInputMask
-                                                    style={styles.input}
-                                                    placeholder="R$"
-                                                    placeholderTextColor='#fff'
-                                                    value={precoSemanal}
-                                                    onChangeText={(text) => setPrecoSemanal(text)}
-                                                    keyboardType={'numeric'}
-                                                    type={'money'}
-                                                    options = {{
-                                                        precision :  2,
-                                                        separator :  ',' ,
-                                                        delimiter :  '.' ,
-                                                        unidade :  'R$ ' ,
-                                                        sufixoUnidade :  ' ' 
-                                                    }} 
-                                                />
-                                            </View> 
-                                        </View>
-
-                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoSemanal}>
-                                            <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </Modal> 
-
-                            <Modal animationType="fade" transparent={true} visible={modalPrecoMensal} onRequestClose={() => {}}>
-                                <View style={styles.modalWindow}>
-                                    <View style={styles.modalBody}>
-                                        <TouchableOpacity style={styles.areaBtnModalClose} onPress={() => {setModalPrecoMensal(false)}}>
-                                            <AntDesign
-                                            style={{marginBottom: 5}}
-                                            name='closecircleo'
-                                            size= {34}
-                                            color="#fff"
-                                            />
-                                        </TouchableOpacity>
-
-                                        <View>
-                                            <Text style={styles.tituloInput}>PREÇO MENSAL</Text>
-                                            <View style={styles.areaInput}>
-                                                <TextInputMask
-                                                    style={styles.input}
-                                                    placeholder="R$"
-                                                    placeholderTextColor='#fff'
-                                                    value={precoMensal}
-                                                    onChangeText={(text) => setPrecoMensal(text)}
-                                                    keyboardType={'numeric'}
-                                                    type={'money'}
-                                                    options = {{
-                                                        precision :  2,
-                                                        separator :  ',' ,
-                                                        delimiter :  '.' ,
-                                                        unidade :  'R$ ' ,
-                                                        sufixoUnidade :  ' ' 
-                                                    }} 
-                                                />
-                                            </View> 
-                                        </View>
-
-                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoMensal}>
+                                        <TouchableOpacity style={styles.areaBtnModal} onPress={updatePrecoHora}>
                                             <Text style={styles.txtBtnModal}>SALVAR ALTERAÇÕES</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -1528,7 +1277,7 @@ export default function FormCaminhoes({route, navigation}) {
                                 <Text style={styles.dados}>{detalhes.preco}</Text>
                             </View>
         
-                            <TouchableOpacity onPress={() => {setModalEstado(true)}}>
+                            <TouchableOpacity onPress={() => {setModalPreco(true)}}>
                                 <MaterialIcons
                                     style={styles.icon}
                                     name='edit'
@@ -1580,7 +1329,7 @@ export default function FormCaminhoes({route, navigation}) {
                 }
 
                 <Text style={styles.tituloImagens}>EDITAR FOTOS</Text>
-                <Text style={styles.subImagens}>Máximo de 6 Fotos.</Text>
+                <Text style={styles.subImagens}>Máximo de 3 Fotos.</Text>
                 <TouchableOpacity style={styles.areaBtnPhoto} onPress={onClickAddImage}>
                     <Text style={styles.txtBtnPhoto}>CARREGAR FOTOS</Text>
                 </TouchableOpacity>
@@ -1624,19 +1373,21 @@ export default function FormCaminhoes({route, navigation}) {
 
 function renderItem(item, removerImg) {
     return (
-        <View style={styles.areaImage}>
-            <TouchableOpacity onPress={() => removerImg(item.id)}>
-                <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
-                    <View style={{flexDirection: 'row-reverse'}}>
-                        <FontAwesome
-                            style={{marginRight: 3}}
-                            name='close'
-                            size= {30}
-                            color="red"
-                        />
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+        <View style={{width: '31%', marginBottom: 10, marginHorizontal: '1%'}}>
+            <View style={styles.areaImage}>
+                <TouchableOpacity onPress={() => removerImg(item.id)}>
+                    <ImageBackground style={styles.itemImage} source={{uri: item.url}}>
+                        <View style={{flexDirection: 'row-reverse'}}>
+                            <FontAwesome
+                                style={{marginRight: 3}}
+                                name='close'
+                                size= {30}
+                                color="red"
+                            />
+                        </View>
+                    </ImageBackground>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
@@ -1653,7 +1404,7 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textTransform: 'uppercase',
         marginBottom: 20,
         fontWeight: 'bold'
@@ -1668,12 +1419,12 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtBtn: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#222',
         fontWeight: 'bold'
     },
     tituloInput: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         fontWeight: 'bold'
     },
@@ -1701,7 +1452,7 @@ const styles = StyleSheet.create ({
     },
     input: {
         width: '100%',
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff'
     }, 
     picker: {
@@ -1710,19 +1461,19 @@ const styles = StyleSheet.create ({
         marginTop: 10
     },
     tituloInfo: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 60,
         fontWeight: 'bold'
     },
     atencao: {
-        fontSize: 17,
+        fontSize: 14,
         color: '#222',
         marginTop: 5,
         textAlign: 'justify'
     },
     dados: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#222',
         marginTop: 10,
         marginBottom: 5,
@@ -1750,13 +1501,13 @@ const styles = StyleSheet.create ({
         resizeMode: 'cover'
     },
     tituloImagens: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#fff',
         marginTop: 40,
         fontWeight: 'bold'
     },
     subImagens: {
-        fontSize: 17,
+        fontSize: 18,
         color: '#fff',
         marginTop: 5
     },
@@ -1770,20 +1521,19 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtBtnPhoto: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },
     areaImage: {
-        height: 105,
-        width: 105,
-        borderWidth: 2,
+        height: 115,
+        width: '100%',
         borderColor: '#fff',
-        margin: 10 
+        borderWidth: 2,   
     },
     itemImage: {
-        height: 101,
-        width: 101,
+        height: 111,
+        width: '100%',
         resizeMode: 'cover'
     },
     modalWindow: {
@@ -1806,7 +1556,7 @@ const styles = StyleSheet.create ({
         paddingHorizontal: 15
     },
     tituloModal: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#222',
         marginTop: 20,
         fontWeight: 'bold'
@@ -1821,12 +1571,12 @@ const styles = StyleSheet.create ({
         marginTop: 20
     },
     txtBtnModal: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },
     txtBtnModalTitulo: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#FFF',
         fontWeight: 'bold',
         textAlign: 'center'

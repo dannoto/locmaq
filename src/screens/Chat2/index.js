@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform, KeyboardAvoidingView, Image, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { HeaderBackButton } from '@react-navigation/stack'
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import MensagemItem from '../../components/ConversaInterna/MensagemItem'
 

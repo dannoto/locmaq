@@ -30,20 +30,22 @@ export default ({route}) => {
     const [detalhesUsinaAsfalto, setDetalhesUsinaAsfalto] = useState([]);
     const [detalhesUsinaConcreto, setDetalhesUsinaConcreto] = useState([]);
     const [detalhesPerfuratriz, setDetalhesPerfuratriz] = useState([]);
+    const [keyFavorito, setkeyFavorito] = useState([]);
     const [modalvisible, setModalVisible] = useState(false);
-    const [desativado, setDesativado] = useState(true);
-    const [ativado, setAtivado] = useState(false);
+    const [desativado, setDesativado] = useState('');
+    const [ativado, setAtivado] = useState('');
     const [proprietario, setProprietario] = useState('');
 
-    function CloseModal() { 
-        setModalVisible(false)
-    }
-
-    function Favoritar() {
-        setDesativado(!desativado)
-        setAtivado(!ativado)
-    }
-   
+    const keyProduto = key;
+    const subcategoria = detalhes.subcategoria;
+    const modelo = detalhes.modelo;
+    const ano = detalhes.ano;
+    const condicao = detalhes.condicao;
+    const preco = detalhes.preco;
+    const precoHora = detalhes.precoHora;
+    const titulo = "";
+    const imagem0 = detalhes.imagem0;
+    
     useEffect(() => {
         async function getDetalhes() {
             await firebase.database().ref('equipamentos').child(key).on('value', (snapshot) => {
@@ -59,12 +61,11 @@ export default ({route}) => {
                     estado: snapshot.val().estado.key, 
                     cidade: snapshot.val().cidade.nome,
                     preco: snapshot.val().preco, 
-                    precoDiaria: snapshot.val().precoDiaria,
-                    precoSemanal: snapshot.val().precoSemanal,
-                    precoMensal: snapshot.val().precoMensal,
+                    precoHora: snapshot.val().precoHora,
                     subcategoria: snapshot.val().subcategoria.nome, 
                     categoria: snapshot.val().categoria.nome,
-                    codigoProduto: snapshot.val().codigoProduto
+                    codigoProduto: snapshot.val().codigoProduto,
+                    imagem0: snapshot.val().imagem0
                 };
                 setDetalhes(data);
 
@@ -302,11 +303,65 @@ export default ({route}) => {
             })
         } 
 
+        async function keyFavoritos() {
+            await firebase.database().ref('users').child(user.uid).child('favoritos').on('value', (snapshot) => {
+                setkeyFavorito([]);
+        
+                snapshot.forEach((childItem) => {
+                    let data = {
+                        keyProduto: childItem.val().keyProduto
+                    };
+        
+                    setkeyFavorito(oldArray => [...oldArray, data]);
+                })
+
+            })
+        } 
+
         getDetalhes();
+        keyFavoritos();
     }, []);
+    
+    function CloseModal() { 
+        setModalVisible(false)
+    }
+
+    async function Favoritar() {
+        let favoritos = await firebase.database().ref('users').child(user.uid).child('favoritos');
+        let chave = favoritos.push().key;
+    
+        favoritos.child(chave).set({
+            keyProduto: keyProduto,
+            subcategoria: subcategoria,
+            modelo: modelo,
+            ano: ano,
+            condicao: condicao, 
+            preco: preco,
+            precoHora: precoHora,
+            titulo: titulo,
+            imagem0: imagem0
+        });
+
+        // if(detalhesFavoritos.keyProduto = keyProduto) {
+        //     setDesativado(false)
+        //     setAtivado(true)
+        // }
+        // else {
+        //     setDesativado(true)
+        //     setAtivado(false)
+        // }
+    }
+
+    async function Desfavoritar() {
+        setDesativado(true)
+        setAtivado(false)
+
+        await firebase.database().ref('users').child('favoritos').child(key).remove();
+    }
+   
 
     return (
-        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
+        <ScrollView style={[styles.background, modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : '']} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>  
@@ -330,7 +385,7 @@ export default ({route}) => {
                             </TouchableOpacity>
                         ) :
                         (
-                            <TouchableOpacity onPress={Favoritar}>
+                            <TouchableOpacity onPress={Desfavoritar}>
                                 <Ionicons
                                 name={'heart-sharp'}
                                 size= {38}
@@ -344,10 +399,6 @@ export default ({route}) => {
                 <Text style={styles.condicao}>{detalhes.condicao}</Text>
 
                 <View style={styles.areaInteresse}>
-                    <View>
-                        <Text style={styles.contato}>CONTATO DO PROPRIETÁRIO</Text>
-                        <Text style={styles.celular}>(66) *****-4875</Text>
-                    </View>
 
                     <View style={styles.areaBtn}>
                         {/* <TouchableOpacity onPress={() => navigation.navigate('Chat',{proprietario:proprietario, interessado:interessado, produto:produto})}> */}
@@ -385,51 +436,41 @@ export default ({route}) => {
                     color="#222"
                     />
 
-                    <Text style={styles.local}>Local: {detalhes.cidade} - {detalhes.estado}</Text>
+                    <Text style={styles.local}>{detalhes.cidade} - {detalhes.estado}</Text>
                 </View>
 
                 {detalhes.condicao == 'VENDA' ?
                     (
                         <View style={styles.areaPrecoGeral}>
-                            <View style={styles.areaPreco}>
-                                <Text style={styles.precoInfo}>Valor: </Text>
-                                <Text style={styles.preco}>{detalhes.preco}</Text>
-                            </View>
+                            {!detalhes.preco ?
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor: </Text>
+                                        <Text style={styles.preco}>-</Text>
+                                    </View>
+                                ) :
+                                (
+                                    <View style={styles.areaPreco}>
+                                        <Text style={styles.precoInfo}>Valor: </Text>
+                                        <Text style={styles.preco}>{detalhes.preco}</Text>
+                                    </View>
+                                )
+                            }
                         </View>
                     ) :
                     (
                         <View style={styles.areaPrecoGeral}>
-                            <View style={styles.areaPreco}>
-                                <Text style={styles.precoInfo}>Valor Diária: </Text>
-                                <Text style={styles.preco}>{detalhes.precoDiaria}</Text>
-                            </View>
-
-                            {!detalhes.precoSemanal ?
+                            {!detalhes.precoHora ?
                                 (
                                     <View style={styles.areaPreco}>
-                                        <Text style={styles.precoInfo}>Valor Semanal: </Text>
+                                        <Text style={styles.precoInfo}>Valor Hora: </Text>
                                         <Text style={styles.preco}>-</Text>
                                     </View>
                                 ) :
                                 (
                                     <View style={styles.areaPreco}>
-                                        <Text style={styles.precoInfo}>Valor Semanal: </Text>
-                                        <Text style={styles.preco}>{detalhes.precoSemanal}</Text>
-                                    </View>
-                                )
-                            }
-
-                            {!detalhes.precoMensal ?
-                                (
-                                    <View style={styles.areaPreco}>
-                                        <Text style={styles.precoInfo}>Valor Mensal: </Text>
-                                        <Text style={styles.preco}>-</Text>
-                                    </View>
-                                ) :
-                                (
-                                    <View style={styles.areaPreco}>
-                                        <Text style={styles.precoInfo}>Valor Mensal: </Text>
-                                        <Text style={styles.preco}>{detalhes.precoMensal}</Text>
+                                        <Text style={styles.precoInfo}>Valor Hora: </Text>
+                                        <Text style={styles.preco}>{detalhes.precoHora}</Text>
                                     </View>
                                 )
                             }
@@ -1595,45 +1636,33 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#222',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         textTransform: 'uppercase'
     },
     areaInteresse: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 10
     },
     condicao: {
         color: '#ffa500',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         paddingHorizontal: 10
-    },
-    contato: {
-        color: '#222',
-        fontSize: 14,
-        marginTop: 15
-    },
-    celular: {
-        textAlign: 'center',
-        color: '#222',
-        fontWeight: 'bold',
-        fontSize: 14,
-        marginTop: 4
     },
     areaBtn: {
         height: 50,
         backgroundColor: '#ffa500',
-        width: '45%',
+        width: '90%',
         marginTop: 10,
-        borderRadius: 5,
-        justifyContent: 'center'
+        borderRadius: 10,
+        justifyContent: 'center',
     },
     txtBtn: {
         color: '#fff', 
-        fontSize: 16,
+        fontSize: 18,
         textAlign: 'center',
         fontWeight: 'bold'
     },
@@ -1645,7 +1674,7 @@ const styles = StyleSheet.create ({
     },
     local: {
         color: '#222',
-        fontSize: 17,
+        fontSize: 18,
         textTransform: 'uppercase'
     },
     areaPrecoGeral: {
@@ -1739,7 +1768,7 @@ const styles = StyleSheet.create ({
         borderRadius: 10
     },
     tituloModal: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#222',
         marginTop: 20,
         fontWeight: 'bold'
@@ -1754,12 +1783,12 @@ const styles = StyleSheet.create ({
         marginTop: 20
     },
     txtBtnModal: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },
     txtBtnModalProprietario: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#FFF',
         fontWeight: 'bold',
         textAlign: 'center'

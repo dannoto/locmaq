@@ -97,7 +97,7 @@ export default () => {
         }
         
         return (
-            <Background>
+            <Background showsVerticalScrollIndicator={false}>
                 <Container
                     behavior={Platform.OS === 'ios' ? 'padding' : ''}
                     enabled
@@ -113,6 +113,7 @@ export default () => {
                             value={empresa}
                             onChangeText={(text) => setEmpresa(text)}
                             keyboardType={'default'}
+                            maxLength={50}
                         />
                     </AreaInput>
 
@@ -125,12 +126,11 @@ export default () => {
                             value={cnpj}
                             onChangeText={(text) => setCnpj(text)}
                             type={'cnpj'}
-                            keyboardType={'numeric'}
+                            keyboardType={'number-pad'}
                             options={{
                                 format: '99.999.999/9999-99'
                             }}
                             maxLength={18}
-
                         />
                     </AreaInput>
 
@@ -140,7 +140,7 @@ export default () => {
                             placeholder="email@example.com"
                             value={email}
                             onChangeText={(text) => setEmail(text)}
-
+                            keyboardType={'email-address'}
                             autoCorrect={false}
                             autoCapitalize="none"
                         />

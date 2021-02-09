@@ -32,11 +32,9 @@ export default ({route}) => {
                 
                     PegaSubcategorias(data);
                 })
-
                 setLoading(false) 
             })
         }
-
         getSubcategories();
        
     }, []);
@@ -57,7 +55,7 @@ export default ({route}) => {
     }
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled> 
@@ -111,33 +109,27 @@ const styles = StyleSheet.create ({
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
         marginBottom: 30,
         fontWeight: 'bold'
     },
     btn: {
-        width: '100%',
-        height: 60,
         backgroundColor: 'transparent',
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 20,
-        borderWidth: 2,
-        borderColor: '#fff', 
-        paddingHorizontal: 10
     },
     txtBtn:{
-        fontSize: 22,
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    txtBtn:{
-        fontSize: 20,
+        width: '100%',
+        fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
         textTransform: 'uppercase',
-        textAlign: 'center'
+        textAlign: 'center',
+        borderWidth: 2,
+        borderColor: '#fff',
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })

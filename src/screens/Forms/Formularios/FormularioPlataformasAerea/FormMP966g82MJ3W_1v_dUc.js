@@ -137,7 +137,7 @@ export default function FormPlataformasAerea({ navigation, route }) {
     }
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled>
@@ -187,7 +187,7 @@ export default function FormPlataformasAerea({ navigation, route }) {
                         placeholder=""
                         value={ano}
                         onChangeText={(text) => setAno(text)}
-                        keyboardType={'numeric'}
+                        keyboardType={'number-pad'}
                         maxLength={4}
                     />
                 </View>
@@ -217,7 +217,7 @@ export default function FormPlataformasAerea({ navigation, route }) {
                     />
                 </View>
 
-                <Text style={styles.tituloInput}>ALTURA DE TRABALHO</Text>
+                <Text style={styles.tituloInput}>ALTURA DE TRABALHO (M)</Text>
                 <View style={styles.areaInput}>
                     <TextInput
                         style={styles.input}
@@ -260,7 +260,8 @@ export default function FormPlataformasAerea({ navigation, route }) {
                     <TextInput
                         style={styles.input}
                         multiline = {true}
-                        numberOfLines = {1}
+                        numberOfLines = {7}
+                        textAlignVertical = 'top'
                         placeholder=""
                         value={infoAdicionais}
                         onChangeText={(text) => setInfoAdicionais(text)}

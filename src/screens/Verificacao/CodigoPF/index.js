@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from '../../../services/firebaseConnection';
 
 
+
 //Codigo PF
 export default function CodigoPF({route}){
 
@@ -18,11 +19,8 @@ export default function CodigoPF({route}){
        
         
         enviarSMS();
-       
+        timer()
     }, [])
-
-
-
 
     function timer() {
         let myInterval = setInterval(() => {
@@ -32,14 +30,14 @@ export default function CodigoPF({route}){
             } else {
                 clearInterval(myInterval)
             }
-            // if (seconds === 0) {
-            //     if (minutes === 0) {
-            //         clearInterval(myInterval)
-            //     } 
-            //     else {
-            //         setSeconds(59);
-            //     }
-            // } 
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(myInterval)
+                } 
+                else {
+                    setSeconds(59);
+                }
+            } 
         }, 1000)
 
         return ()=> {
@@ -74,6 +72,11 @@ export default function CodigoPF({route}){
         // });
        }
 
+       const handleClick = ()=>{
+                        //desired function to be performed on clicking resend button
+        console.log('resend')
+                    }
+     
 
      function confirmaCodigo() {
 
@@ -82,7 +85,7 @@ export default function CodigoPF({route}){
         if (codigoGerado == codigoDigitado ) {
             console.log('CADSTRADO COM SUCESSO')
             
-            timer() 
+            // timer() 
 
         } else {
             console.log('CODIGO INVALIDO')
@@ -109,10 +112,13 @@ export default function CodigoPF({route}){
                 autoFocus
                 /> 
             </View>
+        
 
             <View>
+           
                 <TouchableOpacity>
                     <Text style={styles.txtBtnSemCodigo}>Não recebi o código</Text>
+                 
                     
                 </TouchableOpacity>
 

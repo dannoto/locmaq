@@ -2,12 +2,13 @@ import React, {useEffect, useState, useCallback} from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Anuncios from '../../../components/Anuncios';
 import firebase from '../../../services/firebaseConnection';
-import {useNavigation, useIsFocused, useFocusEffect} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default () => {
+export default ({navigation}) => {
 
 const user = firebase.auth().currentUser;
-const navigation = useNavigation();
+const navegacao = useNavigation();
 const isFocused = useIsFocused();
 
 const [equipamentos, setEquipamentos] = useState([]);
@@ -20,7 +21,7 @@ useEffect(() => {
     async function getEquipamentos() {
         await firebase.database().ref('equipamentos').orderByChild('usuario/key').equalTo(user.uid).on('value', (snapshot) => {
             setEquipamentos([]);
-
+    
             snapshot.forEach((childItem) => {
                 let data = {
                     key: childItem.key,
@@ -29,7 +30,7 @@ useEffect(() => {
                     ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
-                    precoDiaria: childItem.val().precoDiaria,
+                    precoHora: childItem.val().precoHora,
                     codigoProduto: childItem.val().codigoProduto,
                     imagem0:childItem.val().imagem0,
                     imagem1:childItem.val().imagem1,
@@ -38,12 +39,12 @@ useEffect(() => {
                     imagem4:childItem.val().imagem4,
                     imagem5:childItem.val().imagem5
                 };
-
-                setEquipamentos(oldArray => [...oldArray, data]);
+    
+                setEquipamentos(oldArray => [...oldArray, data].reverse());
             })
             setLoading(false)
         })
-    }    
+    } 
 }, [isFocused]);
 
     return (
@@ -60,18 +61,36 @@ useEffect(() => {
                 </View>
             </View>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <SafeAreaView style={styles.areaEquipamentos}>
                     {loading ?
                         (
-                            <ActivityIndicator size={"large"} color={"#222"}/>
+                            <ActivityIndicator style={{marginTop: 30}} size={"large"} color={"#222"}/>
                         ) :
                         (
-                            <FlatList
-                                data={equipamentos}
-                                renderItem={({item}) => (<Anuncios data={item}/>)}
-                                keyExtractor={item => item.key}
-                            />
+                            <View>
+                                {equipamentos == "" ? 
+                                    (
+                                        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+                                            <MaterialCommunityIcons
+                                                // style={styles.icon}
+                                                name='folder-alert-outline'
+                                                size= {90}
+                                                color='#d2d2d2'
+                                            />
+                                            <Text style={{color: '#707070', fontSize: 17, marginTop: 10}}>NENHUM ANÚNCIO CADASTRADO!</Text>
+                                        </View>
+                                    ) :
+                                    (
+                                        <FlatList
+                                        data={equipamentos}
+                                        renderItem={({item}) => (<Anuncios data={item}/>)}
+                                        keyExtractor={item => item.key}
+                                        showsVerticalScrollIndicator={false}
+                                    /> 
+                                    )
+                                }
+                            </View>
                         )
                     }
                 </SafeAreaView>
@@ -88,39 +107,13 @@ const styles = StyleSheet.create ({
     container: {
         flex:1
     },
-    areaBtnAnunciar: {
-        justifyContent: 'space-between',
-        marginRight: 20,
-        marginTop: 20,
-        flexDirection: 'row',
-        
-    },
-    tituloAnuncios: {
-        marginLeft: 20,
-        marginTop: 10,
-        color: '#222',
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
-    btnAnunciar: {
-        backgroundColor: '#ffa500',
-        width: '30%',
-        padding: 10,
-        borderRadius: 5,
-    },
-    txtBtnAnunciar: {
-        color: '#fff', 
-        fontSize: 18,
-        textAlign: 'center',
-        fontWeight: 'bold'
-    },
     areaBtnFiltro: {
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
     txtBtnAnuncios: {
         color: '#222',
-        fontSize: 19,
+        fontSize: 18,
         fontWeight: 'bold',
         marginTop: 30,
         marginBottom: 15

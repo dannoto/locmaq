@@ -39,56 +39,10 @@ export default () => {
 
     return (
         <View style={styles.background}>
-            <View style={styles.header}>
-                <EvilIcons
-                    name='search'
-                    size= {30}
-                    color='#222'
-                />
-
-                <TextInput 
-                    style={{width: '78%', color: '#222', fontSize: 18, marginLeft: 10}}
-                    placeholder='O que você está procurando?'
-                    placeholderTextColor= "#777"
-                    value={search}
-                    onChangeText={(text) => setSearch(text)}
-                    keyboardType={'default'}
-                    returnKeyType='search'
-                    autofocus
-                    selectTextOnFocus
-                />  
-
-                {search.length > 0 ? 
-                    ( 
-                        <TouchableOpacity onPress={() => {setSearch('')}}>
-                            <EvilIcons  
-                                name='close'
-                                size= {30}
-                                color='#222'
-                            />
-                        </TouchableOpacity>
-                    ) :
-                    (
-                        null
-                    )
-                }     
-                
-            </View>
-
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <KeyboardAvoidingView style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
                 enabled>               
-
-                    {/* <View>
-                        {loading &&
-                            <ActivityIndicator size={"large"} color={"#ffffff"}/>
-                        }
-                        {emptyList &&
-                            <Text>Nenhum resultado encontrado!</Text>
-                        }
-                        
-                    </View> */}
 
                     <View style={styles.areaCategorias}>
                         <Text style={styles.tituloCat}>SELECIONE A CATEGORIA</Text>
@@ -105,7 +59,6 @@ export default () => {
                             )
                         }
                     </View>
-                
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>    
@@ -137,7 +90,7 @@ const styles = StyleSheet.create ({
     },
     tituloCat: {
         color: '#222',
-        fontSize: 18,
+        fontSize: 16,
         marginTop: 20,
         paddingBottom: 20,
         paddingLeft: 20, 

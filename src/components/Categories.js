@@ -12,7 +12,7 @@ export default function Categories({data}){
 
         <Image style={styles.img} source={{uri: data.imagem}}/>
         
-        <TouchableOpacity style={styles.btn}  onPress={() => navigation.navigate('BuscaCategoria',{key:data.key}) } >
+        <TouchableOpacity style={styles.btn}  onPress={() => navigation.navigate('BuscaResultado', {key: data.key, catNome: data.nome, catServico: data.servico}) } >
           {data.nome == "" ? 
             (<Text style={styles.btnTitulo}>{data.servico}</Text>)
             :
@@ -37,27 +37,26 @@ const styles = StyleSheet.create ({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 90,
+    height: 75,
     borderBottomWidth: 2,
     borderColor: '#ddd',
     paddingLeft: 20
   },
   btn: {
     flex: 1,
-    height: 90,
+    height: 75,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   btnTitulo: {
     color: '#222',
-    fontSize: 16,
-    marginLeft:10,
+    fontSize: 15,
     textTransform: 'uppercase'
   },
   img: {
-    width: 75,
-    height: 75,
+    width: 60,
+    height: 60,
     marginRight: 10
   }
 })

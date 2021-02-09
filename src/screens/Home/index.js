@@ -2,12 +2,15 @@ import React, {useState, useEffect, useContext } from 'react';
 import { Platform, StyleSheet, ScrollView, KeyboardAvoidingView, View, Text, TouchableOpacity, ActivityIndicator, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import firebase from '../../services/firebaseConnection';
 import Recentes from '../../components/Recentes';
-import FiltroHome from '../../components/FiltroHome';
 import { AuthContext } from '../../contexts/auth';
+
+import FiltroHome from '../../components/FiltroHome';
+import FiltroHomeServicos from '../../components/FiltroHomeServicos';
 
 export default () => {
 
@@ -15,10 +18,14 @@ export default () => {
     const { user } = useContext( AuthContext );
 
     const [produtos, setProdutos] = useState([]);
+    const [servicos, setServicos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [destaques, setDestaques] = useState([]);
     const [condicao, setCondicao] = useState([]);
+    const [condicaoServicos, setCondicaoServicos] = useState([]);
     const [coordenadas, setCoordenadas] = useState();
+
+    const recentes = produtos.concat(servicos)
 
     // Localização do Usuário.
     const [json, setJson] = useState();
@@ -68,18 +75,37 @@ export default () => {
                         ano: childItem.val().ano,
                         modelo: childItem.val().modelo,
                         preco: childItem.val().preco,
-                        precoDiaria: childItem.val().precoDiaria,
+                        precoHora: childItem.val().precoHora,
                         imagem0: childItem.val().imagem0
                     };
 
-                    setProdutos(oldArray => [...oldArray, data]);
+                    setProdutos(oldArray => [...oldArray, data].reverse());
                 })
                 setLoading(false);
-                condAluguel(''); 
+                condAluguel(); 
+            })
+        }
+
+        async function getServicos() {
+            await firebase.database().ref('servicos').on('value', (snapshot) => {
+                setServicos([]);
+    
+                snapshot.forEach((childItem) => {
+                    let data = {
+                        key: childItem.key,
+                        subcategoria: childItem.val().subcategoria.nome,
+                        titulo: childItem.val().titulo,
+                        condicao: childItem.val().condicao,
+                        imagem0: childItem.val().imagem0
+                    };
+    
+                    setServicos(oldArray => [...oldArray, data].reverse());
+                })
             })
         }
 
         getProdutos();
+        getServicos();
         handleLocation();
     }, []);
 
@@ -139,11 +165,11 @@ export default () => {
                     ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
-                    precoDiaria: childItem.val().precoDiaria,
+                    precoHora: childItem.val().precoHora,
                     imagem0: childItem.val().imagem0
                 };
 
-                setCondicao(oldArray => [...oldArray, data]);
+                setCondicao(oldArray => [...oldArray, data].reverse());
             })
         })
     }
@@ -161,32 +187,29 @@ export default () => {
                     ano: childItem.val().ano,
                     modelo: childItem.val().modelo,
                     preco: childItem.val().preco,
-                    precoDiaria: childItem.val().precoDiaria,
+                    precoHora: childItem.val().precoHora,
                     imagem0: childItem.val().imagem0
                 };
 
-                setCondicao(oldArray => [...oldArray, data]);
+                setCondicao(oldArray => [...oldArray, data].reverse());
             })
         })
     }
 
     async function condServicos(estado) {
-        await firebase.database().ref('equipamentos').on('value', (snapshot) => {
-            setCondicao([]);
+        await firebase.database().ref('servicos').on('value', (snapshot) => {
+            setCondicaoServicos([]);
 
             snapshot.forEach((childItem) => {
                 let data = {
                     key: childItem.key,
                     subcategoria: childItem.val().subcategoria.nome,
-                    condicao: childItem.val().condicao.nome,
-                    fabricante: childItem.val().fabricante,
-                    ano: childItem.val().ano,
-                    modelo: childItem.val().modelo,
-                    preco: childItem.val().preco,
+                    titulo: childItem.val().titulo,
+                    condicao: childItem.val().condicao,
                     imagem0: childItem.val().imagem0
                 };
 
-                setCondicao(oldArray => [...oldArray, data]);
+                setCondicaoServicos(oldArray => [...oldArray, data].reverse());
             })
         })
     }
@@ -215,32 +238,34 @@ export default () => {
                 </View>
             </SafeAreaView>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <KeyboardAvoidingView style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
                 enabled> 
 
-                    <SafeAreaView style={styles.areaRecentes}>
-                        <Text style={styles.txtRecentes}>MAIS RECENTES</Text>
-                        
+                    <View style={styles.areaRecentes}>
+                        <Text style={styles.txtRecentes}>MAIS RECENTES DO BRASIL</Text>
+
                         {loading ?
                             (
-                                <ActivityIndicator size={"large"} color={"#222"}/>
+                                <ActivityIndicator style={{marginTop: 15}} size={"large"} color={"#222"}/>
                             ) :
                             (
                                 <SafeAreaView>
-                                    <FlatList
-                                        horizontal
-                                        showsHorizontalScrollIndicator={false}
-                                        showsVerticalScrollIndicator={false}
-                                        data={produtos}
-                                        renderItem={({item}) => (<Recentes data={item}/>)}
-                                        keyExtractor={item => item.key}
-                                    />
+                                    <View>
+                                        <FlatList
+                                            horizontal
+                                            showsHorizontalScrollIndicator={false}
+                                            showsVerticalScrollIndicator={false}
+                                            data={recentes}
+                                            renderItem={({item}) => (<Recentes data={item}/>)}
+                                            keyExtractor={item => item.key}
+                                        />
+                                    </View>
                                 </SafeAreaView>
                             )
                         } 
-                    </SafeAreaView>
+                    </View>
 
                     <View style={styles.areaFiltros}>
                         <TouchableOpacity>
@@ -260,17 +285,70 @@ export default () => {
                         
                         {loading ?
                             (
-                                <ActivityIndicator size={"large"} color={"#222"}/>
+                                <ActivityIndicator style={{marginTop: 15}} size={"large"} color={"#222"}/>
                             ) :
                             (
                                 <SafeAreaView>
-                                    <FlatList
-                                        showsHorizontalScrollIndicator={false}
-                                        showsVerticalScrollIndicator={false}
-                                        data={condicao}
-                                        renderItem={({item}) => (<FiltroHome data={item}/>)}
-                                        keyExtractor={item => item.key}
-                                    />
+                                    {condicao == "" ? 
+                                        (
+                                            <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+                                                <MaterialCommunityIcons
+                                                    name='folder-alert-outline'
+                                                    size= {90}
+                                                    color='#d2d2d2'
+                                                />
+                                                <Text style={{color: '#707070', fontSize: 17, marginTop: 10}}>NENHUM EQUIPAMENTO ENCONTRADO!</Text>
+                                            </View>
+                                        ) :
+                                        (
+                                            <View>
+                                                {condAluguel ?
+                                                    (
+                                                        <FlatList
+                                                            showsHorizontalScrollIndicator={false}
+                                                            showsVerticalScrollIndicator={false}
+                                                            data={condicao}
+                                                            renderItem={({item}) => (<FiltroHome data={item}/>)}
+                                                            keyExtractor={item => item.key}
+                                                        />
+                                                    ) :
+                                                    (
+                                                        null
+                                                    )
+                                                }
+
+                                                {/* {condVendas ?
+                                                    (
+                                                        <FlatList
+                                                            showsHorizontalScrollIndicator={false}
+                                                            showsVerticalScrollIndicator={false}
+                                                            data={condicao}
+                                                            renderItem={({item}) => (<FiltroHome data={item}/>)}
+                                                            keyExtractor={item => item.key}
+                                                        />
+                                                    ) :
+                                                    (
+                                                        null
+                                                    )
+                                                } */}
+
+                                                {/* {condServicos ?
+                                                    (
+                                                        <FlatList
+                                                            showsHorizontalScrollIndicator={false}
+                                                            showsVerticalScrollIndicator={false}
+                                                            data={condicaoServicos}
+                                                            renderItem={({item}) => (<FiltroHomeServicos data={item}/>)}
+                                                            keyExtractor={item => item.key}
+                                                        />
+                                                    ) :
+                                                    (
+                                                        null
+                                                    )
+                                                } */}
+                                            </View>
+                                        )
+                                    }
                                 </SafeAreaView>
                             )
                         }
@@ -328,7 +406,7 @@ const styles = StyleSheet.create ({
         flex: 1,
     },
     txtRecentes: {
-        fontSize: 19,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold',
         paddingHorizontal: 10,
@@ -343,7 +421,7 @@ const styles = StyleSheet.create ({
         marginBottom: 20
     },
     txtFiltros: {
-        fontSize: 19,
+        fontSize: 18,
         color: '#222',
         fontWeight: 'bold',
         marginTop: 25

@@ -1,23 +1,72 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Platform , ScrollView, Text, TouchableOpacity, KeyboardAvoidingView, View, StyleSheet, Image } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import firebase from '../../services/firebaseConnection';
 import { useNavigation } from '@react-navigation/native';
 
 export default () => {
 
     const { user, sair } = useContext(AuthContext);
     const navigation = useNavigation();
-    const avatar = user.avatar.url
+    const [detalhes, setDetalhes] = useState([]);
+    const [nomeFirebase, setNomeFirebase] = useState([]);
+    const [empresaFirebase, setEmpresaFirebase] = useState([]);
 
+    useEffect (() => {
+        async function getTipo() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+               setDetalhes([]);
+            
+                let data = {
+                    key: snapshot.key,
+                    tipo: snapshot.val().tipo,
+                    avatar: snapshot.val().avatar.url
+                };
+                setDetalhes(data);
+                
+                if (data.tipo == "Pessoa Física") {
+                    getNome();
+                } 
+                else if (data.tipo == "Pessoa Jurídica") {
+                    getEmpresa();
+                }
+           })
+        }
+
+        async function getNome() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+            setNomeFirebase([]);
+            
+            let data = {
+                nome: snapshot.val().nome
+            };
+            setNomeFirebase(data);
+            })
+        }
+
+        async function getEmpresa() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+            setempresaFirebase([]);
+            
+            let data = {
+                empresa: snapshot.val().empresa
+            };
+            setEmpresaFirebase(data);
+            })
+        }
+
+        getTipo();
+    }, []);
+ 
     return (
         <View style={styles.background}>
 
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.navigate('MeusDados')}>
-                    {avatar != "" ?
-                        <Image style={styles.img} source={{uri: avatar}}/>
+                    {detalhes.avatar != "" ?
+                        <Image style={styles.img} source={{uri: detalhes.avatar}}/>
                         :
                         <Ionicons
                             name={'md-person-circle'}
@@ -27,10 +76,17 @@ export default () => {
                     }
                 </TouchableOpacity>
                 
-                <Text style={styles.nome}>{ user.nome || user.empresa }</Text>
+                {detalhes.tipo == "Pessoa Física" ?
+                    (
+                        <Text style={styles.nome}>{nomeFirebase.nome}</Text>
+                    ) : 
+                    (
+                        <Text style={styles.nome}>{empresaFirebase.nome}</Text>
+                    )
+                }
             </View>
 
-            <ScrollView style={styles.background}>
+            <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
                 <KeyboardAvoidingView style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
                 enabled>                            
@@ -56,6 +112,15 @@ export default () => {
                             <Text style={styles.btnTitulo}>MEUS ANÚNCIOS</Text>
                         </TouchableOpacity> 
 
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Favoritos')}>
+                        <EvilIcons style={styles.icon}
+                            name={'heart'}
+                            size={40}
+                            color="#ffa500"
+                        /> 
+                            <Text style={styles.btnTitulo}>FAVORITOS</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('MinhasAssinaturas')}>
                         <EvilIcons
                             name={'retweet'}
@@ -65,7 +130,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>MINHAS ASSINATURAS</Text>
                         </TouchableOpacity> 
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Chat2')}>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('HistoricoPagamentos')}>
                         <EvilIcons
                             name={'credit-card'}
                             size={40}
@@ -109,22 +174,13 @@ export default () => {
                     <View style={styles.areaBtn}>
                         <Text style={styles.titulo2}>CENTRAL DE ATENDIMENTO</Text>
 
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Erro')}>
-                        <EvilIcons style={styles.icon}
-                            name={'exclamation'}
-                            size={40}
-                            color="#ffa500"
-                        /> 
-                            <Text style={styles.btnTitulo}>ENCONTROU ALGUM ERRO?</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Perguntas')}>
+                        <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Feedback')}>
                         <EvilIcons style={styles.icon}
                             name={'question'}
                             size={40}
                             color="#ffa500"
                         /> 
-                            <Text style={styles.btnTitulo}>PERGUNTAS FREQUENTES</Text>
+                            <Text style={styles.btnTitulo}>AJUDA E SUPORTE</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Sobre')}>
@@ -133,7 +189,7 @@ export default () => {
                             size={40}
                             color="#ffa500"
                         /> 
-                            <Text style={styles.btnTitulo}>SOBRE A LOCMAQ</Text>
+                            <Text style={styles.btnTitulo}>SOBRE A LOQMAC</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.btn} onPress={ () => navigation.navigate('Termos')}>
@@ -154,7 +210,7 @@ export default () => {
                             <Text style={styles.btnTitulo}>POLÍTICA DE PRIVACIDADE</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.btn} onPress={() => sair()}>
+                        <TouchableOpacity style={styles.btnSair} onPress={() => sair()}>
                         <EvilIcons style={styles.icon}
                             name={'external-link'}
                             size={40}
@@ -192,7 +248,7 @@ const styles = StyleSheet.create ({
     },
     nome: {
         color: '#222',
-        fontSize: 22,
+        fontSize: 18,
         paddingLeft: 10,
         textTransform: 'uppercase'
     },
@@ -211,6 +267,11 @@ const styles = StyleSheet.create ({
         height: 60,
         borderBottomWidth: 2,
         borderColor: '#ddd',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    btnSair: {
+        height: 60,
         alignItems: 'center',
         flexDirection: 'row'
     },

@@ -11,15 +11,15 @@ export default function Recentes({data}){
     const titulo =  fabricante +' - '+ modelo;
 
     function filterTitulo(titulo) {
-        if(titulo.length < 16) {
+        if(titulo.length < 15) {
           return titulo;
         }
-        return `${titulo.substring(0, 16)}...`;
+        return `${titulo.substring(0, 15)}...`;
     }
 
     return(
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Detalhes',{key:data.key}) } style={styles.areabtn}> 
+            <TouchableOpacity onPress={() => navigation.navigate('DetalhesEquipamentos',{key:data.key}) } style={styles.areabtn}> 
 
                 <View style={styles.areaImg}>
                     <ImageBackground style={styles.img} source={{uri: data.imagem0}}>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create ({
         resizeMode: 'cover'
     },
     txtProd: {
-        fontSize: 17,
+        fontSize: 16,
         textAlign: 'center',
         color: '#222',
         marginTop: 10,

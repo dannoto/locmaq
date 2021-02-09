@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Modal, Image, Alert } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Modal, Image, Alert, TextInput } from 'react-native';
 import { AuthContext } from '../../../contexts/auth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,10 +26,71 @@ window.fetch = new Fetch({
 export default () => {
     const { user } = useContext( AuthContext );
     const [avatar, setAvatar] = useState([]);
+    const [nome, setNome] = useState('');
+    const [empresa, setEmpresa] = useState('');
+    const [detalhes, setDetalhes] = useState([]);
+    const [nomeFirebase, setNomeFirebase] = useState([]);
+    const [empresaFirebase, setEmpresaFirebase] = useState([]);
     const [getUri, setGetUri] = useState('');
+    const [modalNome, setModalNome] = useState(false);
+    const [modalEmpresa, setModalEmpresa] = useState(false);
     const [modalvisible, setModalVisible] = useState(false);
     const [imagemURL, setImagemURL] = useState([]);
     const [imagemAtual, setImagemAtual] = useState([]);
+
+    useEffect (() => {
+        async function getTipo() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+               setDetalhes([]);
+            
+                let data = {
+                    key: snapshot.key,
+                    tipo: snapshot.val().tipo,
+                };
+                setDetalhes(data);
+                
+                if (data.tipo == "Pessoa Física") {
+                    getNome();
+                } 
+                else if (data.tipo == "Pessoa Jurídica") {
+                    getEmpresa();
+                }
+           })
+        }
+
+        async function getNome() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+            setNomeFirebase([]);
+            
+            let data = {
+                nome: snapshot.val().nome,
+                cpf: snapshot.val().cpf
+            };
+            setNomeFirebase(data);
+            })
+        }
+
+        async function getEmpresa() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+            setempresaFirebase([]);
+            
+            let data = {
+                empresa: snapshot.val().empresa,
+                cnpj: snapshot.val().cnpj
+            };
+            setEmpresaFirebase(data);
+            })
+        }
+
+        async function pegarFotoPerfil() {
+            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
+                setImagemAtual(snapshot.val().avatar);
+            });  
+        }
+
+        getTipo();
+        pegarFotoPerfil();
+    }, []);
 
     function onClickModal() {
         setModalVisible(true);
@@ -38,6 +99,22 @@ export default () => {
     function CloseModal() { 
         setModalVisible(false)
     };
+
+    async function updateNome() {
+        await firebase.database().ref('users').child(user.uid).update({
+            nome: nome
+        })
+        setModalNome(false)
+        setNome()
+    }
+
+    async function updateEmpresa() {
+        await firebase.database().ref('users').child(user.uid).update({
+            empresa: empresa
+        })
+        setModalEmpresa(false)
+        setEmpresa()
+    }
 
     function takePhotoFromCamera() {
         ImagePicker.openCamera({
@@ -79,7 +156,6 @@ export default () => {
         salvarImagem(newDataImg)   
         setImagemAtual([])
         setImagemAtual(avatar[0].url)
-
     }
 
     function onSelectedImageLibrary(image) {
@@ -96,26 +172,7 @@ export default () => {
         setAvatar(newDataImg);
         salvarImagem(newDataImg) 
         setImagemAtual(avatar[0].url)
-        // console.log(imagemAtual.length)
-        // if (imagemURL.length > 0 ) {
-        //     console.log('É MAIORRRR QUE ZEROOOOOOOOOOOOOO')
-        //     setImagemURL([])
-        
-        // } else {
-        //     console.log('É MENORRRRRRRR QUE ZEROOOOOOOOOOOOOO')
-        // }
-   
     }
-    
-    useEffect (() => {
-        async function pegarFotoPerfil() {
-            await firebase.database().ref('users').child(user.uid).on('value', (snapshot) => {
-                setImagemAtual(snapshot.val().avatar);
-            });  
-        }
-        pegarFotoPerfil()
-    }, []);
-
 
     async function salvarImagem(imagens) {
         let tipoImagem = imagens[0].tipo.replace('image/','');
@@ -137,7 +194,6 @@ export default () => {
             imagem.put(blob, {contentType:mime})
             .then(() => {
                 return imagem.getDownloadURL().then((e) => { 
-                    console.log('tamanho')
                     if (Storage.length > 0 ) {
                        
                         Storage = "";
@@ -146,20 +202,11 @@ export default () => {
                         atualizaFoto();
                         setImagemURL(Storage)
 
-
-                        
-                        console.log('LIMPADO')
-                        console.log(imagemURL);
                     } else {
-                        
                         Storage.push({url:e});
                         atualizaFoto();
                         setImagemURL(Storage)
-                    
-                        console.log(imagemURL)
-
-                    }
-                    
+                    }  
                 });
             })
             .catch((error) => {
@@ -176,7 +223,7 @@ export default () => {
     }
 
     return (
-        <ScrollView style={[styles.container, modalvisible ? {backgroundColor: '#fff', opacity: 0.1} : '']}>
+        <ScrollView style={[styles.container, modalvisible || modalNome || modalEmpresa ? {backgroundColor: '#fff', opacity: 0.1} : '']} showsVerticalScrollIndicator={false}>
             <View style={styles.areaImg}>
                 {imagemAtual != '' ?
                     <Image style={styles.imgPerfil} source={{uri: imagemAtual.url}}/>
@@ -218,24 +265,119 @@ export default () => {
                 </Modal>
             </View>
 
-            <View style={styles. areaNome}>
-                <View style={{width: '80%'}}>
-                    <Text style={styles.titulo}>NOME</Text>
-                    <Text style={[styles.dados, {textTransform: 'uppercase'}]}>{user.nome}</Text>    
+            {detalhes.tipo == "Pessoa Física" ? 
+                (
+                    <View style={styles. areaNome}>
+                    <View style={{width: '80%'}}>
+                        <Text style={styles.titulo}>NOME</Text>
+                        <Text style={[styles.dados, {textTransform: 'uppercase'}]}>{nomeFirebase.nome}</Text>    
+                    </View>
+    
+                    <TouchableOpacity onPress={() => setModalNome(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#222'
+                        />
+                    </TouchableOpacity> 
+    
+                    <Modal animationType="fade" transparent={true} visible={modalNome} onRequestClose={() => {}}>
+                        <View style={styles.modalWindowNome}>
+                            <View style={styles.modalBodyNome}>
+                                <TouchableOpacity style={styles.areaBtnModalCloseNome} onPress={() => setModalNome(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+    
+                                <Text style={styles.tituloInput}>NOME</Text>
+                                <View style={styles.areaInput}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder=""
+                                        value={nome}
+                                        onChangeText={(text) => setNome(text)}
+                                        keyboardType={'default'}
+                                        maxLength={50}
+                                    />
+                                </View>
+    
+                                <TouchableOpacity style={styles.areaBtnModalNome} onPress={updateNome}>
+                                    <Text style={styles.txtBtnModalNome}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
+                ) : 
+                (
+                    <View style={styles. areaNome}>
+                    <View style={{width: '80%'}}>
+                        <Text style={styles.titulo}>EMPRESA</Text>
+                        <Text style={[styles.dados, {textTransform: 'uppercase'}]}>{empresaFirebase.nome}</Text>    
+                    </View>
+    
+                    <TouchableOpacity onPress={() => setModalEmpresa(true)}>
+                        <MaterialIcons
+                            style={styles.icon}
+                            name='edit'
+                            size= {28}
+                            color='#222'
+                        />
+                    </TouchableOpacity> 
+    
+                    <Modal animationType="fade" transparent={true} visible={modalEmpresa} onRequestClose={() => {}}>
+                        <View style={styles.modalWindowNome}>
+                            <View style={styles.modalBodyNome}>
+                                <TouchableOpacity style={styles.areaBtnModalCloseNome} onPress={() => setModalEmpresa(false)}>
+                                    <AntDesign
+                                    style={{marginBottom: 5}}
+                                    name='closecircleo'
+                                    size= {34}
+                                    color="#fff"
+                                    />
+                                </TouchableOpacity>
+    
+                                <Text style={styles.tituloInput}>EMPRESA</Text>
+                                <View style={styles.areaInput}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder=""
+                                        value={empresa}
+                                        onChangeText={(text) => setEmpresa(text)}
+                                        keyboardType={'default'}
+                                        maxLength={50}
+                                    />
+                                </View>
+    
+                                <TouchableOpacity style={styles.areaBtnModalNome} onPress={updateEmpresa}>
+                                    <Text style={styles.txtBtnModalNome}>SALVAR ALTERAÇÕES</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+                )
+            }
 
-                <TouchableOpacity>
-                    <MaterialIcons
-                        style={styles.icon}
-                        name='edit'
-                        size= {28}
-                        color='#222'
-                    />
-                </TouchableOpacity>  
-            </View>
-        
-            <Text style={styles.titulo}>CPF</Text>
-            <Text style={styles.dados}>{user.cpf}</Text>
+            {detalhes.tipo == "Pessoa Física" ? 
+                (
+                    <View>
+                        <Text style={styles.titulo}>CPF</Text>
+                        <Text style={styles.dados}>{nomeFirebase.cpf}</Text>
+                    </View>
+                ) :
+                (
+                    <View>
+                        <Text style={styles.titulo}>CPF</Text>
+                        <Text style={styles.dados}>{empresaFirebase.cnpj}</Text>
+                    </View>
+                )
+            }
 
             <Text style={styles.titulo}>E-MAIL</Text>
             <Text style={styles.dados}>{user.email}</Text>
@@ -300,14 +442,14 @@ const styles = StyleSheet.create ({
         marginHorizontal: 20,
     },
     titulo: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#ffa500',
         marginTop: 20,
         marginHorizontal: 20
     },
     dados: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#222',
         marginTop: 5,
         marginHorizontal: 20
@@ -323,12 +465,6 @@ const styles = StyleSheet.create ({
         backgroundColor: '#ffa500',
         borderRadius: 10,
     },
-    tituloModal: {
-        fontSize: 20,
-        color: '#222',
-        marginTop: 20,
-        fontWeight: 'bold'
-    },
     areaBtnModal: {
         width: '80%',
         marginLeft: '10%',
@@ -339,12 +475,67 @@ const styles = StyleSheet.create ({
         marginTop: 20,
     },
     txtBtnModal: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#ffa500',
         fontWeight: 'bold'
     },
     areaBtnModalClose: {
         marginTop: 20,
         flexDirection: 'row-reverse'
+    },
+
+    modalWindowNome: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalBodyNome:{
+        width: '94%',
+        height: 270,
+        backgroundColor: '#ffa500',
+        borderRadius: 10,
+        paddingHorizontal: 15
+    },
+    areaBtnModalNome: {
+        width: '80%',
+        marginLeft: '10%',
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20
+    },
+    txtBtnModalNome: {
+        fontSize: 18,
+        color: '#ffa500',
+        fontWeight: 'bold'
+    },
+    areaBtnModalCloseNome: {
+        marginTop: 20,
+        marginBottom: 10,
+        flexDirection: 'row-reverse'
+    },
+    tituloInput: {
+        fontSize: 18,
+        color: '#fff',
+        fontWeight: 'bold'
+    },
+    areaInput: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        marginTop: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 2,
+        borderColor: '#fff'
+    },
+    input: {
+        width: '100%',
+        fontSize: 18,
+        color: '#fff'
     }
 })

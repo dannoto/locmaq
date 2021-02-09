@@ -14,8 +14,8 @@ export const Container = styled.KeyboardAvoidingView`
 `;
 
 export const Logo = styled.Image`
-    width: 60%;
-    padding: 10px;
+    width: 50%;
+    margin: 15px;
 `;
 
 export const TextTitulo = styled.Text`

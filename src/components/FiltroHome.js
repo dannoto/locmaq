@@ -9,18 +9,18 @@ export default function FiltroHome({data}){
     const ano = data.ano;
     const modeloAno = modelo + ' / ' + ano
 
-    function filterModelo(modelo) {
-        if(modelo.length < 18) {
-          return modelo;
+    function filterTitulo(titulo) {
+        if(titulo.length < 15) {
+          return titulo;
         }
-        return `${modelo.substring(0, 18)}...`;
+        return `${titulo.substring(0, 15)}...`;
     }
 
-    function filterFabricante(fabricante) {
-        if(fabricante.length < 15) {
-          return fabricante;
+    function filterModelo(modelo) {
+        if(modelo.length < 16) {
+          return modelo;
         }
-        return `${fabricante.substring(0, 15)}...`;
+        return `${modelo.substring(0, 16)}...`;
     }
 
     function filterPreco(preco) {
@@ -31,7 +31,7 @@ export default function FiltroHome({data}){
     }
     
     return(
-        <TouchableOpacity style={styles.areaAnuncios} onPress={() => navigation.navigate('Detalhes',{key:data.key})}>
+        <TouchableOpacity style={styles.areaAnuncios} onPress={() => navigation.navigate('DetalhesEquipamentos',{key:data.key})}>
             
             <View style={styles.areaImg}>
                 <ImageBackground style={styles.img} source={{uri: data.imagem0}}>
@@ -40,26 +40,24 @@ export default function FiltroHome({data}){
                     </View>
                 </ImageBackground>
             </View>
-    
+
             <View>
-                <Text style={styles.fabricante}>{filterFabricante(data.fabricante)}</Text>
+                <Text style={styles.titulo}>{filterTitulo(data.fabricante)}</Text>
                 <Text style={styles.modelo}>{filterModelo(modeloAno)} </Text>
 
                 {data.condicao == 'ALUGUEL' ?
                     (
-                        <Text style={styles.preco}>{filterPreco('Diária ' + data.precoDiaria)}</Text>
+                        <Text style={styles.preco}>{filterPreco(data.precoHora + ' / Hora')}</Text>
                     ) :
                     (
                         <Text style={styles.preco}>{filterPreco(data.preco)}</Text>
                     )
                 }
-               
+            
                 <View style={styles.areaBtn}>
                     <Text style={styles.txtBtn}>SAIBA MAIS</Text>
                 </View>
-                   
-            </View>
-                
+            </View> 
         </TouchableOpacity>  
     );
 }
@@ -86,9 +84,9 @@ const styles = StyleSheet.create ({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    fabricante: {
+    titulo: {
         color: '#222',
-        fontSize: 17,
+        fontSize: 16,
         marginLeft: 5,
         marginTop: 5,
         textTransform: 'uppercase',

@@ -5,173 +5,149 @@ import {useNavigation} from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import ListaConversas from '../../components/ListaConversas';
-import { validate } from 'gerador-validador-cpf';
 
 export default () => {
 
-const user = firebase.auth().currentUser;
-const navigation = useNavigation();
+    const user = firebase.auth().currentUser;
+    const navigation = useNavigation();
 
-const [chats, setChats] = useState([]);
-const [loading, setLoading] = useState(false);
-const [loadingLista, setLoadingLista] = useState(false);
+    const [chats, setChats] = useState([]);
+    const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-   async function getChatList() {
-        await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
-            setChats([]);
+    useEffect(() => {
+    async function getChatList() {
+            await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
+                setChats([]);
 
-            snapshot.forEach((childItem) => {
+                snapshot.forEach((childItem) => {
 
-                 firebase.database().ref('chats').child(childItem.key).on('value', (dados) => {
-                    dados.forEach((dado) => {
-                   
-                            // let data = {
-                            //     key:dado.key,
-                            //     interessado:dado.interessado,
-                            //     proprietario:dado.proprietario,
-                            //     produto:dado.produto,
+                    firebase.database().ref('chats').child(childItem.key).on('value', (dados) => {
+                        dados.forEach((dado) => {
+                    
+                            let data = {
+                                key: dado.key,
+                                interessado: dado.interessado,
+                                proprietario: dado.proprietario,
+                                produto: dado.produto,
 
-                            // };
-
-                            // // console.log(childItem.key)
-                            // setChats(oldArray => [...oldArray, data]);
-                            console.log(dado)
-
+                            };
+                            setChats(oldArray => [...oldArray, data]);
+                        })   
+                        setLoading(false)
                     })   
-
-                })   
-
-                           
-
-                       
-
+                })
             })
+        }
+        getChatList();
+        // console.log(chats)
+    
+    
+        // async function getdadosChat() {
+        //     await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
+        //         setChats([]);
+
+        //         snapshot.forEach((childItem) => {
+        //             let data = {
+        //                 key: childItem.key,
+        //                 // condicao: childItem.val().condicao.nome,
+        //                 // subcategoria: childItem.val().subcategoria.nome,
+        //                 // ano: childItem.val().ano.ano,
+        //                 // modelo: childItem.val().modelo,
+        //                 // imagem: childItem.val().imagensURL,
+        //             };
+
+        //             setChats(oldArray => [...oldArray, data]);
+        //         })
+        //         setLoading(false)
+        //         // console.log(snapshot)
+        //     })
+        // }
+
+        // async function geDadosProprietario() {
+        //     await firebase.database().ref('users').child(proprietario.codigo).on('value', (snapshot) => {
             
         
-        })
-    }
-    getChatList();
-    // console.log(chats)
-   
-  
-    // async function getdadosChat() {
-    //     await firebase.database().ref('users').child(user.uid).child('chats').on('value', (snapshot) => {
-    //         setChats([]);
-
-    //         snapshot.forEach((childItem) => {
-    //             let data = {
-    //                 key: childItem.key,
-    //                 // condicao: childItem.val().condicao.nome,
-    //                 // subcategoria: childItem.val().subcategoria.nome,
-    //                 // ano: childItem.val().ano.ano,
-    //                 // modelo: childItem.val().modelo,
-    //                 // imagem: childItem.val().imagensURL,
-    //             };
-
-    //             setChats(oldArray => [...oldArray, data]);
-    //         })
-    //         setLoading(false)
-    //         // console.log(snapshot)
-    //     })
-    // }
-
-    // async function geDadosProprietario() {
-    //     await firebase.database().ref('users').child(proprietario.codigo).on('value', (snapshot) => {
+        //         snapshot.forEach((childItem) => {
+        //           let data = {
+                
+        //             nome: childItem.val().nome,
+        //             cpf: childItem.val().cpf,
+        //             email: childItem.val().email,
+        //             // avatar: childItem.val().avatar,
+        //           };
         
-    
-    //         snapshot.forEach((childItem) => {
-    //           let data = {
-               
-    //             nome: childItem.val().nome,
-    //             cpf: childItem.val().cpf,
-    //             email: childItem.val().email,
-    //             // avatar: childItem.val().avatar,
-    //           };
-    
-    //           setDadosProprietario(snapshot.val().avatar.url);
-    
-           
-      
-    //         // })
-           
-             
-    //     })
-    // }
-  
-
-  
-}, []);
-
+        //           setDadosProprietario(snapshot.val().avatar.url);
+        
+            
+        
+        //         // })
+            
+                
+        //     })
+        // }
+    }, []);
 
     return (
-        <View style={styles.background}>
-            <SafeAreaView>
-                <View style={styles.header}>
-                    <Text style={styles.titulo}>NEGOCIAÇÕES</Text>
-
-                    <TouchableOpacity>
+        <KeyboardAvoidingView style={styles.background} behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled> 
+            <View style={styles.container}>
+                <SafeAreaView>
+                    <View style={styles.header}>
                         <EvilIcons
                             name='search'
                             size= {30}
-                            color="#222"
+                            color='#222'
                         />
-                    </TouchableOpacity>
-                    
-                </View>
-                
-                {/* <View style={styles.busca}>
-                    <TextInput 
-                        style={{width: '78%', color: '#222', fontSize: 18, marginLeft: 10}}
-                        placeholder="Pesquisar..."
-                        placeholderTextColor= "#777"
-                        value={search}
-                        onChangeText={(text) => setSearch(text)}
-                        keyboardType={'default'}
-                        returnKeyType="search"
-                        autofocus
-                        selectTextOnFocus
-                    />  
 
-                    {search.length > 0 ? 
+                        <View style={{width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <TextInput 
+                                style={{color: '#222', fontSize: 18, marginLeft: 10}}
+                                placeholder='Pesquisar conversa...'
+                                placeholderTextColor= "#777"
+                                value={search}
+                                onChangeText={(text) => setSearch(text)}
+                                keyboardType={'default'}
+                                returnKeyType='search'
+                                autofocus
+                                selectTextOnFocus
+                            />  
+
+                            {search.length > 0 ? 
+                                ( 
+                                    <TouchableOpacity onPress={() => {setSearch('')}}>
+                                        <EvilIcons  
+                                            name='close'
+                                            size= {30}
+                                            color='#222'
+                                        />
+                                    </TouchableOpacity>
+                                ) :
+                                (
+                                    null
+                                )
+                            }  
+                        </View>   
+                    </View>
+                </SafeAreaView>
+
+                <ScrollView style={styles.areaEquipamentos} showsVerticalScrollIndicator={false}>   
+                    {loading ?
                         ( 
-                            <TouchableOpacity onPress={() => {setSearch('')}}>
-                                <EvilIcons  
-                                    name='close'
-                                    size= {30}
-                                    color="#222"
-                                />
-                            </TouchableOpacity>
+                            <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
                         ) :
                         (
-                            null
+                            <FlatList
+                                data={chats}
+                                renderItem={({item}) => (<ListaConversas data={item}/>)}
+                                keyExtractor={item => item.key}
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                            />
                         )
-                    }     
-                
-                </View> */}
-            </SafeAreaView>
-
-            <ScrollView>
-                <KeyboardAvoidingView style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : ''}
-                enabled> 
-                    <View style={styles.areaEquipamentos}>
-                        {loadingLista ?
-                            (
-                                <ActivityIndicator style={{marginTop: 20}} size={"large"} color={"#222"}/>
-                            ) :
-                            (
-                                <FlatList
-                                    data={chats}
-                                    renderItem={({item}) => (<ListaConversas data={item}/>)}
-                                    keyExtractor={item => item.key}
-                                />
-                            )
-                        }
-                    </View>
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
+                    }      
+                </ScrollView>
+            </View>
+        </KeyboardAvoidingView>
         
     );
 }
@@ -185,33 +161,16 @@ const styles = StyleSheet.create ({
         flex:1
     },
     header: {
+        width: '100%',
         height: 60,
         backgroundColor: '#fff',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 15,
         shadowOffset: {width: 0, height: 4},
         shadowColor: '#222',
         shadowRadius: 2,
         elevation: 7
-    },
-    busca: {
-        height: 60,
-        backgroundColor: '#fff',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 15,
-        shadowOffset: {width: 0, height: 4},
-        shadowColor: '#222',
-        shadowRadius: 2,
-        elevation: 7
-    },
-    titulo: {
-        marginLeft: 10,
-        color: '#222',
-        fontSize: 20,
-        fontWeight: 'bold'
     },
     areaBtnAnunciar: {
         justifyContent: 'space-between',

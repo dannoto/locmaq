@@ -71,11 +71,8 @@ export default () => {
         }
 
         return (
-            <Background>
-                <Container
-                    behavior={Platform.OS === 'ios' ? 'padding' : ''}
-                    enabled
-                >
+            <Background showsVerticalScrollIndicator={false}>
+                <Container behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
 
                     <Logo source={require('../../assets/Logo1.png')} />
                     <TextTitulo>REGISTRE-SE! É FÁCIL E GRATUITO.</TextTitulo>
@@ -87,6 +84,7 @@ export default () => {
                             value={nome}
                             onChangeText={(text) => setNome(text)}
                             keyboardType={'default'}
+                            maxLength={50}
                         />
                     </AreaInput>
 
@@ -99,12 +97,11 @@ export default () => {
                             value={cpf}
                             onChangeText={(text) => setCpf(text)}
                             type={'cpf'}
-                            keyboardType={'numeric'}
+                            keyboardType={'number-pad'}
                             options={{
                                 format: '999.999.999-99'
                             }}
                             maxLength={14}
-
                         />
                     </AreaInput>
 
@@ -114,7 +111,7 @@ export default () => {
                             placeholder="email@example.com"
                             value={email}
                             onChangeText={(text) => setEmail(text)}
-
+                            keyboardType={'email-address'}
                             autoCorrect={false}
                             autoCapitalize="none"
                         />

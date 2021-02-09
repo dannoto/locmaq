@@ -35,7 +35,7 @@ export default () => {
 
 
     return (
-        <ScrollView style={styles.background}>
+        <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : ''}
             enabled> 
@@ -70,37 +70,38 @@ const styles = StyleSheet.create ({
         backgroundColor: '#ffa500'
     },
     container: {
-        flex: 1
+        flex: 1,
+        width: '100%'
     },
     area: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 40
     },
     titulo: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
         marginBottom: 20,
         fontWeight: 'bold'
     },
     btn: {
-        width: '100%',
-        height: 60,
         backgroundColor: 'transparent',
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 20,
-        borderWidth: 2,
-        borderColor: '#fff',
-        paddingHorizontal: 10
     },
     txtBtn:{
-        fontSize: 20,
+        width: '100%',
+        fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
         textTransform: 'uppercase',
-        textAlign: 'center'
+        textAlign: 'center',
+        borderWidth: 2,
+        borderColor: '#fff',
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })
